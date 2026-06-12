@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import org.cobra.moreores.client.gui.widget.TextureButtonWidget;
+import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
 import org.cobra.moreores.networking.block.data.PolishingStateDataPayload;
 import org.lwjgl.glfw.GLFW;
 
@@ -43,7 +43,7 @@ public abstract class AbstractGemPFScreen<S extends AbstractGemPFMenu> extends A
     }
 
     protected Button addButton(String translation, int buttonId, int x, int y, Identifier texture, Component tooltip) {
-        Button button = new TextureButtonWidget(x, y, Component.translatable(translation), texture, buttonId, menu.getPos());
+        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonId, menu.getPos());
         button.setTooltip(Tooltip.create(tooltip));
         return this.addRenderableWidget(button);
     }

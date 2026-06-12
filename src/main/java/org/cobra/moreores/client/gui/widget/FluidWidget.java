@@ -51,7 +51,7 @@ public class FluidWidget implements Renderable, LayoutElement {
         Fluid fluid = this.fluidStorage.variant.getFluid();
         long capacity = this.fluidStorage.getCapacity();
         int fluidHeight = Math.round(((float)amount / capacity) * this.height);
-        FluidRenderHandler handler = FluidRenderingRegistry.INSTANCE.get(fluid);
+        FluidRenderHandler handler = Flud.INSTANCE.get(fluid);
         if(handler == null) return;
         BlockPos blockPos = pos.get();
         FluidState fluidState = fluid.defaultFluidState();

@@ -4,8 +4,8 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.BlockTags;
-import org.cobra.moreores.block.ModBlocks;
-import org.cobra.moreores.registry.ModBlockTags;
+import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.core.registry.ModBlockTags;
 
 import java.util.concurrent.CompletableFuture;
 

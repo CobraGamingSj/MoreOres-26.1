@@ -6,7 +6,7 @@ package org.cobra.moreores.compat;//package org.cobra.moreores.compat;
 //import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 //import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 //import me.shedaniel.rei.api.common.util.EntryStacks;
-//import org.cobra.moreores.block.ModBlocks;
+//import org.cobra.moreores.world.block.ModBlocks;
 //import org.cobra.moreores.recipe.GemPurifierRecipe;
 //import org.cobra.moreores.client.gui.screen.GemPurifierScreen;
 //

@@ -19,10 +19,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.level.block.Block;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.block.ModBlocks;
-import org.cobra.moreores.block.RubyLampBlock;
-import org.cobra.moreores.item.RadiantBowItem;
-import org.cobra.moreores.item.equipment.ModEquipmentAssetKeys;
+import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.block.RubyLampBlock;
+import org.cobra.moreores.world.item.RadiantBowItem;
+import org.cobra.moreores.world.item.equipment.ModEquipmentAssetKeys;
 
 public class AutomaticModelGenerator extends FabricModelProvider {
     public AutomaticModelGenerator(FabricPackOutput output) {

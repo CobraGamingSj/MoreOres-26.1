@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import org.cobra.moreores.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
 
 public class GemInfusionBlockEntityRenderState extends BlockEntityRenderState {
 

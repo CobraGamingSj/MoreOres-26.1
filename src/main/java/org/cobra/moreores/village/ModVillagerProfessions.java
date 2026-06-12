@@ -2,7 +2,7 @@ package org.cobra.moreores.village;
 
 import com.google.common.collect.ImmutableSet;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.block.ModBlocks;
+import org.cobra.moreores.world.block.ModBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
-import org.cobra.moreores.block.GemPurifierBlock;
-import org.cobra.moreores.block.entity.gem.GemPurifierBlockEntity;
+import org.cobra.moreores.world.block.GemPurifierBlock;
+import org.cobra.moreores.world.block.entity.gem.GemPurifierBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;

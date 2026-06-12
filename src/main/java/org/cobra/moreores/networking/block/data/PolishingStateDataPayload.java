@@ -1,7 +1,7 @@
 package org.cobra.moreores.networking.block.data;
 
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.block.entity.gem.AbstractGemPCBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.AbstractGemPCBlockEntity;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;

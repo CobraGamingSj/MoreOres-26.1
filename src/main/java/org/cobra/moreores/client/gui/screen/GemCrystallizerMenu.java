@@ -14,11 +14,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.cobra.moreores.block.ModBlocks;
-import org.cobra.moreores.block.entity.gem.GemCrystallizeBlockEntity;
-import org.cobra.moreores.item.ModItems;
+import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
-import org.cobra.moreores.registry.ModItemTags;
+import org.cobra.moreores.core.registry.ModItemTags;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class GemCrystallizerMenu extends AbstractGemPFMenu {

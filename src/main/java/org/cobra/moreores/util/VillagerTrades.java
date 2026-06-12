@@ -1,8 +1,7 @@
 package org.cobra.moreores.util;
 
-import net.minecraft.world.item.trading.TradeSets;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.item.ModItems;
+import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.village.ModVillagerProfessions;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -11,7 +10,7 @@ import net.minecraft.world.item.trading.MerchantOffer;
 
 public class VillagerTrades {
 
-    public static void register() {
+    public static void registerTrades() {
         Trade.registerVillagerOffers(ModVillagerProfessions.JEWELLER, 1, factories -> {
             factories.add((world, entity, random) -> new MerchantOffer(
                     new ItemCost(Items.COAL, 24),

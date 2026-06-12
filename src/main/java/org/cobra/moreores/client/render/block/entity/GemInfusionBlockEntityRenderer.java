@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
-import org.cobra.moreores.block.GemPurifierBlock;
-import org.cobra.moreores.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.block.GemPurifierBlock;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer<GemCrystallizeBlockEntity, GemInfusionBlockEntityRenderState> {

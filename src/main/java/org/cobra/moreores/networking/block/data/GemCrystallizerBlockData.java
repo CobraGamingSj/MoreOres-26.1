@@ -11,9 +11,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.block.entity.gem.GemCrystallizeBlockEntity;
-import org.cobra.moreores.item.ModItems;
-import org.cobra.moreores.registry.ModItemTags;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.item.ModItems;
+import org.cobra.moreores.core.registry.ModItemTags;
 import org.lwjgl.glfw.GLFW;
 
 public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements CustomPacketPayload {

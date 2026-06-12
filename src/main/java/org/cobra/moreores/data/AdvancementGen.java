@@ -2,7 +2,7 @@ package org.cobra.moreores.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.item.ModItems;
+import org.cobra.moreores.world.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;

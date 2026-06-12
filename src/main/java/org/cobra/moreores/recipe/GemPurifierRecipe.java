@@ -9,7 +9,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
-import org.cobra.moreores.block.ModBlocks;
+import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
 import org.cobra.moreores.recipe.display.GemPolishingRecipeDisplay;
 import org.cobra.moreores.recipe.input.GemPurifyingRecipeInput;

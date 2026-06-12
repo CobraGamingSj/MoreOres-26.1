@@ -10,7 +10,7 @@ package org.cobra.moreores.compat;//package org.cobra.moreores.compat;
 //import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 //import me.shedaniel.rei.api.common.util.EntryStacks;
 //import org.cobra.moreores.MoreOresModInitializer;
-//import org.cobra.moreores.block.ModBlocks;
+//import org.cobra.moreores.world.block.ModBlocks;
 //import net.minecraft.text.Text;
 //import net.minecraft.util.Identifier;
 //import org.apache.logging.log4j.core.pattern.TextRenderer;

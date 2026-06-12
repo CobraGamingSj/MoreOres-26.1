@@ -11,10 +11,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.block.ModBlocks;
-import org.cobra.moreores.block.entity.gem.GemPurifierBlockEntity;
-import org.cobra.moreores.item.ModItems;
-import org.cobra.moreores.registry.ModItemTags;
+import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.block.entity.gem.GemPurifierBlockEntity;
+import org.cobra.moreores.world.item.ModItems;
+import org.cobra.moreores.core.registry.ModItemTags;
 import org.lwjgl.glfw.GLFW;
 
 public record GemPurifierBlockData(int keyCode, BlockPos pos) implements CustomPacketPayload {

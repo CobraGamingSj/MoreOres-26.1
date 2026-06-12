@@ -2,8 +2,8 @@ package org.cobra.moreores.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.block.ModBlocks;
-import org.cobra.moreores.item.ModItems;
+import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;

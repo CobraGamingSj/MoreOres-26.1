@@ -2,7 +2,6 @@ package org.cobra.moreores.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -10,7 +9,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
-import org.cobra.moreores.block.ModBlocks;
+import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
 import org.cobra.moreores.recipe.display.GemCrystallizingRecipeDisplay;
 import org.cobra.moreores.recipe.input.GemInfusionRecipeInput;

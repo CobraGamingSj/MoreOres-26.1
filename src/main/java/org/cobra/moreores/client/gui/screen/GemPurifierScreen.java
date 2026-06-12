@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.client.gui.widget.FluidWidget;
-import org.cobra.moreores.client.gui.widget.TextureButtonWidget;
+import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
 
 @Environment(EnvType.CLIENT)
 public class GemPurifierScreen extends AbstractContainerScreen<GemPurifierMenu> {
@@ -54,7 +54,7 @@ public class GemPurifierScreen extends AbstractContainerScreen<GemPurifierMenu> 
     }
 
     private Button addButton(String translation, int buttonId, int x, int y, Identifier texture, Component tooltip) {
-        Button button = new TextureButtonWidget(x, y, Component.translatable(translation), texture, buttonId, menu.blockEntity.getBlockPos());
+        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonId, menu.blockEntity.getBlockPos());
         button.setTooltip(Tooltip.create(tooltip));
         return this.addRenderableWidget(button);
     }

@@ -14,11 +14,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.cobra.moreores.block.ModBlocks;
-import org.cobra.moreores.block.entity.gem.GemPurifierBlockEntity;
-import org.cobra.moreores.item.ModItems;
+import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.block.entity.gem.GemPurifierBlockEntity;
+import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
-import org.cobra.moreores.registry.ModItemTags;
+import org.cobra.moreores.core.registry.ModItemTags;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class GemPurifierMenu extends AbstractGemPFMenu implements MenuHelper {
