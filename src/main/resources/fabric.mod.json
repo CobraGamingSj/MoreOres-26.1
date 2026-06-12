@@ -8,7 +8,7 @@
     "CobraGamingSJ"
   ],
   "contact": {
-    "sources": "https://github.com/CobraGamingSj/MoreOres-Fabric-1.21.11",
+    "sources": "https://github.com/CobraGamingSj/MoreOres-Fabric-26.1",
     "issues": "https://github.com/CobraGamingSj/MoreOres-Fabric-1.21.1/issues",
     "email": "cobragamingsj@gmail.com"
   },
@@ -32,8 +32,8 @@
   ],
 	"depends": {
       "fabricloader": ">=0.13.0",
-		"minecraft": "~1.21.11",
+		"minecraft": ">=26.1",
 		"java": ">=26",
-		"fabric-api": ">=0.139.4+1.21.11"
+		"fabric-api": ">=0.144.0+26.1"
 	}
 }
