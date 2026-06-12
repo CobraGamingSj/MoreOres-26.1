@@ -1,0 +1,353 @@
+{
+  "parent": "moreores:is_that_a_gem",
+  "criteria": {
+    "blue_garnet": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:blue_garnet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "green_garnet": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:green_garnet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "green_sapphire": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:green_sapphire"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "jade": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:jade"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "peridot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:peridot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "pink_garnet": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:pink_garnet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "pyrope": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:pyrope"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "radiant": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:radiant"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "ruby": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:ruby"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sapphire": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:sapphire"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "topaz": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:topaz"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "white_topaz": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:white_topaz"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "crimson_garnet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:crimson_garnet"
+          }
+        ]
+      }
+    },
+    "kyawthuite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:kyawthuite"
+          }
+        ]
+      }
+    },
+    "crystallite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:crystallite"
+          }
+        ]
+      }
+    },
+    "radiant_amethyst": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:radiant_amethyst"
+          }
+        ]
+      }
+    },
+    "limestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:limestone"
+          }
+        ]
+      }
+    },
+    "moonstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:moonstone"
+          }
+        ]
+      }
+    },
+    "grandidierite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:grandidierite"
+          }
+        ]
+      }
+    },
+    "red_beryl": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:red_beryl"
+          }
+        ]
+      }
+    },
+    "alexandrite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:alexandrite"
+          }
+        ]
+      }
+    },
+    "quartsidian": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:quartsidian"
+          }
+        ]
+      }
+    },
+    "opal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:opal"
+          }
+        ]
+      }
+    },
+    "orange_zircon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:orange_zircon"
+          }
+        ]
+      }
+    },
+    "kashmir_sapphire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:kashmir_sapphire"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "background": "moreores:block/radiant_block",
+    "description": {
+      "translate": "advancement.moreores.gems_all.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "moreores:radiant"
+    },
+    "title": {
+      "translate": "advancement.moreores.gems_all"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "ruby"
+    ],
+    [
+      "radiant"
+    ],
+    [
+      "sapphire"
+    ],
+    [
+      "green_sapphire"
+    ],
+    [
+      "blue_garnet"
+    ],
+    [
+      "pink_garnet"
+    ],
+    [
+      "green_garnet"
+    ],
+    [
+      "topaz"
+    ],
+    [
+      "white_topaz"
+    ],
+    [
+      "peridot"
+    ],
+    [
+      "jade"
+    ],
+    [
+      "pyrope"
+    ],
+    [
+      "crimson_garnet"
+    ],
+    [
+      "kyawthuite"
+    ],
+    [
+      "crystallite"
+    ],
+    [
+      "radiant_amethyst"
+    ],
+    [
+      "limestone"
+    ],
+    [
+      "moonstone"
+    ],
+    [
+      "quartsidian"
+    ],
+    [
+      "alexandrite"
+    ],
+    [
+      "orange_zircon"
+    ],
+    [
+      "opal"
+    ],
+    [
+      "grandidierite"
+    ],
+    [
+      "red_beryl"
+    ],
+    [
+      "kashmir_sapphire"
+    ]
+  ],
+  "rewards": {
+    "experience": 5,
+    "loot": [
+      "minecraft:blocks/diamond_ore"
+    ]
+  },
+  "sends_telemetry_event": true
+}

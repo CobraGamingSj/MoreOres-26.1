@@ -1,0 +1,8 @@
+{
+  "block.energy_block.break": {
+    "subtitle": "sound.energy_block.break",
+    "sounds": [
+         "moreores:energy_block_break"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+{
+	"parent": "moreores:block/gem_purifier_block",
+	"textures": {
+		"body": "moreores:block/gem_purifier/body_rp"
+	}
+}

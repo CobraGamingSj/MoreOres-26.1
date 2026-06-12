@@ -1,0 +1,39 @@
+package org.cobra.moreores.networking.block.data;
+
+import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.block.entity.gem.AbstractGemPCBlockEntity;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
+
+public record PolishingStateDataPayload(BlockPos blockPos, String action) implements CustomPacketPayload {
+    public static final Type<PolishingStateDataPayload> ID = new Type<>(Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "polishing_state"));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, PolishingStateDataPayload> PACKET_CODEC = StreamCodec.ofMember((payload, buf) -> {
+        buf.writeBlockPos(payload.blockPos);
+        buf.writeUtf(payload.action);
+    }, buf -> new PolishingStateDataPayload(buf.readBlockPos(), buf.readUtf()));
+
+    public void handle(ServerPlayNetworking.Context context) {
+
+        context.server().execute(() -> {
+            if(context.player().level().getBlockEntity(blockPos) instanceof AbstractGemPCBlockEntity<?> be) {
+                switch(action) {
+                    case "start" -> be.start();
+                    case "pause" -> be.pause();
+                    case "resume" -> be.resume();
+                    case "stop" -> be.stop();
+                }
+                be.setChanged();
+            }
+        });
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return ID;
+    }
+}

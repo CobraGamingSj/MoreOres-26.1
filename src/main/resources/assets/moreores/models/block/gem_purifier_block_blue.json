@@ -1,0 +1,6 @@
+{
+	"parent": "moreores:block/gem_purifier_block",
+	"textures": {
+		"output_tray": "moreores:block/output_tray/ot_tray_blue"
+	}
+}
