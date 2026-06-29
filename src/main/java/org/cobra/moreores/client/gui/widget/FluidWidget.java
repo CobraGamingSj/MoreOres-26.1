@@ -45,13 +45,13 @@ public class FluidWidget implements Renderable, LayoutElement {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float deltaTicks) {
         long amount = this.fluidStorage.amount;
         if(amount <= 0) return;
         Fluid fluid = this.fluidStorage.variant.getFluid();
         long capacity = this.fluidStorage.getCapacity();
         int fluidHeight = Math.round(((float)amount / capacity) * this.height);
-        FluidRenderHandler handler = Flud.INSTANCE.get(fluid);
+        FluidRenderHandler handler = FluidRenderingRegistry.get(fluid);
         if(handler == null) return;
         BlockPos blockPos = pos.get();
         FluidState fluidState = fluid.defaultFluidState();
@@ -62,14 +62,14 @@ public class FluidWidget implements Renderable, LayoutElement {
         float red = (tintColor >> 16 & 0xFF) /255F;
         float green = (tintColor >> 8 & 0xFF) /255F;
         float blue = (tintColor & 0xFF) /255F;
-        ScreenHelperUtils.renderTiledSprite(context, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, 1F, red, green, blue);
+        ScreenHelperUtils.extractTiledFluidSprite(extractor, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, 1F, red, green, blue);
 
         if(isPointWithinBounds(this.x, this.y, this.width, this.height, mouseX, mouseY)) {
-            drawTooltip(context, mouseX, mouseY);
+            drawTooltip(extractor, mouseX, mouseY);
         }
     }
 
-    protected void drawTooltip(GuiGraphicsExtractor context, int mouseX, int  mouseY) {
+    protected void drawTooltip(GuiGraphicsExtractor extractor, int mouseX, int  mouseY) {
         Fluid fluid = this.fluidStorage.variant.getFluid();
         long fluidAmount = this.fluidStorage.getAmount();
         long fluidCapacity = this.fluidStorage.getCapacity();
@@ -80,7 +80,7 @@ public class FluidWidget implements Renderable, LayoutElement {
                     Component.translatable(fluid.defaultFluidState().createLegacyBlock().getBlock().getDescriptionId()),
                     Component.literal("%s / %s mB".formatted(FluidStack.convertDropletsToMb(fluidAmount), FluidStack.convertDropletsToMb(fluidCapacity))).withStyle(ChatFormatting.BLUE)
             );
-            context.setComponentTooltipForNextFrame(textRenderer, texts, mouseX, mouseY);
+            extractor.setComponentTooltipForNextFrame(textRenderer, texts, mouseX, mouseY);
         }
     }
 

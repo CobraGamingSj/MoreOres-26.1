@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
@@ -12,29 +13,35 @@ import net.minecraft.world.level.Level;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
 import org.cobra.moreores.recipe.display.GemCrystallizingRecipeDisplay;
-import org.cobra.moreores.recipe.input.GemInfusionRecipeInput;
+import org.cobra.moreores.recipe.input.GemCrystallizationRecipeInput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
-public class GemCrystallizerRecipe implements Recipe<GemInfusionRecipeInput> {
-    public final Ingredient ingredientBefore;
-    public final Ingredient ingredientAfter;
-    public final ItemStack output;
-
+public record GemCrystallizerRecipe(Ingredient ingredientBefore, Ingredient ingredientAfter, ItemStackTemplate output) implements Recipe<GemCrystallizationRecipeInput> {
+    
     @Nullable
-    private PlacementInfo ingredientPlacement;
+    private static PlacementInfo placementInfo;
+    
+    public static final MapCodec<GemCrystallizerRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Ingredient.CODEC.fieldOf("gemBefore").forGetter(GemCrystallizerRecipe::ingredientBefore),
+            Ingredient.CODEC.fieldOf("gemAfter").forGetter(GemCrystallizerRecipe::ingredientAfter),
+            ItemStackTemplate.CODEC.fieldOf("infusedGem").forGetter(GemCrystallizerRecipe::output)
+    ).apply(instance, GemCrystallizerRecipe::new));
 
-    public GemCrystallizerRecipe(Ingredient ingredientBefore, Ingredient ingredientAfter, ItemStack result) {
-        this.ingredientBefore = ingredientBefore;
-        this.ingredientAfter = ingredientAfter;
-        this.output = result;
-    }
-
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizerRecipe> STREAM_CODEC = StreamCodec.composite(
+            Ingredient.CONTENTS_STREAM_CODEC, GemCrystallizerRecipe::ingredientBefore,
+            Ingredient.CONTENTS_STREAM_CODEC, GemCrystallizerRecipe::ingredientAfter,
+            ItemStackTemplate.STREAM_CODEC, GemCrystallizerRecipe::output,
+            GemCrystallizerRecipe::new
+    );
+    
+    public static final RecipeSerializer<GemCrystallizerRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
+    
     @Override
-    public ItemStack assemble(GemInfusionRecipeInput input) {
-        return this.output.copy();
+    public ItemStack assemble(GemCrystallizationRecipeInput input) {
+        return this.getResult().copy();
     }
 
     @Override
@@ -48,7 +55,7 @@ public class GemCrystallizerRecipe implements Recipe<GemInfusionRecipeInput> {
     }
 
     public ItemStack getResult() {
-        return this.output;
+        return this.output.create();
     }
 
     public Ingredient getIngredientBefore() {
@@ -60,20 +67,20 @@ public class GemCrystallizerRecipe implements Recipe<GemInfusionRecipeInput> {
     }
 
     @Override
-    public boolean matches(GemInfusionRecipeInput input, Level world) {
+    public boolean matches(GemCrystallizationRecipeInput input, Level world) {
         if (world.isClientSide()) return false;
         return this.ingredientBefore.test(input.inputBefore()) && this.ingredientAfter.test(input.inputAfter()) ||
                 this.ingredientAfter.test(input.inputBefore()) && this.ingredientBefore.test(input.inputAfter());
     }
 
     @Override
-    public RecipeSerializer<? extends Recipe<GemInfusionRecipeInput>> getSerializer() {
-        return Serializer.INSTANCE;
+    public RecipeSerializer<? extends Recipe<GemCrystallizationRecipeInput>> getSerializer() {
+        return ModRecipeSerializer.GEM_CRYSTALLIZER;
     }
 
     @Override
-    public RecipeType<? extends Recipe<GemInfusionRecipeInput>> getType() {
-        return Type.INSTANCE;
+    public RecipeType<? extends Recipe<GemCrystallizationRecipeInput>> getType() {
+        return ModRecipeType.GEM_CRYSTALLIZER;
     }
 
     @Override
@@ -90,10 +97,10 @@ public class GemCrystallizerRecipe implements Recipe<GemInfusionRecipeInput> {
 
     @Override
     public PlacementInfo placementInfo() {
-        if (this.ingredientPlacement == null) {
-            this.ingredientPlacement = PlacementInfo.createFromOptionals(List.of(Optional.of(this.ingredientBefore), Optional.of(this.ingredientAfter)));
+        if (placementInfo == null) {
+            placementInfo = PlacementInfo.createFromOptionals(List.of(Optional.of(this.ingredientBefore), Optional.of(this.ingredientAfter)));
         }
-        return this.ingredientPlacement;
+        return placementInfo;
     }
 
     @Override
@@ -103,49 +110,5 @@ public class GemCrystallizerRecipe implements Recipe<GemInfusionRecipeInput> {
 
     public List<Ingredient> getIngredients() {
         return List.of(ingredientBefore, ingredientAfter);
-    }
-
-    public static class Type implements RecipeType<GemCrystallizerRecipe> {
-
-        //RECIPE PROPERTIES
-        public static final Type INSTANCE = new Type();
-        public static final String ID = "gem_crystallizing"; //Recipe ID
-    }
-
-    public static class Serializer implements RecipeSerializer<GemCrystallizerRecipe> {
-
-        //RECIPE PROPERTIES
-        public static final Serializer INSTANCE = new Serializer();
-        public static final String ID = "gem_crystallizing"; //Recipe ID
-
-        //CODEC
-        private static final MapCodec<GemCrystallizerRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Ingredient.CODEC.fieldOf("gemBefore").forGetter(GemCrystallizerRecipe::getIngredientBefore),
-                Ingredient.CODEC.fieldOf("gemAfter").forGetter(GemCrystallizerRecipe::getIngredientAfter),
-                ItemStack.CODEC.fieldOf("infusedGem").forGetter(GemCrystallizerRecipe::getResult)
-        ).apply(instance, GemCrystallizerRecipe::new));
-
-        @Override
-        public MapCodec<GemCrystallizerRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, GemCrystallizerRecipe> streamCodec() {
-            return StreamCodec.of(Serializer::write, Serializer::read);
-        }
-
-        private static void write(RegistryFriendlyByteBuf buf, GemCrystallizerRecipe recipe) {
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buf, recipe.getIngredientBefore());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buf, recipe.getIngredientAfter());
-            ItemStack.STREAM_CODEC.encode(buf, recipe.getResult());
-        }
-
-        private static GemCrystallizerRecipe read(RegistryFriendlyByteBuf buf) {
-            Ingredient ingredientBefore = Ingredient.CONTENTS_STREAM_CODEC.decode(buf);
-            Ingredient ingredientAfter = Ingredient.CONTENTS_STREAM_CODEC.decode(buf);
-            ItemStack result = ItemStack.STREAM_CODEC.decode(buf);
-            return new GemCrystallizerRecipe(ingredientBefore, ingredientAfter, result);
-        }
     }
 }

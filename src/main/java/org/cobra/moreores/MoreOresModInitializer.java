@@ -23,6 +23,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import org.cobra.moreores.recipe.ModRecipeSerializer;
+import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.ModBlockEntityType;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
@@ -380,12 +382,8 @@ public class MoreOresModInitializer implements ModInitializer {
 
 
 		//ModRecipes Registry
-        Registry.register(BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, GemPurifierRecipe.Type.ID), GemPurifierRecipe.Type.INSTANCE);
-        Registry.register(BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, GemCrystallizerRecipe.Type.ID), GemCrystallizerRecipe.Type.INSTANCE);
-        LOGGER.info("Loading ModRecipeType for " + MOD_ID + " mod.");
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, GemPurifierRecipe.Serializer.ID), GemPurifierRecipe.Serializer.INSTANCE);
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, GemCrystallizerRecipe.Serializer.ID), GemCrystallizerRecipe.Serializer.INSTANCE);
-        LOGGER.info("Loading ModRecipeSerializer for" + MOD_ID + " mod.");
+		ModRecipeType.register();
+		ModRecipeSerializer.register();
 
 
 		//Networking Registry
@@ -419,7 +417,7 @@ public class MoreOresModInitializer implements ModInitializer {
 		serverPlayer.addItem(new ItemStack(ModItems.RUBY, 32));
 		serverPlayer.addItem(new ItemStack(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE, 9));
 		serverPlayer.addItem(new ItemStack(Items.ENCHANTED_GOLDEN_APPLE, 5));
-		serverPlayer.displayClientMessage(
+		serverPlayer.sendSystemMessage(
 				Component.literal("🎉 [MoreOres+] ")
 						.withStyle(ChatFormatting.GOLD)
 						.append(Component.literal("Secret unlocked! ")

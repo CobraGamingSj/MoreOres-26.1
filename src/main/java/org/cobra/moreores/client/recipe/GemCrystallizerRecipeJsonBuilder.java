@@ -1,5 +1,7 @@
 package org.cobra.moreores.client.recipe;
 
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.level.block.Block;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.recipe.GemCrystallizerRecipe;
@@ -23,23 +25,23 @@ import net.minecraft.world.level.block.Blocks;
 public class GemCrystallizerRecipeJsonBuilder {
     private final Ingredient ingredientBefore;
     private final Ingredient ingredientAfter;
-    private final ItemStack output;
+    private final ItemStackTemplate output;
     private final RecipeCategory category;
     private final Map<String, Criterion<?>> criterion = new LinkedHashMap<>();
 
-    public GemCrystallizerRecipeJsonBuilder(Ingredient ingredientBefore, Ingredient ingredientAfter, ItemStack output, RecipeCategory category) {
+    public GemCrystallizerRecipeJsonBuilder(Ingredient ingredientBefore, Ingredient ingredientAfter, ItemStackTemplate output, RecipeCategory category) {
         this.ingredientBefore = ingredientBefore;
         this.ingredientAfter = ingredientAfter;
         this.output = output;
         this.category = category;
     }
 
-    public static GemCrystallizerRecipeJsonBuilder create(Ingredient ingredientBefore, ItemStack result, RecipeCategory category) {
+    public static GemCrystallizerRecipeJsonBuilder create(Ingredient ingredientBefore, ItemStackTemplate result, RecipeCategory category) {
         return new GemCrystallizerRecipeJsonBuilder(ingredientBefore, Ingredient.of(ModItems.RADIANT), result, category);
     }
 
     public static GemCrystallizerRecipeJsonBuilder createQuartsidian() {
-        return new GemCrystallizerRecipeJsonBuilder(Ingredient.of(Items.QUARTZ), Ingredient.of(Blocks.OBSIDIAN.asItem()), new ItemStack(ModItems.QUARTSIDIAN), RecipeCategory.MISC);
+        return new GemCrystallizerRecipeJsonBuilder(Ingredient.of(Items.QUARTZ), Ingredient.of(Blocks.OBSIDIAN.asItem()), new ItemStackTemplate(Blocks.OBSIDIAN.asItem()), RecipeCategory.MISC);
     }
 
     public GemCrystallizerRecipeJsonBuilder criterion(String name, Criterion<?> criterion) {

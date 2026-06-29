@@ -10,7 +10,7 @@ import org.cobra.moreores.world.block.entity.ModBlockEntityType;
 import org.cobra.moreores.client.gui.screen.GemCrystallizerMenu;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.recipe.GemCrystallizerRecipe;
-import org.cobra.moreores.recipe.input.GemInfusionRecipeInput;
+import org.cobra.moreores.recipe.input.GemCrystallizationRecipeInput;
 import org.cobra.moreores.core.registry.ModItemTags;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,7 +56,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemPCBlockEntity<GemCryst
 
     protected final ContainerData propertyDelegate;
     private int maxProgressTicks = 300;
-    private final RecipeManager.CachedCheck<GemInfusionRecipeInput, GemCrystallizerRecipe> matchGetter = RecipeManager.createCheck(GemCrystallizerRecipe.Type.INSTANCE);
+    private final RecipeManager.CachedCheck<GemCrystallizationRecipeInput, GemCrystallizerRecipe> matchGetter = RecipeManager.createCheck(GemCrystallizerRecipe.Type.INSTANCE);
 
     public GemCrystallizeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityType.GEM_CRYSTALLIZE_BLOCK_ENTITY, pos, state);
@@ -107,7 +107,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemPCBlockEntity<GemCryst
     }
 
     @Override
-    public RecipeManager.CachedCheck<GemInfusionRecipeInput, GemCrystallizerRecipe> getMatchGetter() {
+    public RecipeManager.CachedCheck<GemCrystallizationRecipeInput, GemCrystallizerRecipe> getMatchGetter() {
         return matchGetter;
     }
 
@@ -372,7 +372,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemPCBlockEntity<GemCryst
 
     private Optional<RecipeHolder<GemCrystallizerRecipe>> currentRecipe() {
         ServerLevel serverWorld = (ServerLevel) level;
-        return this.matchGetter.getRecipeFor(new GemInfusionRecipeInput(this.ingredientStack(), this.ingredientAfterStack()), serverWorld);
+        return this.matchGetter.getRecipeFor(new GemCrystallizationRecipeInput(this.ingredientStack(), this.ingredientAfterStack()), serverWorld);
     }
 
     private boolean canInsertItemIntoResultSlot(Item item) {

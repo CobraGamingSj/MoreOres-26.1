@@ -8,7 +8,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 public class ScreenHelperUtils {
-    public static void renderTiledSprite(GuiGraphicsExtractor context, TextureAtlasSprite sprite, int x, int y, int width, int height, float a, float r, float g, float b) {
+    public static void extractTiledFluidSprite(GuiGraphicsExtractor context, TextureAtlasSprite sprite, int x, int y, int width, int height, float a, float r, float g, float b) {
         int spriteWidth = sprite.contents().width();
         int spriteHeight = sprite.contents().height();
 

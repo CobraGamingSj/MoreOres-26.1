@@ -1,5 +1,6 @@
 package org.cobra.moreores.client.recipe;
 
+import net.minecraft.world.item.ItemStackTemplate;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.recipe.GemPurifierRecipe;
 import java.util.LinkedHashMap;
@@ -19,17 +20,17 @@ import net.minecraft.world.item.crafting.Recipe;
 
 public class GemPolishingRecipeJsonBuilder {
     private final Ingredient ingredient;
-    private final ItemStack output;
+    private final ItemStackTemplate output;
     private final RecipeCategory category;
     private final Map<String, Criterion<?>> criterion = new LinkedHashMap<>();
 
-    public GemPolishingRecipeJsonBuilder(Ingredient ingredient, ItemStack output, RecipeCategory category) {
+    public GemPolishingRecipeJsonBuilder(Ingredient ingredient, ItemStackTemplate output, RecipeCategory category) {
         this.ingredient = ingredient;
         this.output = output;
         this.category = category;
     }
 
-    public static GemPolishingRecipeJsonBuilder create(Ingredient ingredient, ItemStack result, RecipeCategory category) {
+    public static GemPolishingRecipeJsonBuilder create(Ingredient ingredient, ItemStackTemplate result, RecipeCategory category) {
         return new GemPolishingRecipeJsonBuilder(ingredient, result, category);
     }
 

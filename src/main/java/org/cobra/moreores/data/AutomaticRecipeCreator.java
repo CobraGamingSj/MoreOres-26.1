@@ -1,6 +1,7 @@
 package org.cobra.moreores.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -262,7 +263,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                     var input = entry.getKey();
                     var result = entry.getValue();
 
-                    createGemPurifying(Ingredient.of(input), new ItemStack(result))
+                    createGemPurifying(Ingredient.of(input), result)
                             .criterion(getHasName(input), has(result))
                             .offerTo(output, getSimpleRecipeName(result));
                 }
@@ -271,7 +272,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                     Item inputBefore = entry.getKey();
                     Item result = entry.getValue();
 
-                    createGemInfusion(Ingredient.of(inputBefore), new ItemStack(result))
+                    createGemInfusion(Ingredient.of(inputBefore), result)
                             .criterion(getHasName(inputBefore), has(result))
                             .offerTo(output, getSimpleRecipeName(result));
                 }
@@ -416,12 +417,12 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
         };
     }
 
-    public GemPolishingRecipeJsonBuilder createGemPurifying(Ingredient input, ItemStack result) {
-        return GemPolishingRecipeJsonBuilder.create(input, result, RecipeCategory.MISC);
+    public GemPolishingRecipeJsonBuilder createGemPurifying(Ingredient input, Item result) {
+        return GemPolishingRecipeJsonBuilder.create(input, new ItemStackTemplate(result), RecipeCategory.MISC);
     }
 
-    public GemCrystallizerRecipeJsonBuilder createGemInfusion(Ingredient inputBefore, ItemStack result) {
-        return GemCrystallizerRecipeJsonBuilder.create(inputBefore, result, RecipeCategory.MISC);
+    public GemCrystallizerRecipeJsonBuilder createGemInfusion(Ingredient inputBefore, Item result) {
+        return GemCrystallizerRecipeJsonBuilder.create(inputBefore, new ItemStackTemplate(result), RecipeCategory.MISC);
     }
 
     @Override
