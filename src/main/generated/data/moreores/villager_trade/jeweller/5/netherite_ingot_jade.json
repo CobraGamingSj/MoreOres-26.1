@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "moreores:jade"
+  },
+  "max_uses": 6.0,
+  "reputation_discount": 0.5,
+  "wants": {
+    "count": 11.0,
+    "id": "minecraft:netherite_ingot"
+  },
+  "xp": 5.0
+}

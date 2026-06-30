@@ -1,0 +1,8 @@
+{
+  "type": "moreores:gem_crystallizing",
+  "gemAfter": "moreores:radiant",
+  "gemBefore": "moreores:sapphire",
+  "infusedGem": {
+    "id": "moreores:kashmir_sapphire"
+  }
+}

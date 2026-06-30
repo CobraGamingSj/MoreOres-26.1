@@ -20,7 +20,7 @@ public class ModS2CPayloadRegistry {
     }
 
     public static<T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> id, StreamCodec<RegistryFriendlyByteBuf, T> packetCodec) {
-        PayloadTypeRegistry.playS2C().register(id, packetCodec);
+        PayloadTypeRegistry.clientboundPlay().register(id, packetCodec);
     }
 
     public static void registerS2CPackets() {

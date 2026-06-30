@@ -1,6 +1,7 @@
 package org.cobra.moreores;
 
 import org.cobra.moreores.data.*;
+import org.cobra.moreores.data.village.TradeSets;
 import org.cobra.moreores.enchantment.ModEnchantments;
 import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimMaterials;
 import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimPatterns;
@@ -10,6 +11,7 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import org.cobra.moreores.world.item.trading.ModVillagerTrades;
 
 public class MoreOresDataGenerator implements DataGeneratorEntrypoint {
 	@Override
@@ -25,6 +27,7 @@ public class MoreOresDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(PointOfInterestTypeTagGen::new);
 		pack.addProvider(AutomaticRecipeCreator::new);
 		pack.addProvider(AutomaticTranslationCreator::new);
+		pack.addProvider(EquipmentAssetsProvider::new);
 	}
 
 	@Override
@@ -34,5 +37,7 @@ public class MoreOresDataGenerator implements DataGeneratorEntrypoint {
 		registryBuilder.add(Registries.TRIM_MATERIAL, ModArmorTrimMaterials::bootstrap);
 		registryBuilder.add(Registries.TRIM_PATTERN, ModArmorTrimPatterns::bootstrap);
 		registryBuilder.add(Registries.ENCHANTMENT, ModEnchantments::bootstrap);
+		registryBuilder.add(Registries.TRADE_SET, TradeSets::bootstrap);
+		registryBuilder.add(Registries.VILLAGER_TRADE, ModVillagerTrades::bootstrap);
 	}
 }

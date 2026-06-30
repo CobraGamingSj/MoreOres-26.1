@@ -1,7 +1,10 @@
 package org.cobra.moreores.village;
 
 import com.google.common.collect.ImmutableSet;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.fabricmc.fabric.api.object.builder.v1.world.poi.PoiHelper;
 import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.data.village.TradeSets;
 import org.cobra.moreores.world.block.ModBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,16 +21,25 @@ public class ModVillagerProfessions {
     public static final PoiType JEWEL = registerPoi("jewel_poi", ModBlocks.GEM_PURIFIER_BLOCK);
 
     public static final ResourceKey<VillagerProfession> JEWELLER = ResourceKey.create(Registries.VILLAGER_PROFESSION, MoreOresModInitializer.id("jeweller"));
-    public static final VillagerProfession JEWELLER_KEY = registerProfession("jeweller", JEWEL_POI);
+    public static final VillagerProfession JEWELLER_KEY = registerProfession("jeweller", new VillagerProfession(
+            Component.literal("Jeweller"),
+            entry -> entry.is(JEWEL_POI),
+            entry -> entry.is(JEWEL_POI),
+            ImmutableSet.of(), ImmutableSet.of(),
+            SoundEvents.VILLAGER_WORK_SHEPHERD, Int2ObjectMap.ofEntries(
+                Int2ObjectMap.entry(1, TradeSets.JEWELLER_LEVEL_1),
+                Int2ObjectMap.entry(2, TradeSets.JEWELLER_LEVEL_2),
+                Int2ObjectMap.entry(3, TradeSets.JEWELLER_LEVEL_3),
+                Int2ObjectMap.entry(4, TradeSets.JEWELLER_LEVEL_4),
+                Int2ObjectMap.entry(5, TradeSets.JEWELLER_LEVEL_5)
+    )));
 
-    private static VillagerProfession registerProfession(String id, ResourceKey<PoiType> type) {
-        return Registry.register(BuiltInRegistries.VILLAGER_PROFESSION, MoreOresModInitializer.id(id),
-                new VillagerProfession(Component.literal("Jeweller"), entry -> entry.is(type), entry -> entry.is(type),
-                        ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_SHEPHERD));
+    private static VillagerProfession registerProfession(String id, VillagerProfession profession) {
+        return Registry.register(BuiltInRegistries.VILLAGER_PROFESSION, MoreOresModInitializer.id(id), profession);
     }
 
     private static PoiType registerPoi(String id, Block block) {
-        return PointOfInterestHelper.register(MoreOresModInitializer.id(id), 1, 1, block);
+        return PoiHelper.register(MoreOresModInitializer.id(id), 1, 1, block);
     }
 
     private static ResourceKey<PoiType> poiKey(String id) {

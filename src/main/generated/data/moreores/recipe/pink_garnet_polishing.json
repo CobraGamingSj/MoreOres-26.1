@@ -1,8 +1,7 @@
 {
-  "type": "moreores:gem_polishing",
+  "type": "moreores:gem_purifying",
   "ingredientGem": "moreores:raw_pink_garnet",
   "resultGem": {
-    "count": 1,
     "id": "moreores:pink_garnet"
   }
 }

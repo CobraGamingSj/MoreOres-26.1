@@ -1,5 +1,8 @@
 package org.cobra.moreores.data;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.minecraft.tags.TagEntry;
 import org.cobra.moreores.MoreOresModInitializer;
 
 import java.util.concurrent.CompletableFuture;
@@ -9,17 +12,18 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.PoiTypeTags;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
+import org.cobra.moreores.village.ModVillagerProfessions;
 
-public class PointOfInterestTypeTagGen extends TagsProvider<PoiType> {
+public class PointOfInterestTypeTagGen extends FabricTagsProvider<PoiType> {
     private static final String JEWEL_KEY = "jewel_poi";
 
-    public PointOfInterestTypeTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registryLookupFuture) {
+    public PointOfInterestTypeTagGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookupFuture) {
         super(output, Registries.POINT_OF_INTEREST_TYPE, registryLookupFuture);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
         this.getOrCreateRawBuilder(PoiTypeTags.ACQUIRABLE_JOB_SITE)
-                .addOptionalElement(MoreOresModInitializer.id(JEWEL_KEY));
+                .add(TagEntry.element(ModVillagerProfessions.JEWEL_POI.identifier()));
     }
 }

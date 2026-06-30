@@ -1,0 +1,8 @@
+{
+  "type": "moreores:gem_crystallizing",
+  "gemAfter": "moreores:radiant",
+  "gemBefore": "moreores:jade_block",
+  "infusedGem": {
+    "id": "moreores:grandidierite_block"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "moreores:peridot"
+  },
+  "max_uses": 6.0,
+  "reputation_discount": 0.5,
+  "wants": {
+    "count": 65.0,
+    "id": "minecraft:iron_ingot"
+  },
+  "xp": 5.0
+}

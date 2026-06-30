@@ -1,5 +1,6 @@
 package org.cobra.moreores.world.block.entity.gem;
 
+import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemCrystallizerBlock;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.item.util.GemCategory;
@@ -56,7 +57,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemPCBlockEntity<GemCryst
 
     protected final ContainerData propertyDelegate;
     private int maxProgressTicks = 300;
-    private final RecipeManager.CachedCheck<GemCrystallizationRecipeInput, GemCrystallizerRecipe> matchGetter = RecipeManager.createCheck(GemCrystallizerRecipe.Type.INSTANCE);
+    private final RecipeManager.CachedCheck<GemCrystallizationRecipeInput, GemCrystallizerRecipe> matchGetter = RecipeManager.createCheck(ModRecipeType.GEM_CRYSTALLIZER);
 
     public GemCrystallizeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityType.GEM_CRYSTALLIZE_BLOCK_ENTITY, pos, state);

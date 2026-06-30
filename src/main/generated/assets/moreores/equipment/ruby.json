@@ -1,0 +1,24 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "moreores:ruby"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "moreores:ruby"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "moreores:ruby"
+      }
+    ],
+    "nautilus_body": [
+      {
+        "texture": "moreores:ruby"
+      }
+    ]
+  }
+}

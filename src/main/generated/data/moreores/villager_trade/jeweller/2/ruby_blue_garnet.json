@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "moreores:blue_garnet"
+  },
+  "max_uses": 6.0,
+  "reputation_discount": 0.5,
+  "wants": {
+    "count": 2.0,
+    "id": "moreores:ruby"
+  },
+  "xp": 5.0
+}

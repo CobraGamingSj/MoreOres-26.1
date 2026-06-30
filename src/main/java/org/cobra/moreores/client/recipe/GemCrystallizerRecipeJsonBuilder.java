@@ -50,7 +50,7 @@ public class GemCrystallizerRecipeJsonBuilder {
     }
 
     public void offerTo(RecipeOutput exporter, String name) {
-        ResourceKey<Recipe<?>> recipeId = ResourceKey.create(Registries.RECIPE, MoreOresModInitializer.id(name + "_crystallizer"));
+        ResourceKey<Recipe<?>> recipeId = ResourceKey.create(Registries.RECIPE, MoreOresModInitializer.id(name + "_crystallizing"));
         this.validate(recipeId);
         Advancement.Builder builder = exporter.advancement()
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))

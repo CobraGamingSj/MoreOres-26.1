@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "moreores:pyrope"
+  },
+  "max_uses": 6.0,
+  "reputation_discount": 0.15,
+  "wants": {
+    "count": 3.0,
+    "id": "moreores:green_sapphire"
+  },
+  "xp": 5.0
+}

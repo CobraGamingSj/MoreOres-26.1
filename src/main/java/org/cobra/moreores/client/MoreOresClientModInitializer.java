@@ -28,8 +28,8 @@ public class MoreOresClientModInitializer implements ClientModInitializer {
 
         ModS2CNetworks.registerClientS2C();
 
-        BlockRenderLayerMap.putBlock(ModBlocks.GEM_PURIFIER_BLOCK, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(ModBlocks.GEM_CRYSTALLIZER_BLOCK, ChunkSectionLayer.TRANSLUCENT);
+//        BlockRenderLayerMap.putBlock(ModBlocks.GEM_PURIFIER_BLOCK, ChunkSectionLayer.TRANSLUCENT);
+//        BlockRenderLayerMap.putBlock(ModBlocks.GEM_CRYSTALLIZER_BLOCK, ChunkSectionLayer.TRANSLUCENT);
 
         MenuScreens.register(ModMenuType.GEM_PURIFIER, GemPurifierScreen::new);
         MenuScreens.register(ModMenuType.GEM_CRYSTALLIZER, GemCrystallizerScreen::new);

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "moreores:moonstone_crystallizing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_topaz": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:moonstone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_white_topaz"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "moreores:moonstone_crystallizing"
+    ]
+  }
+}

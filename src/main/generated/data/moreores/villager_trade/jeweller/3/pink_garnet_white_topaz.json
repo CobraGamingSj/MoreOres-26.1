@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "moreores:white_topaz"
+  },
+  "max_uses": 6.0,
+  "reputation_discount": 0.15,
+  "wants": {
+    "count": 5.0,
+    "id": "moreores:pink_garnet"
+  },
+  "xp": 5.0
+}

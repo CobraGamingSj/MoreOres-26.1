@@ -1,0 +1,8 @@
+{
+  "type": "moreores:gem_crystallizing",
+  "gemAfter": "minecraft:obsidian",
+  "gemBefore": "minecraft:quartz",
+  "infusedGem": {
+    "id": "minecraft:obsidian"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "moreores:gem_crystallizing",
+  "gemAfter": "moreores:radiant",
+  "gemBefore": "moreores:kyawthuite_block",
+  "infusedGem": {
+    "id": "moreores:orange_zircon_block"
+  }
+}

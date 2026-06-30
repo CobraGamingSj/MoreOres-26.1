@@ -1,5 +1,6 @@
 package org.cobra.moreores.world.block.entity.gem;
 
+import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemPurifierBlock;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.item.util.GemCategory;
@@ -84,7 +85,7 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
 
     protected final ContainerData propertyDelegate;
     private int maxProgressTick = 384;
-    private final RecipeManager.CachedCheck<GemPurifyingRecipeInput, GemPurifierRecipe> matchGetter = RecipeManager.createCheck(GemPurifierRecipe.Type.INSTANCE);
+    private final RecipeManager.CachedCheck<GemPurifyingRecipeInput, GemPurifierRecipe> matchGetter = RecipeManager.createCheck(ModRecipeType.GEM_PURIFIER);
 
     public GemPurifierBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityType.GEM_PURIFIER_BLOCK_ENTITY, pos, state);
@@ -429,7 +430,10 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
 
     private Optional<RecipeHolder<GemPurifierRecipe>> currentRecipe() {
         ServerLevel serverWorld = (ServerLevel) level;
-        return this.matchGetter.getRecipeFor(new GemPurifyingRecipeInput(this.ingredientStack().getCraftingRemainder()), serverWorld);
+        if(serverWorld == null) {
+            return Optional.empty();
+        }
+        return this.matchGetter.getRecipeFor(new GemPurifyingRecipeInput(this.ingredientStack()), serverWorld);
     }
 
     private boolean canInsertItemIntoResultSlot(Item item) {

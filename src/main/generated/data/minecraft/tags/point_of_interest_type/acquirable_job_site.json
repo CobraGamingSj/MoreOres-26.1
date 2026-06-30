@@ -1,8 +1,5 @@
 {
   "values": [
-    {
-      "id": "moreores:jewel_poi",
-      "required": false
-    }
+    "moreores:jewel_poi"
   ]
 }

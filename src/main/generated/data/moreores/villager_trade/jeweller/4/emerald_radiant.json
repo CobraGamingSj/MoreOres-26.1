@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "moreores:radiant"
+  },
+  "max_uses": 6.0,
+  "reputation_discount": 0.5,
+  "wants": {
+    "count": 26.0,
+    "id": "minecraft:emerald"
+  },
+  "xp": 5.0
+}

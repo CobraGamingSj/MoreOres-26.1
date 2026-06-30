@@ -22,7 +22,9 @@ import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.RubyLampBlock;
 import org.cobra.moreores.world.item.RadiantBowItem;
-import org.cobra.moreores.world.item.equipment.ModEquipmentAssetKeys;
+import org.cobra.moreores.world.item.equipment.ModEquipmentAssets;
+
+import java.util.Map;
 
 public class AutomaticModelGenerator extends FabricModelProvider {
     public AutomaticModelGenerator(FabricPackOutput output) {
@@ -54,6 +56,13 @@ public class AutomaticModelGenerator extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerator) {
+        Map<String, Identifier> trimPrefixes = Map.of(
+                "_helmet", ItemModelGenerators.TRIM_PREFIX_HELMET,
+                "_chestplate", ItemModelGenerators.TRIM_PREFIX_CHESTPLATE,
+                "_leggings", ItemModelGenerators.TRIM_PREFIX_LEGGINGS,
+                "_boots", ItemModelGenerators.TRIM_PREFIX_BOOTS
+        );
+        
         for (Item item : BuiltInRegistries.ITEM) {
 
             if(item instanceof BlockItem) {
@@ -76,47 +85,22 @@ public class AutomaticModelGenerator extends FabricModelProvider {
                     itemModelGenerator.generateSpear(item);
                     handheld = true;
                 } else if (path.startsWith("ruby_")) {
-                    assetKey = ModEquipmentAssetKeys.RUBY;
+                    assetKey = ModEquipmentAssets.RUBY;
                 } else if (path.startsWith("sapphire_")) {
-                    assetKey = ModEquipmentAssetKeys.SAPPHIRE;
+                    assetKey = ModEquipmentAssets.SAPPHIRE;
                 } else if (path.startsWith("radiant_")) {
-                    assetKey = ModEquipmentAssetKeys.RADIANT;
+                    assetKey = ModEquipmentAssets.RADIANT;
                 }
-
-                if (assetKey != null) {
-                    if(path.endsWith("_helmet")) {
-                        itemModelGenerator.generateTrimmableItem(
-                                item,
-                                assetKey,
-                                ItemModelGenerators.TRIM_PREFIX_HELMET,
-                                false
-                        );
-                        continue;
-                    } else if (path.endsWith("_chestplate")) {
-                        itemModelGenerator.generateTrimmableItem(
-                                item,
-                                assetKey,
-                                ItemModelGenerators.TRIM_PREFIX_CHESTPLATE,
-                                false
-                        );
-                        continue;
-                    } else if (path.endsWith("_leggings")) {
-                        itemModelGenerator.generateTrimmableItem(
-                                item,
-                                assetKey,
-                                ItemModelGenerators.TRIM_PREFIX_LEGGINGS,
-                                false
-                        );
-                        continue;
-                    } else if (path.endsWith("_boots")) {
-                        itemModelGenerator.generateTrimmableItem(
-                                item,
-                                assetKey,
-                                ItemModelGenerators.TRIM_PREFIX_BOOTS,
-                                false
-                        );
-                        continue;
+                
+                if(assetKey != null) {
+                    for (Map.Entry<String, Identifier> entry : trimPrefixes.entrySet()) {
+                        String suffix = entry.getKey();
+                        Identifier prefix = entry.getValue();
+                        if(path.endsWith(suffix)) {
+                            itemModelGenerator.generateTrimmableItem(item, assetKey, prefix, false);
+                        }
                     }
+                    continue;
                 }
                 
                 if(item instanceof RadiantBowItem bow) {

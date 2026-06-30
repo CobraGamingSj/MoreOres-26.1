@@ -23,28 +23,25 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.cobra.moreores.recipe.ModRecipeSerializer;
-import org.cobra.moreores.recipe.ModRecipeType;
-import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.world.block.entity.ModBlockEntityType;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
+import org.cobra.moreores.core.registry.RewardState;
 import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
-import org.cobra.moreores.world.item.ModItems;
+import org.cobra.moreores.level.gen.BiomeModifiers;
 import org.cobra.moreores.networking.ModC2SNetworks;
 import org.cobra.moreores.networking.ModC2SPayloadRegistry;
 import org.cobra.moreores.networking.ModS2CNetworks;
 import org.cobra.moreores.networking.ModS2CPayloadRegistry;
-import org.cobra.moreores.recipe.GemCrystallizerRecipe;
-import org.cobra.moreores.recipe.GemPurifierRecipe;
+import org.cobra.moreores.recipe.ModRecipeSerializer;
+import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
 import org.cobra.moreores.recipe.display.GemCrystallizingRecipeDisplay;
 import org.cobra.moreores.recipe.display.GemPolishingRecipeDisplay;
-import org.cobra.moreores.core.registry.RewardState;
 import org.cobra.moreores.sound.ModBlockSoundGroup;
 import org.cobra.moreores.util.VanillaLootModifiers;
-import org.cobra.moreores.util.VillagerTrades;
 import org.cobra.moreores.village.ModVillagerProfessions;
-import org.cobra.moreores.level.gen.BiomeModifiers;
+import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.block.entity.ModBlockEntityType;
+import org.cobra.moreores.world.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -364,11 +361,7 @@ public class MoreOresModInitializer implements ModInitializer {
 		//Villagers Registry
 		ModVillagerProfessions.register();
 
-
-		//CustomTrades
-		VillagerTrades.registerTrades();
-
-
+		
 		//ModifyVanillaLootTables
 		VanillaLootModifiers.modifyVanillaLoot();
 

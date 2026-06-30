@@ -18,10 +18,12 @@ public class DynamicRegistry extends FabricDynamicRegistryProvider {
         entries.addAll(registries.lookupOrThrow(Registries.TRIM_MATERIAL));
         entries.addAll(registries.lookupOrThrow(Registries.TRIM_PATTERN));
         entries.addAll(registries.lookupOrThrow(Registries.ENCHANTMENT));
+        entries.addAll(registries.lookupOrThrow(Registries.TRADE_SET));
+        entries.addAll(registries.lookupOrThrow(Registries.VILLAGER_TRADE));
     }
 
     @Override
     public String getName() {
-        return "Dynamic Registry";
+        return "Dynamic Registries";
     }
 }

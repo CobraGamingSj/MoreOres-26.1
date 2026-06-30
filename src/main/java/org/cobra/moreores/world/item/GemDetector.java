@@ -29,14 +29,14 @@ public class GemDetector extends Item {
                         BlockState state = world.getBlockState(checkPos);
 
                         if(state.is(ModBlockTags.MOD_ORES)) {
-                            user.displayClientMessage(Component.literal("Ore detected at " + checkPos.toShortString() + ", ore: " + state), false);
+                            user.sendSystemMessage(Component.literal("Ore detected at " + checkPos.toShortString() + ", ore: " + state));
                             return InteractionResult.SUCCESS;
                         }
                     }
                 }
             }
 
-            user.displayClientMessage(Component.literal("No ore found"), false);
+            user.sendSystemMessage(Component.literal("No ore found"));
         }
         return InteractionResult.SUCCESS;
     }

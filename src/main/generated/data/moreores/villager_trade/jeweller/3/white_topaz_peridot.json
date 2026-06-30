@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "moreores:peridot"
+  },
+  "max_uses": 6.0,
+  "reputation_discount": 0.5,
+  "wants": {
+    "count": 2.0,
+    "id": "moreores:white_topaz"
+  },
+  "xp": 5.0
+}

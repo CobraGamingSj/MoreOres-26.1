@@ -1,8 +1,7 @@
 {
-  "type": "moreores:gem_polishing",
+  "type": "moreores:gem_purifying",
   "ingredientGem": "moreores:raw_white_topaz_block",
   "resultGem": {
-    "count": 1,
     "id": "moreores:white_topaz_block"
   }
 }

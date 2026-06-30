@@ -24,7 +24,7 @@ public class ModC2SPayloadRegistry {
     }
     
     public static<T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> id, StreamCodec<RegistryFriendlyByteBuf, T> packetCodec) {
-        PayloadTypeRegistry.playC2S().register(id, packetCodec);
+        PayloadTypeRegistry.serverboundPlay().register(id, packetCodec);
     }
     
     public static void registerC2SPackets() {

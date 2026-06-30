@@ -1,0 +1,8 @@
+{
+  "type": "moreores:gem_crystallizing",
+  "gemAfter": "moreores:radiant",
+  "gemBefore": "moreores:ruby",
+  "infusedGem": {
+    "id": "moreores:alexandrite"
+  }
+}
