@@ -8,11 +8,11 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import org.jspecify.annotations.Nullable;
 
-public abstract class AbstractGemPFMenu extends AbstractContainerMenu implements MenuHelper {
+public abstract class AbstractGemMachineMenu extends AbstractContainerMenu implements MenuHelper {
 
     protected final BlockPos pos;
 
-    public AbstractGemPFMenu(@Nullable MenuType<?> type, int syncId, BlockPos pos) {
+    public AbstractGemMachineMenu(@Nullable MenuType<?> type, int syncId, BlockPos pos) {
         super(type, syncId);
         this.pos = pos;
     }

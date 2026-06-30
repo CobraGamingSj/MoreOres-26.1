@@ -51,9 +51,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifierDataSynchronizer> {
+public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPurifierDataSynchronizer> {
 
-    private WaterFluidState waterState = WaterFluidState.IDLE;
+    private FluidState waterState = FluidState.IDLE;
 
     public final SingleVariantStorage<FluidVariant> fluidStorage = new SingleVariantStorage<>() {
         @Override
@@ -173,7 +173,7 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
         super.saveAdditional(view);
         view.putLong("gem_purifier.water", fluidStorage.amount);
         view.storeNullable("gem_purifier.fluid.variant", FluidVariant.CODEC, fluidStorage.variant);
-        view.storeNullable("WaterState", WaterFluidState.CODEC, waterState);
+        view.storeNullable("WaterState", FluidState.CODEC, waterState);
         view.storeNullable("GemType", PurificationGemstones.CODEC, getGem());
     }
 
@@ -182,7 +182,7 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
         super.loadAdditional(view);
         fluidStorage.amount = view.getLongOr("gem_purifier.water", 0);
         fluidStorage.variant = view.read("gem_purifier.fluid.variant", FluidVariant.CODEC).orElse(FluidVariant.blank());
-        waterState = view.read("WaterState", WaterFluidState.CODEC).orElse(WaterFluidState.IDLE);
+        waterState = view.read("WaterState", FluidState.CODEC).orElse(FluidState.IDLE);
         gemType = view.read("GemType", PurificationGemstones.CODEC).orElse(PurificationGemstones.EMPTY);
     }
 
@@ -272,8 +272,8 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
 
         changeState();
 
-        if(polishingInfusionState == PolishingInfusionState.RUNNING) {
-            energyState = EnergyState.EXTRACTING;
+        if(polishingInfusionState == MachineStatus.RUNNING) {
+            energyState = MachineEnergyState.EXTRACTING;
             if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && hasEnoughWater()) {
                 this.increaseProgress();
                 this.extractEnergy();
@@ -285,23 +285,23 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
                 setChanged(world, pos, state);
             } else {
                 this.resetProgress();
-                this.polishingInfusionState = PolishingInfusionState.IDLE;
+                this.polishingInfusionState = MachineStatus.IDLE;
                 setChanged(world, pos, state);
             }
         } else if (polishingInfusionState.isPaused()) {
-            energyState = EnergyState.INSERTING;
-            waterState = WaterFluidState.FILLING;
+            energyState = MachineEnergyState.INSERTING;
+            waterState = FluidState.FILLING;
             insertEnergy();
             fillWater();
         } else {
             if((energyAmount() < 10_000_000 && hasEnergySourceProviderItem()) || (waterAmount() < 810000 && hasWaterBucket())) {
-                energyState = EnergyState.INSERTING;
+                energyState = MachineEnergyState.INSERTING;
                 insertEnergy();
-                waterState = WaterFluidState.FILLING;
+                waterState = FluidState.FILLING;
                 fillWater();
             } else {
-                energyState = EnergyState.IDLE;
-                waterState= WaterFluidState.IDLE;
+                energyState = MachineEnergyState.IDLE;
+                waterState= FluidState.IDLE;
             }
         }
 
@@ -332,15 +332,15 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
 
     private void fillWater() {
         if(!hasWaterBucket() || waterAmount() >= 810000) {
-            waterState = WaterFluidState.IDLE;
+            waterState = FluidState.IDLE;
             return;
         }
         long amount = 1620;
         try(Transaction transaction = Transaction.openOuter()) {
             long inserted = fluidStorage.insert(FluidVariant.of(Fluids.WATER), FluidStack.convertDropletsToMb(amount), transaction);
             transaction.commit();
-            if(inserted > 0) waterState = WaterFluidState.FILLING;
-            else waterState = WaterFluidState.IDLE;
+            if(inserted > 0) waterState = FluidState.FILLING;
+            else waterState = FluidState.IDLE;
         }
     }
 
@@ -350,7 +350,7 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
             fluidStorage.extract(FluidVariant.of(Fluids.WATER), FluidStack.convertDropletsToMb(amount), transaction);
             transaction.commit();
         }
-        waterState = WaterFluidState.EMPTYING;
+        waterState = FluidState.EMPTYING;
     }
 
     private void checkForEnoughEnergyAndRemoveItem() {
@@ -452,7 +452,7 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
     @Override
     protected void insertEnergy() {
         if(!hasEnergySourceProviderItem() || energyStorage.amount >= 10_000_000) {
-            energyState = EnergyState.IDLE;
+            energyState = MachineEnergyState.IDLE;
             return;
         }
         long amount = energyStack().is(ModItems.ENERGY_INGOT) ? 1024 : 1536;
@@ -460,8 +460,8 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
         try(Transaction transaction = Transaction.openOuter()) {
             long inserted = energyStorage.insert(amount, transaction);
             transaction.commit();
-            if(inserted > 0) energyState = EnergyState.INSERTING;
-            else energyState = EnergyState.IDLE;
+            if(inserted > 0) energyState = MachineEnergyState.INSERTING;
+            else energyState = MachineEnergyState.IDLE;
         }
     }
 
@@ -472,6 +472,6 @@ public class GemPurifierBlockEntity extends AbstractGemPCBlockEntity<GemPurifier
             energyStorage.extract(amount, transaction);
             transaction.commit();
         }
-        energyState = EnergyState.EXTRACTING;
+        energyState = MachineEnergyState.EXTRACTING;
     }
 }

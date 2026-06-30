@@ -21,7 +21,7 @@ import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
 import org.cobra.moreores.core.registry.ModItemTags;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class GemPurifierMenu extends AbstractGemPFMenu implements MenuHelper {
+public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelper {
     private final Container inventory;
     private final ContainerLevelAccess context;
     private final ContainerData propertyDelegate;

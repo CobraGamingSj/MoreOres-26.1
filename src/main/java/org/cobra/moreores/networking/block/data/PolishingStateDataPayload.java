@@ -1,7 +1,7 @@
 package org.cobra.moreores.networking.block.data;
 
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.world.block.entity.gem.AbstractGemPCBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.AbstractGemMachineBlockEntity;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -20,7 +20,7 @@ public record PolishingStateDataPayload(BlockPos blockPos, String action) implem
     public void handle(ServerPlayNetworking.Context context) {
 
         context.server().execute(() -> {
-            if(context.player().level().getBlockEntity(blockPos) instanceof AbstractGemPCBlockEntity<?> be) {
+            if(context.player().level().getBlockEntity(blockPos) instanceof AbstractGemMachineBlockEntity<?> be) {
                 switch(action) {
                     case "start" -> be.start();
                     case "pause" -> be.pause();

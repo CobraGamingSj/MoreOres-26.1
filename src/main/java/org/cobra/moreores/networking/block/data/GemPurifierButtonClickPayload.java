@@ -1,7 +1,7 @@
 package org.cobra.moreores.networking.block.data;
 
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.world.block.entity.gem.AbstractGemPCBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.AbstractGemMachineBlockEntity;
 import org.cobra.moreores.client.gui.screen.GemCrystallizerMenu;
 import org.cobra.moreores.client.gui.screen.GemPurifierMenu;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -25,7 +25,7 @@ public record GemPurifierButtonClickPayload(int buttonID, BlockPos pos) implemen
     public void handle(ServerPlayNetworking.Context context) {
         ServerLevel world = context.server().overworld();
 
-        if(world.getBlockEntity(pos) instanceof AbstractGemPCBlockEntity<?> blockEntity) {
+        if(world.getBlockEntity(pos) instanceof AbstractGemMachineBlockEntity<?> blockEntity) {
             switch (buttonID) {
                 case 0 -> blockEntity.start();
                 case 1 -> blockEntity.pause();

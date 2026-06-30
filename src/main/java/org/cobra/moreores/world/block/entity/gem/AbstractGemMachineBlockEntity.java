@@ -29,15 +29,15 @@ import org.cobra.moreores.world.item.util.impl.PurificationGemstones;
 import org.cobra.moreores.networking.block.data.GemPFEnergyDataPayload;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public abstract class AbstractGemPCBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ImplementedInventory, TickableBlockEntity {
+public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ImplementedInventory, TickableBlockEntity {
     protected final NonNullList<ItemStack> main;
-    protected PolishingInfusionState polishingInfusionState = PolishingInfusionState.IDLE;
-    protected EnergyState energyState = EnergyState.IDLE;
+    protected MachineStatus polishingInfusionState = MachineStatus.IDLE;
+    protected MachineEnergyState energyState = MachineEnergyState.IDLE;
     protected IGemstone gemType = IGemstone.EMPTY;
 
     public int initialProgress = 0;
 
-    public AbstractGemPCBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public AbstractGemMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.main = NonNullList.withSize(mainStackSize(), ItemStack.EMPTY);
     }
@@ -68,8 +68,8 @@ public abstract class AbstractGemPCBlockEntity<P extends CustomPacketPayload> ex
         ContainerHelper.saveAllItems(view, main);
         view.putInt("Progress", initialProgress);
         view.putLong("Energy", energyStorage.amount);
-        view.storeNullable("PolishingState", PolishingInfusionState.CODEC, polishingInfusionState);
-        view.storeNullable("EnergyState", EnergyState.CODEC, energyState);
+        view.storeNullable("PolishingState", MachineStatus.CODEC, polishingInfusionState);
+        view.storeNullable("EnergyState", MachineEnergyState.CODEC, energyState);
     }
 
     @Override
@@ -78,8 +78,8 @@ public abstract class AbstractGemPCBlockEntity<P extends CustomPacketPayload> ex
         ContainerHelper.loadAllItems(view, main);
         initialProgress = view.getIntOr("Progress", 0);
         energyStorage.amount = view.getLongOr("Energy", 0);
-        polishingInfusionState = view.read("PolishingState", PolishingInfusionState.CODEC).orElse(PolishingInfusionState.IDLE);
-        energyState = view.read("EnergyState", EnergyState.CODEC).orElse(EnergyState.IDLE);
+        polishingInfusionState = view.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.IDLE);
+        energyState = view.read("EnergyState", MachineEnergyState.CODEC).orElse(MachineEnergyState.IDLE);
     }
 
     public IGemstone detectGem(ItemStack stack) {
@@ -133,7 +133,7 @@ public abstract class AbstractGemPCBlockEntity<P extends CustomPacketPayload> ex
 
     protected void insertEnergy() {
         if(!hasEnergySourceProviderItem() || energyStorage.amount >= 1_000_000) {
-            energyState = EnergyState.IDLE;
+            energyState = MachineEnergyState.IDLE;
             return;
         }
         long amount = energyStack().is(ModItems.ENERGY_INGOT) ? 102 : 154;
@@ -141,8 +141,8 @@ public abstract class AbstractGemPCBlockEntity<P extends CustomPacketPayload> ex
         try(Transaction transaction = Transaction.openOuter()) {
             long inserted = energyStorage.insert(amount, transaction);
             transaction.commit();
-            if(inserted > 0) energyState = EnergyState.INSERTING;
-            else energyState = EnergyState.IDLE;
+            if(inserted > 0) energyState = MachineEnergyState.INSERTING;
+            else energyState = MachineEnergyState.IDLE;
         }
     }
 
@@ -152,7 +152,7 @@ public abstract class AbstractGemPCBlockEntity<P extends CustomPacketPayload> ex
             energyStorage.extract(amount, transaction);
             transaction.commit();
         }
-        energyState = EnergyState.EXTRACTING;
+        energyState = MachineEnergyState.EXTRACTING;
     }
 
     protected abstract boolean hasRecipe();
@@ -163,25 +163,25 @@ public abstract class AbstractGemPCBlockEntity<P extends CustomPacketPayload> ex
 
     public void start() {
         if(polishingInfusionState.isIdle() && hasRecipe() && hasEnoughEnergy()) {
-            polishingInfusionState = PolishingInfusionState.RUNNING;
+            polishingInfusionState = MachineStatus.RUNNING;
         }
     }
 
     public void pause() {
         if(polishingInfusionState.isRunning()) {
-            polishingInfusionState = PolishingInfusionState.PAUSED;
+            polishingInfusionState = MachineStatus.PAUSED;
         }
     }
 
     public void resume() {
         if(polishingInfusionState.isPaused()&& hasRecipe() && hasEnoughEnergy()) {
-            polishingInfusionState = PolishingInfusionState.RUNNING;
+            polishingInfusionState = MachineStatus.RUNNING;
         }
     }
 
     public void stop() {
         if(!polishingInfusionState.isIdle()) {
-            polishingInfusionState = PolishingInfusionState.IDLE;
+            polishingInfusionState = MachineStatus.IDLE;
             resetProgress();
         }
     }

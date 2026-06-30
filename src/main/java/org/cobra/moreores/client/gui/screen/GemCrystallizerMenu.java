@@ -21,7 +21,7 @@ import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
 import org.cobra.moreores.core.registry.ModItemTags;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class GemCrystallizerMenu extends AbstractGemPFMenu {
+public class GemCrystallizerMenu extends AbstractGemMachineMenu {
     private final Container inventory;
     private final ContainerLevelAccess context;
     private final ContainerData propertyDelegate;

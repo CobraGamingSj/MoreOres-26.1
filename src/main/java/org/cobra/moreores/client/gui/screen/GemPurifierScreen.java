@@ -18,7 +18,7 @@ import org.cobra.moreores.client.gui.widget.FluidWidget;
 import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
 
 @Environment(EnvType.CLIENT)
-public class GemPurifierScreen extends AbstractContainerScreen<GemPurifierMenu> {
+public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu> {
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
     private static final Identifier TEXTURE = MoreOresModInitializer.id("textures/gui/container/gem_purifier/gem_purifier_gui.png");
@@ -30,42 +30,41 @@ public class GemPurifierScreen extends AbstractContainerScreen<GemPurifierMenu> 
     public GemPurifierScreen(GemPurifierMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
+    
+    @Override
+    protected Identifier getBackgroundTexture() {
+        return TEXTURE;
+    }
 
     @Override
-    public void init() {
-        super.init();
-        titleLabelY = 1000;
-        inventoryLabelY = 1000;
-
-        addRenderableOnly(FluidWidget.builder(menu.blockEntity.fluidStorage).bounds(this.leftPos + 10, this.topPos + 42, 20, 44).posSupplier(menu.blockEntity::getBlockPos).build());
-
-        Button start = this.addButton("gui.button.gp.start", 0, this.leftPos + 112, topPos + 8, START_BUTTON, Component.literal("Start Polishing"));
-
-        Button pause = this.addButton("gui.button.gp.pause", 1, leftPos + 160, topPos + 8, PAUSE_BUTTON, Component.literal("Pause Polishing"));
-
-        Button resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + 112, this.topPos + 56, RESUME_BUTTON, Component.literal("Resume Polishing"));
-
-        Button stop = this.addButton("gui.button.gp.stop", 3, leftPos + 160, topPos + 56, STOP_BUTTON, Component.literal("Stop Polishing"));
-
-        start.visible = true;
-        pause.visible = true;
-        resume.visible = true;
-        stop.visible = true;
+    protected Identifier getStartButtonTexture() {
+        return START_BUTTON;
     }
 
-    private Button addButton(String translation, int buttonId, int x, int y, Identifier texture, Component tooltip) {
-        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonId, menu.blockEntity.getBlockPos());
-        button.setTooltip(Tooltip.create(tooltip));
-        return this.addRenderableWidget(button);
+    @Override
+    protected Identifier getPauseButtonTexture() {
+        return PAUSE_BUTTON;
     }
 
-    private void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
+    @Override
+    protected Identifier getResumeButtonTexture() {
+        return RESUME_BUTTON;
+    }
+
+    @Override
+    protected Identifier getStopButtonTexture() {
+        return STOP_BUTTON;
+    }
+
+    @Override
+    public void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if(this.menu.isPolishing()) {
             context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 83, y + 31, 207, 0, 10, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
     }
 
-    private void renderEnergyStorageHandler(GuiGraphicsExtractor context, int x, int y) {
+    @Override
+    public void renderEnergyHandler(GuiGraphicsExtractor context, int x, int y) {
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
         int gradientStart = CommonColors.BLUE;
         int gradientEnd = CommonColors.GREEN;
@@ -88,7 +87,7 @@ public class GemPurifierScreen extends AbstractContainerScreen<GemPurifierMenu> 
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 
         renderProgressArrow(context, i, j);
-        renderEnergyStorageHandler(context, i, j);
+        renderEnergyHandler(context, i, j);
 
     }
 

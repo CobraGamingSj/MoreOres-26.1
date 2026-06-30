@@ -41,7 +41,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-public class GemCrystallizeBlockEntity extends AbstractGemPCBlockEntity<GemCrystallizerDataSynchronizer> {
+public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<GemCrystallizerDataSynchronizer> {
 
     public static final int INGREDIENT_BEFORE_SLOT = 0;
     public static final int INGREDIENT_AFTER_SLOT = 1;
@@ -269,8 +269,8 @@ public class GemCrystallizeBlockEntity extends AbstractGemPCBlockEntity<GemCryst
         changeState();
         setChanged(world, pos, state);
 
-        if(polishingInfusionState == PolishingInfusionState.RUNNING) {
-            energyState = EnergyState.EXTRACTING;
+        if(polishingInfusionState == MachineStatus.RUNNING) {
+            energyState = MachineEnergyState.EXTRACTING;
             setChanged(world, pos, state);
             if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && dustParticleCount >= 15) {
                 this.increaseProgress();
@@ -289,20 +289,20 @@ public class GemCrystallizeBlockEntity extends AbstractGemPCBlockEntity<GemCryst
                 setChanged(world, pos, state);
             } else {
                 this.resetProgress();
-                this.polishingInfusionState = PolishingInfusionState.IDLE;
+                this.polishingInfusionState = MachineStatus.IDLE;
                 setChanged(world, pos, state);
             }
         } else if (polishingInfusionState.isPaused()) {
-            energyState = EnergyState.INSERTING;
+            energyState = MachineEnergyState.INSERTING;
             insertEnergy();
             setChanged(world, pos, state);
         } else {
             if((energyAmount() < 1_000_000 && hasEnergySourceProviderItem())) {
-                energyState = EnergyState.INSERTING;
+                energyState = MachineEnergyState.INSERTING;
                 insertEnergy();
                 setChanged(world, pos, state);
             } else {
-                energyState = EnergyState.IDLE;
+                energyState = MachineEnergyState.IDLE;
                 setChanged(world, pos, state);
             }
         }

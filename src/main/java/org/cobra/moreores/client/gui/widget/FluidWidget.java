@@ -14,6 +14,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.FluidStateModelSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -48,27 +49,26 @@ public class FluidWidget implements Renderable, LayoutElement {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float deltaTicks) {
-//        long amount = this.fluidStorage.amount;
-//        if(amount <= 0) return;
-//        Fluid fluid = this.fluidStorage.variant.getFluid();
-//        long capacity = this.fluidStorage.getCapacity();
-//        int fluidHeight = Math.round(((float)amount / capacity) * this.height);
-//        FluidVariantRenderHandler handler = FluidVariantRendering.getHandler(fluid);
-//        if(handler == null) return;
-//        BlockPos blockPos = pos.get();
-//        FluidState fluidState = fluid.defaultFluidState();
-//        BlockAndTintGetter world = Minecraft.getInstance().level;
-//        if(world == null) return;
-//        TextureAtlasSprite sprite = handler.getFluidSprites(world, blockPos, fluidState)[1];
-//        int tintColor = handler.getColor(this.fluidStorage.variant, world, blockPos);
-//        float red = (tintColor >> 16 & 0xFF) /255F;
-//        float green = (tintColor >> 8 & 0xFF) /255F;
-//        float blue = (tintColor & 0xFF) /255F;
-//        ScreenHelperUtils.extractTiledFluidSprite(extractor, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, 1F, red, green, blue);
-//
-//        if(isPointWithinBounds(this.x, this.y, this.width, this.height, mouseX, mouseY)) {
-//            drawTooltip(extractor, mouseX, mouseY);
-//        }
+        long amount = this.fluidStorage.amount;
+        if(amount <= 0) return;
+        Fluid fluid = this.fluidStorage.variant.getFluid();
+        long capacity = this.fluidStorage.getCapacity();
+        int fluidHeight = Math.round(((float)amount / capacity) * this.height);
+        FluidStateModelSet set = Minecraft.getInstance().getModelManager().getFluidStateModelSet();
+        BlockPos blockPos = pos.get();
+        FluidState fluidState = fluid.defaultFluidState();
+        BlockAndTintGetter world = Minecraft.getInstance().level;
+        if(world == null) return;
+        TextureAtlasSprite sprite = set.get(fluidState).stillMaterial().sprite();
+        int tintColor = set.get(fluidState).tintSource().colorInWorld(world.getBlockState(blockPos), world, blockPos);
+        float red = (tintColor >> 16 & 0xFF) /255F;
+        float green = (tintColor >> 8 & 0xFF) /255F;
+        float blue = (tintColor & 0xFF) /255F;
+        ScreenHelperUtils.extractTiledFluidSprite(extractor, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, 1F, red, green, blue);
+
+        if(isPointWithinBounds(this.x, this.y, this.width, this.height, mouseX, mouseY)) {
+            drawTooltip(extractor, mouseX, mouseY);
+        }
     }
 
     protected void drawTooltip(GuiGraphicsExtractor extractor, int mouseX, int  mouseY) {

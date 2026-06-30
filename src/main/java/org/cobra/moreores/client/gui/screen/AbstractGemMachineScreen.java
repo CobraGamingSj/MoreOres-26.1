@@ -14,11 +14,11 @@ import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
 import org.cobra.moreores.networking.block.data.PolishingStateDataPayload;
 import org.lwjgl.glfw.GLFW;
 
-public abstract class AbstractGemPFScreen<M extends AbstractGemPFMenu> extends AbstractContainerScreen<M> {
+public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu> extends AbstractContainerScreen<M> {
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
 
-    public AbstractGemPFScreen(M handler, Inventory inventory, Component title) {
+    public AbstractGemMachineScreen(M handler, Inventory inventory, Component title) {
         super(handler, inventory, title, 207, 196);
     }
 

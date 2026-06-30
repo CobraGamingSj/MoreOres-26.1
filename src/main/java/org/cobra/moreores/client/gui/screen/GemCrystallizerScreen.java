@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.MoreOresModInitializer;
 
 @Environment(EnvType.CLIENT)
-public class GemCrystallizerScreen extends AbstractGemPFScreen<GemCrystallizerMenu> {
+public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystallizerMenu> {
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
     private static final Identifier TEXTURE = MoreOresModInitializer.id("textures/gui/container/gem_crystallizer/gem_crystallizer_gui.png");

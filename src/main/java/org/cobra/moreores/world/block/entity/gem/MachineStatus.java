@@ -3,18 +3,18 @@ package org.cobra.moreores.world.block.entity.gem;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
 
-public enum PolishingInfusionState implements StringRepresentable {
+public enum MachineStatus implements StringRepresentable {
     IDLE("idle"),
     RUNNING("running"),
     PAUSED("paused");
 
     private final String name;
 
-    PolishingInfusionState(String name) {
+    MachineStatus(String name) {
         this.name = name;
     }
 
-    public static final Codec<PolishingInfusionState> CODEC = StringRepresentable.fromEnum(PolishingInfusionState::values);
+    public static final Codec<MachineStatus> CODEC = StringRepresentable.fromEnum(MachineStatus::values);
 
     public boolean isIdle() {
         return this == IDLE;
