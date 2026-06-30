@@ -15,8 +15,6 @@ import net.minecraft.world.entity.ai.village.poi.PoiType;
 import org.cobra.moreores.village.ModVillagerProfessions;
 
 public class PointOfInterestTypeTagGen extends FabricTagsProvider<PoiType> {
-    private static final String JEWEL_KEY = "jewel_poi";
-
     public PointOfInterestTypeTagGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookupFuture) {
         super(output, Registries.POINT_OF_INTEREST_TYPE, registryLookupFuture);
     }

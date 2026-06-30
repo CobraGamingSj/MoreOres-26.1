@@ -18,6 +18,15 @@ public class ModArmorTrimAssets {
     public static final MaterialAssetGroup PERIDOT = of("peridot");
     public static final MaterialAssetGroup JADE = of("jade");
     public static final MaterialAssetGroup PYROPE = of("pyrope");
+    public static final MaterialAssetGroup CRIMSON_GARNET = of("crimson_garnet");
+    public static final MaterialAssetGroup CRYSTALLITE = of("crystallite");
+    public static final MaterialAssetGroup RADIANT_AMETHYST = of("radiant_amethyst");
+    public static final MaterialAssetGroup ALEXANDRITE = of("alexandrite");
+    public static final MaterialAssetGroup LIMESTONE = of("limestone");
+    public static final MaterialAssetGroup MOONSTONE = of("moonstone");
+    public static final MaterialAssetGroup QUARTSIDIAN = of("quartsidian");
+    public static final MaterialAssetGroup OPAL = of("opal");
+    public static final MaterialAssetGroup RED_BERYL = of("red_beryl");
 
     public static MaterialAssetGroup of(String suffix) {
         return new MaterialAssetGroup(new MaterialAssetGroup.AssetInfo(suffix), Map.of());
