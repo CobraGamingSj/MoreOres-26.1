@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
 
-public class GemInfusionBlockEntityRenderState extends BlockEntityRenderState {
+public class GemCrystalizerBlockEntityRenderState extends BlockEntityRenderState {
 
     public GemCrystallizeBlockEntity entity;
     public Level entityWorld;

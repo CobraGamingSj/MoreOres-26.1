@@ -264,7 +264,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                     var result = entry.getValue();
 
                     createGemPurifying(Ingredient.of(input), result)
-                            .criterion(getHasName(input), has(result))
+                            .criterion(getHasName(input), has(input))
                             .offerTo(output, getSimpleRecipeName(result));
                 }
 

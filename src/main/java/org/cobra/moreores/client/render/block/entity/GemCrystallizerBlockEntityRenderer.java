@@ -20,11 +20,11 @@ import org.cobra.moreores.world.block.GemPurifierBlock;
 import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer<GemCrystallizeBlockEntity, GemInfusionBlockEntityRenderState> {
+public final class GemCrystallizerBlockEntityRenderer implements BlockEntityRenderer<GemCrystallizeBlockEntity, GemCrystalizerBlockEntityRenderState> {
     private final BlockEntityRendererProvider.Context context;
     private final ItemModelResolver itemModelManager;
 
-    public GemInfusionBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public GemCrystallizerBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         this.context = context;
         this.itemModelManager = context.itemModelResolver();
     }
@@ -97,7 +97,7 @@ public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer
     }
 
     @Override
-    public void extractRenderState(GemCrystallizeBlockEntity blockEntity, GemInfusionBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(GemCrystallizeBlockEntity blockEntity, GemCrystalizerBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
         state.setEntity(blockEntity);
         state.entityWorld = blockEntity.getLevel();
@@ -114,7 +114,7 @@ public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer
     }
 
     @Override
-    public void submit(GemInfusionBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState camera) {
+    public void submit(GemCrystalizerBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState camera) {
         GemCrystallizeBlockEntity entity = state.entity;
         if (entity == null || entity.getLevel() == null) return;
 
@@ -134,8 +134,8 @@ public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer
     }
 
     @Override
-    public GemInfusionBlockEntityRenderState createRenderState() {
-        return new GemInfusionBlockEntityRenderState();
+    public GemCrystalizerBlockEntityRenderState createRenderState() {
+        return new GemCrystalizerBlockEntityRenderState();
     }
 
     public BlockEntityRendererProvider.Context context() {

@@ -10,6 +10,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -18,8 +19,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.networking.item.EnergyIngotC2SPayload;
+import org.cobra.moreores.world.block.ModBlocks;
 
 public class EnergyIngotItem extends Item {
 
@@ -47,7 +48,7 @@ public class EnergyIngotItem extends Item {
                 }
             }
 
-            LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, world);
+            LightningBolt lightning = new LightningBolt(EntityTypes.LIGHTNING_BOLT, world);
             lightning.setPosRaw(target.getX(), target.getY(), target.getZ());
             world.addFreshEntity(lightning);
         }
@@ -62,7 +63,7 @@ public class EnergyIngotItem extends Item {
         BlockPos pos = context.getClickedPos();
         if(!world.isClientSide()) {
             if (world.getBlockState(pos).is(ModBlocks.RADIANT_BLOCK)) {
-                EntityType<LightningBolt> lightningType = EntityType.LIGHTNING_BOLT;
+                EntityType<LightningBolt> lightningType = EntityTypes.LIGHTNING_BOLT;
                 LightningBolt lightning = new LightningBolt(lightningType, world);
                 lightning.setPosRaw(pos.getX(), pos.getY(), pos.getZ());
                 world.addFreshEntity(lightning);

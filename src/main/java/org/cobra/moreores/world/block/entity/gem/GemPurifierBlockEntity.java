@@ -8,7 +8,7 @@ import org.cobra.moreores.world.item.util.impl.IGemstone;
 import org.cobra.moreores.world.item.util.impl.PurificationGemstones;
 import org.cobra.moreores.networking.block.data.GemPurifierFluidDataPayload;
 import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
-import org.cobra.moreores.world.block.entity.ModBlockEntityType;
+import org.cobra.moreores.world.block.entity.ModBlockEntityTypes;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.recipe.input.GemPurifyingRecipeInput;
@@ -88,7 +88,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     private final RecipeManager.CachedCheck<GemPurifyingRecipeInput, GemPurifierRecipe> matchGetter = RecipeManager.createCheck(ModRecipeType.GEM_PURIFIER);
 
     public GemPurifierBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntityType.GEM_PURIFIER_BLOCK_ENTITY, pos, state);
+        super(ModBlockEntityTypes.GEM_PURIFIER_BLOCK_ENTITY, pos, state);
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {

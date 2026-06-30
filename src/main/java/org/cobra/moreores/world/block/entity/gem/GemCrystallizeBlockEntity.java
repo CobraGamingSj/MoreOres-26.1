@@ -7,7 +7,7 @@ import org.cobra.moreores.world.item.util.GemCategory;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.world.item.util.impl.IGemstone;
 import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
-import org.cobra.moreores.world.block.entity.ModBlockEntityType;
+import org.cobra.moreores.world.block.entity.ModBlockEntityTypes;
 import org.cobra.moreores.client.gui.screen.GemCrystallizerMenu;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.recipe.GemCrystallizerRecipe;
@@ -60,7 +60,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
     private final RecipeManager.CachedCheck<GemCrystallizationRecipeInput, GemCrystallizerRecipe> matchGetter = RecipeManager.createCheck(ModRecipeType.GEM_CRYSTALLIZER);
 
     public GemCrystallizeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntityType.GEM_CRYSTALLIZE_BLOCK_ENTITY, pos, state);
+        super(ModBlockEntityTypes.GEM_CRYSTALLIZE_BLOCK_ENTITY, pos, state);
         this.propertyDelegate = new ContainerData() {
             @Override
             public int get(int index) {

@@ -21,7 +21,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
 import org.cobra.moreores.core.registry.RewardState;
@@ -36,11 +35,13 @@ import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
 import org.cobra.moreores.recipe.display.GemCrystallizingRecipeDisplay;
 import org.cobra.moreores.recipe.display.GemPolishingRecipeDisplay;
+import org.cobra.moreores.recipe.display.ModRecipeDisplays;
 import org.cobra.moreores.sound.ModBlockSoundGroup;
 import org.cobra.moreores.util.VanillaLootModifiers;
 import org.cobra.moreores.village.ModVillagerProfessions;
 import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.world.block.entity.ModBlockEntityType;
+import org.cobra.moreores.world.block.entity.ModBlockEntityTypes;
+import org.cobra.moreores.world.entity.ModEntityTypes;
 import org.cobra.moreores.world.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +53,6 @@ public class MoreOresModInitializer implements ModInitializer {
 
 	public static Identifier id(String id) {
 		return Identifier.fromNamespaceAndPath(MOD_ID, id);
-	}
-
-	public static ResourceKey<Item> itemKey(String id) {
-		return ResourceKey.create(Registries.ITEM, id(id));
 	}
 
 	public static String formatName(String path) {
@@ -137,9 +134,7 @@ public class MoreOresModInitializer implements ModInitializer {
 				entries.accept(ModBlocks.KASHMIR_SAPPHIRE_BLOCK);
 			}).build();
 
-    public static ResourceKey<Block> blockKey(String id) {
-		return ResourceKey.create(Registries.BLOCK, id(id));
-    }
+    
 
     @Override
 	public void onInitialize() {
@@ -367,7 +362,7 @@ public class MoreOresModInitializer implements ModInitializer {
 
 
 		//ModBlockEntityType Registry
-		ModBlockEntityType.register();
+		ModBlockEntityTypes.register();
 
 
 		//ModScreenHandlers Registry
@@ -379,6 +374,9 @@ public class MoreOresModInitializer implements ModInitializer {
 		ModRecipeSerializer.register();
 
 
+		ModEntityTypes.register();
+		
+		
 		//Networking Registry
 		ModS2CNetworks.register();
 		ModC2SNetworks.register();
@@ -389,8 +387,7 @@ public class MoreOresModInitializer implements ModInitializer {
 
 		//ModRecipeBookCategories Registry
 		ModRecipeBookCategories.register();
-        Registry.register(BuiltInRegistries.RECIPE_DISPLAY, MoreOresModInitializer.id("gem_polishing"), GemPolishingRecipeDisplay.SERIALIZER);
-        Registry.register(BuiltInRegistries.RECIPE_DISPLAY, MoreOresModInitializer.id("gem_crystallizer"), GemCrystallizingRecipeDisplay.SERIALIZER);
+        ModRecipeDisplays.register();
 
 
 		//EnchantmentEffects Registry

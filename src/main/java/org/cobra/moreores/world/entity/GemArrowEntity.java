@@ -1,10 +1,7 @@
 package org.cobra.moreores.world.entity;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,7 +33,7 @@ public class GemArrowEntity extends AbstractArrow {
         }
         
         entity.hurtServer((ServerLevel) entity.level(), entity.damageSources().arrow(this, null), 20);
-        LightningBolt lightningEntity = new LightningBolt(EntityType.LIGHTNING_BOLT, entity.level());
+        LightningBolt lightningEntity = new LightningBolt(EntityTypes.LIGHTNING_BOLT, entity.level());
         lightningEntity.setPosRaw(entity.getX(), entity.getY(), entity.getZ());
         entity.level().addFreshEntity(lightningEntity);
         this.discard();

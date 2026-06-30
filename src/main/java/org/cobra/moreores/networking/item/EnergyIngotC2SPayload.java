@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -26,7 +27,7 @@ public record EnergyIngotC2SPayload() implements CustomPacketPayload {
             Player user = context.player();
             Level world = user.level();
 
-            EntityType<LightningBolt> lightningType = EntityType.LIGHTNING_BOLT;
+            EntityType<LightningBolt> lightningType = EntityTypes.LIGHTNING_BOLT;
             LightningBolt lightning = new LightningBolt(lightningType, world);
             lightning.setPosRaw(user.getX(), user.getY(), user.getZ());
             world.addFreshEntity(lightning);
