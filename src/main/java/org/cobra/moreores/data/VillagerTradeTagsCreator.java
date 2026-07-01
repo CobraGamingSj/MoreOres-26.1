@@ -4,8 +4,6 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.VillagerTradesTagsProvider;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.world.item.trading.VillagerTrade;
 import org.cobra.moreores.core.registry.ModVillagerTradeTags;
@@ -13,8 +11,8 @@ import org.cobra.moreores.world.item.trading.ModVillagerTrades;
 
 import java.util.concurrent.CompletableFuture;
 
-public class VillagerTradeTagGen extends FabricTagsProvider<VillagerTrade> {
-    public VillagerTradeTagGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+public class VillagerTradeTagsCreator extends FabricTagsProvider<VillagerTrade> {
+    public VillagerTradeTagsCreator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, Registries.VILLAGER_TRADE, lookupProvider);
     }
 

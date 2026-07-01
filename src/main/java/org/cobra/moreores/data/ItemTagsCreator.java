@@ -10,8 +10,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import java.util.concurrent.CompletableFuture;
 
-public class ItemTagGen extends FabricTagsProvider.ItemTagsProvider {
-    public ItemTagGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
+public class ItemTagsCreator extends FabricTagsProvider.ItemTagsProvider {
+    public ItemTagsCreator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
         super(output, completableFuture);
     }
 

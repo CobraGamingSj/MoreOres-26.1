@@ -15,8 +15,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 
-public class AdvancementGen extends FabricAdvancementProvider {
-    public AdvancementGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
+public class AdvancementsCreator extends FabricAdvancementProvider {
+    public AdvancementsCreator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup);
     }
 

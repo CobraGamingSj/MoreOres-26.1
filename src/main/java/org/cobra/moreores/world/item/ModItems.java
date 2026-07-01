@@ -210,7 +210,6 @@ public class ModItems {
     
     
     // Eclipse Gem
-    public static final Item ECLIPSE_GEM_CRYSTALS = register("eclipse_gem_crystals", s -> new Item(s.rarity(Rarity.UNCOMMON).fireResistant()));
     public static final Item CRYSTAL_OF_ECLIPSE = register("crystal_of_eclipse", settings -> new Item(settings.rarity(Rarity.RARE).fireResistant()));
     public static final Item ECLIPSE_GEM = register("eclipse_gem", settings -> new Item(settings.rarity(Rarity.EPIC).fireResistant()));
     

@@ -9,8 +9,8 @@ import org.cobra.moreores.core.registry.ModBlockTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BlockTagGen extends FabricTagsProvider.BlockTagsProvider {
-    public BlockTagGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class BlockTagsCreator extends FabricTagsProvider.BlockTagsProvider {
+    public BlockTagsCreator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

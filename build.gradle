@@ -78,7 +78,6 @@ java {
 }
 
 jar {
-	archiveFileName = archives_base_name + " v" + project.mod_version
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}" }
 	}

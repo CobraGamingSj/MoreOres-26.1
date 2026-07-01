@@ -390,7 +390,7 @@ public class MoreOresModInitializer implements ModInitializer {
 		//ModRecipeBookCategories Registry
 		ModRecipeBookCategories.register();
         Registry.register(BuiltInRegistries.RECIPE_DISPLAY, MoreOresModInitializer.id("gem_polishing"), GemPolishingRecipeDisplay.SERIALIZER);
-        Registry.register(BuiltInRegistries.RECIPE_DISPLAY, MoreOresModInitializer.id("gem_crystallizer"), GemCrystallizingRecipeDisplay.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_DISPLAY, MoreOresModInitializer.id("gem_crystallizing"), GemCrystallizingRecipeDisplay.SERIALIZER);
 
 
 		//EnchantmentEffects Registry

@@ -6,8 +6,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import java.util.concurrent.CompletableFuture;
 
-public class DynamicRegistry extends FabricDynamicRegistryProvider {
-    public DynamicRegistry(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class DynamicRegistriesCreator extends FabricDynamicRegistryProvider {
+    public DynamicRegistriesCreator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
