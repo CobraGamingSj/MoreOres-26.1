@@ -431,6 +431,10 @@ public class BlockTagsCreator extends FabricTagsProvider.BlockTagsProvider {
         tag(ModBlockTags.INCORRECT_FOR_RADIANT_TOOL)
         ;
 
+        tag(ModBlockTags.RUBY_ORES)
+                .add(ResourceHelper.obtainKey(ModBlocks.RUBY_ORE))
+                .add(ResourceHelper.obtainKey(ModBlocks.DEEPSLATE_RUBY_ORE));
+        
         tag(ModBlockTags.SAPPHIRE_ORES)
                 .add(ResourceHelper.obtainKey(ModBlocks.SAPPHIRE_ORE))
                 .add(ResourceHelper.obtainKey(ModBlocks.DEEPSLATE_SAPPHIRE_ORE));

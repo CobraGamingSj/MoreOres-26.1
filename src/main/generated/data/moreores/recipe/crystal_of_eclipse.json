@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "#": "moreores:eclipse_gem_crystals",
     "A": "minecraft:sand"

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:blasting",
-  "category": "misc",
   "cookingtime": 750,
   "experience": 0.15,
   "group": "moreores:pyrope",

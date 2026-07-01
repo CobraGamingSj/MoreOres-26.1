@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "moreores:ruby_block"
+            "items": "moreores:raw_ruby_block"
           }
         ]
       },

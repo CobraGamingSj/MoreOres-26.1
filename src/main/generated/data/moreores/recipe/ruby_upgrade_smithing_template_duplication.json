@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "moreores:ruby",
     "b": "moreores:ruby_upgrade_smithing_template",
