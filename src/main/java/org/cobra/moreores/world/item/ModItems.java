@@ -20,6 +20,7 @@ public class ModItems {
 
     public static final Item GEM_DETECTOR = RESOURCE.register("gem_detector", GemDetector::new);
 
+    
 //    Gemstones & Ingots
     public static final Item RUBY = RESOURCE.register("ruby", s -> new GemItem(s, "ruby"));
     public static final Item RAW_RUBY = RESOURCE.register("raw_ruby", s -> new Item(s.fireResistant()));
@@ -79,68 +80,71 @@ public class ModItems {
 
 
     //Ruby Armor
-    public static final Item RUBY_HELMET = RESOURCE.register(
+    public static final Item RUBY_HELMET = RESOURCE.registerSteveArmor(
             "ruby_helmet",
-            s -> new Item(s.humanoidArmor(ModArmorMaterials.RUBY, ArmorType.HELMET).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.RUBY, ArmorType.HELMET
     );
-    public static final Item RUBY_CHESTPLATE = RESOURCE.register(
+    public static final Item RUBY_CHESTPLATE = RESOURCE.registerSteveArmor(
             "ruby_chestplate",
-            s -> new Item(s.humanoidArmor(ModArmorMaterials.RUBY, ArmorType.CHESTPLATE).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.RUBY, ArmorType.CHESTPLATE
     );
-    public static final Item RUBY_LEGGINGS = RESOURCE.register(
+    public static final Item RUBY_LEGGINGS = RESOURCE.registerSteveArmor(
             "ruby_leggings",
-            s -> new Item(s.humanoidArmor(ModArmorMaterials.RUBY, ArmorType.LEGGINGS).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.RUBY, ArmorType.LEGGINGS
     );
-    public static final Item RUBY_BOOTS = RESOURCE.register(
+    public static final Item RUBY_BOOTS = RESOURCE.registerSteveArmor(
             "ruby_boots",
-            s -> new Item(s.humanoidArmor(ModArmorMaterials.RUBY, ArmorType.BOOTS).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.RUBY, ArmorType.BOOTS
     );
-    public static final Item RUBY_NAUTILUS_ARMOR = RESOURCE.register(
+    public static final Item RUBY_NAUTILUS_ARMOR = RESOURCE.registerNautilusArmor(
             "ruby_nautilus_armor",
-            s -> new Item(s.nautilusArmor(ModArmorMaterials.RUBY).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.RUBY
     );
 
 
 //    Sapphire Armor
-    public static final Item SAPPHIRE_HELMET = RESOURCE.register(
-            "sapphire_helmet",
-            s -> new Item(s.humanoidArmor(ModArmorMaterials.SAPPHIRE, ArmorType.HELMET).fireResistant())
+    public static final Item SAPPHIRE_HELMET = RESOURCE.registerSteveArmor(
+            "sapphire_helmet", 
+            Item::new, new Item.Properties(), ModArmorMaterials.SAPPHIRE, ArmorType.HELMET
     );
-    public static final Item SAPPHIRE_CHESTPLATE = RESOURCE.register(
+    public static final Item SAPPHIRE_CHESTPLATE = RESOURCE.registerSteveArmor(
             "sapphire_chestplate",
-            s -> new Item(s.humanoidArmor(ModArmorMaterials.SAPPHIRE, ArmorType.CHESTPLATE).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.SAPPHIRE, ArmorType.CHESTPLATE
     );
-    public static final Item SAPPHIRE_LEGGINGS = RESOURCE.register(
+    public static final Item SAPPHIRE_LEGGINGS = RESOURCE.registerSteveArmor(
             "sapphire_leggings",
-            s -> new Item(s.humanoidArmor(ModArmorMaterials.SAPPHIRE, ArmorType.LEGGINGS).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.SAPPHIRE, ArmorType.LEGGINGS
     );
-    public static final Item SAPPHIRE_BOOTS = RESOURCE.register(
+    public static final Item SAPPHIRE_BOOTS = RESOURCE.registerSteveArmor(
             "sapphire_boots",
-            s -> new Item(s.humanoidArmor(ModArmorMaterials.SAPPHIRE, ArmorType.BOOTS).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.SAPPHIRE, ArmorType.BOOTS
     );
-    public static final Item SAPPHIRE_NAUTILUS_ARMOR = RESOURCE.register(
+    public static final Item SAPPHIRE_NAUTILUS_ARMOR = RESOURCE.registerNautilusArmor(
             "sapphire_nautilus_armor",
-            s -> new Item(s.nautilusArmor(ModArmorMaterials.SAPPHIRE).fireResistant())
+            Item::new, new Item.Properties(), ModArmorMaterials.SAPPHIRE
     );
 
 
 //     Radiant Armor
-    public static final Item RADIANT_HELMET = RESOURCE.register(
+    public static final Item RADIANT_HELMET = RESOURCE.registerSteveArmor(
             "radiant_helmet",
-            s -> new ArmorItem(s.rarity(Rarity.EPIC).humanoidArmor(ModArmorMaterials.RADIANT, ArmorType.HELMET).fireResistant())
+            s -> new ArmorItem(s.rarity(Rarity.EPIC)), new Item.Properties(), ModArmorMaterials.RADIANT, ArmorType.HELMET
     );
-    public static final Item RADIANT_CHESTPLATE = RESOURCE.register(
+    public static final Item RADIANT_CHESTPLATE = RESOURCE.registerSteveArmor(
             "radiant_chestplate",
-            s -> new ArmorItem(s.rarity(Rarity.EPIC).humanoidArmor(ModArmorMaterials.RADIANT, ArmorType.CHESTPLATE).fireResistant())
+            s -> new ArmorItem(s.rarity(Rarity.EPIC)), new Item.Properties(), ModArmorMaterials.RADIANT, ArmorType.CHESTPLATE
     );
-    public static final Item RADIANT_LEGGINGS = RESOURCE.register(
+    public static final Item RADIANT_LEGGINGS = RESOURCE.registerSteveArmor(
             "radiant_leggings",
-            s -> new ArmorItem(s.rarity(Rarity.EPIC).humanoidArmor(ModArmorMaterials.RADIANT, ArmorType.LEGGINGS).fireResistant())
+            s -> new ArmorItem(s.rarity(Rarity.EPIC)), new Item.Properties(), ModArmorMaterials.RADIANT, ArmorType.LEGGINGS
     );
-    public static final Item RADIANT_BOOTS = RESOURCE.register(
+    public static final Item RADIANT_BOOTS = RESOURCE.registerSteveArmor(
             "radiant_boots",
-            s -> new ArmorItem(s.rarity(Rarity.EPIC).humanoidArmor(ModArmorMaterials.RADIANT, ArmorType.BOOTS).fireResistant())
+            s -> new ArmorItem(s.rarity(Rarity.EPIC)), new Item.Properties(), ModArmorMaterials.RADIANT, ArmorType.BOOTS
     );
+    public static final Item RADIANT_NAUTILUS_ARMOR = RESOURCE.registerNautilusArmor(
+            "radiant_nautilus_armor", 
+            s -> new Item(s.rarity(Rarity.EPIC).fireResistant()), new Item.Properties(), ModArmorMaterials.RADIANT);
 
 
     //Sapphire Tools & Weapons

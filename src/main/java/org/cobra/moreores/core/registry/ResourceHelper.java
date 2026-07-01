@@ -21,6 +21,8 @@ import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,41 +40,49 @@ public class ResourceHelper {
         
         public static final ItemResource INSTANCE = new ItemResource();
         
-        public Item register(String id, Item item) {
+        private Item register(String id, Item item) {
             return Registry.register(BuiltInRegistries.ITEM, id(id), item);
         }
 
-        public Item register(String name, Function<Item.Properties, Item> item) {
-            return register(name, item.apply(new Item.Properties().setId(itemKey(name))));
+        public Item register(String id, Function<Item.Properties, Item> item) {
+            return register(id, item.apply(new Item.Properties().setId(itemKey(id))));
         }
 
-        public Item registerSword(String name, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
-            return register(name, item.apply(new Item.Properties().setId(itemKey(name)).sword(material, attackDamage, attackSpeed)));
+        public Item registerSteveArmor(String id, Function<Item.Properties, Item> function, Item.Properties properties, ArmorMaterial material, ArmorType type) {
+            return register(id, function.apply(properties.setId(itemKey(id)).humanoidArmor(material, type).fireResistant()));
         }
 
-        public Item registerPickaxe(String name, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
-            return register(name, item.apply(new Item.Properties().setId(itemKey(name)).pickaxe(material, attackDamage, attackSpeed)));
+        public Item registerNautilusArmor(String id, Function<Item.Properties, Item> function, Item.Properties properties, ArmorMaterial material) {
+            return register(id, function.apply(properties.setId(itemKey(id)).nautilusArmor(material).fireResistant()));
+        }
+        
+        public Item registerSword(String id, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
+            return register(id, item.apply(new Item.Properties().setId(itemKey(id)).sword(material, attackDamage, attackSpeed)));
         }
 
-        public Item registerAxe(String name, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
-            return register(name, item.apply(new Item.Properties().setId(itemKey(name)).axe(material, attackDamage, attackSpeed)));
+        public Item registerPickaxe(String id, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
+            return register(id, item.apply(new Item.Properties().setId(itemKey(id)).pickaxe(material, attackDamage, attackSpeed)));
         }
 
-        public Item registerHoe(String name, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
-            return register(name, item.apply(new Item.Properties().setId(itemKey(name)).hoe(material, attackDamage, attackSpeed)));
+        public Item registerAxe(String id, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
+            return register(id, item.apply(new Item.Properties().setId(itemKey(id)).axe(material, attackDamage, attackSpeed)));
         }
 
-        public Item registerShovel(String name, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
-            return register(name, item.apply(new Item.Properties().setId(itemKey(name)).shovel(material, attackDamage, attackSpeed)));
+        public Item registerHoe(String id, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
+            return register(id, item.apply(new Item.Properties().setId(itemKey(id)).hoe(material, attackDamage, attackSpeed)));
         }
 
-        public Item registerSpear(String name, Function<Item.Properties, Item> item, ToolMaterial material, float swingAnimationSeconds, float chargeDamageMultiplier, float chargeDelaySeconds,
+        public Item registerShovel(String id, Function<Item.Properties, Item> item, float attackDamage, float attackSpeed, ToolMaterial material) {
+            return register(id, item.apply(new Item.Properties().setId(itemKey(id)).shovel(material, attackDamage, attackSpeed)));
+        }
+
+        public Item registerSpear(String id, Function<Item.Properties, Item> item, ToolMaterial material, float swingAnimationSeconds, float chargeDamageMultiplier, float chargeDelaySeconds,
                                          float maxDurationForDismountSeconds, float minSpeedForDismount, float maxDurationForChargeKnockbackInSeconds,
                                          float minSpeedForChargeKnockback, float maxDurationForChargeDamageInSeconds,
                                          float minRelativeSpeedForChargeDamage) {
-            return register(name, item.apply(new Item.Properties().spear(material, swingAnimationSeconds, chargeDamageMultiplier, chargeDelaySeconds, maxDurationForDismountSeconds,
+            return register(id, item.apply(new Item.Properties().spear(material, swingAnimationSeconds, chargeDamageMultiplier, chargeDelaySeconds, maxDurationForDismountSeconds,
                             minSpeedForDismount, maxDurationForChargeKnockbackInSeconds, minSpeedForChargeKnockback, maxDurationForChargeDamageInSeconds, minRelativeSpeedForChargeDamage)
-                    .setId(itemKey(name))));
+                    .setId(itemKey(id))));
         }
     }
     
@@ -95,7 +105,7 @@ public class ResourceHelper {
             return register(id, blockFunction.apply(settings));
         }
 
-        public void registerBlockItem(String id, Block block) {
+        private void registerBlockItem(String id, Block block) {
             ItemResource.INSTANCE.register(id, settings -> new BlockItem(block, settings.useBlockDescriptionPrefix()));
         }
     }
@@ -111,10 +121,7 @@ public class ResourceHelper {
     }
 
     public static final class EntityResource {
-
-        private EntityResource() {
-
-        }
+        private EntityResource() {}
 
         public static final EntityResource INSTANCE = new EntityResource();
 
@@ -139,18 +146,18 @@ public class ResourceHelper {
         
         public static final RecipeResource INSTANCE = new RecipeResource();
 
-        public <T extends Recipe<?>> RecipeSerializer<T> registerSerializer(String name, RecipeSerializer<T> serializer) {
-            return Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, MoreOresModInitializer.id(name), serializer);
+        public <T extends Recipe<?>> RecipeSerializer<T> registerSerializer(String id, RecipeSerializer<T> serializer) {
+            return Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, MoreOresModInitializer.id(id), serializer);
         }
 
-        public <T extends Recipe<?>> RecipeType<T> registerType(String name) {
+        public <T extends Recipe<?>> RecipeType<T> registerType(String id) {
             return Registry.register(
                     BuiltInRegistries.RECIPE_TYPE,
-                    MoreOresModInitializer.id(name),
+                    MoreOresModInitializer.id(id),
                     new RecipeType<T>() {
                         @Override
                         public String toString() {
-                            return name;
+                            return id;
                         }
                     }
             );
@@ -160,10 +167,10 @@ public class ResourceHelper {
             return Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, id), new RecipeBookCategory());
         }
         
-        public <T extends RecipeDisplay> void registerDisplay(String name, RecipeDisplay.Type<T> type) {
-            Registry.register(BuiltInRegistries.RECIPE_DISPLAY, MoreOresModInitializer.id(name), type);
+        public <T extends RecipeDisplay> void registerDisplay(String id, RecipeDisplay.Type<T> type) {
+            Registry.register(BuiltInRegistries.RECIPE_DISPLAY, MoreOresModInitializer.id(id), type);
         }
-    } 
+    }
     
     public static ResourceKey<Block> obtainKey(Block value) {
         return BuiltInRegistries.BLOCK.getResourceKey(value).get();

@@ -149,7 +149,7 @@ public class MoreOresModInitializer implements ModInitializer {
 		});
 
 
-		ServerMessageEvents.CHAT_MESSAGE.register((msg, sender, params) -> {
+		ServerMessageEvents.CHAT_MESSAGE.register((msg, sender, bounds) -> {
 			String playerSignature = msg.signedContent().toLowerCase();
 			if(playerSignature.contains("happy birthday cobra") || playerSignature.contains("happy birthday") || playerSignature.contains("happy bday") || playerSignature.contains("happy bday cobra")) {
 				giveBirthdayRewards(sender);

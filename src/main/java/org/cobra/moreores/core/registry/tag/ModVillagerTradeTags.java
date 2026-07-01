@@ -16,5 +16,4 @@ public class ModVillagerTradeTags {
     private static TagKey<VillagerTrade> of(String name) {
         return TagKey.create(Registries.VILLAGER_TRADE, MoreOresModInitializer.id(name));
     }
-
 }
