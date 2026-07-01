@@ -1,11 +1,12 @@
 {
   "sources": [
     {
+      "type": "minecraft:directory",
+      "prefix": "item/",
+      "source": "item"
+    },
+    {
       "type": "minecraft:paletted_permutations",
-      "textures": [
-        "moreores:trims/entity/humanoid/guardian",
-        "moreores:trims/entity/humanoid_leggings/guardian"
-      ],
       "palette_key": "minecraft:trims/color_palettes/trim_palette",
       "permutations": {
         "ruby": "moreores:trims/color_palettes/ruby",
@@ -30,7 +31,13 @@
         "quartsidian": "moreores:trims/color_palettes/quartsidian",
         "opal": "moreores:trims/color_palettes/opal",
         "red_beryl": "moreores:trims/color_palettes/red_beryl"
-      }
+      },
+      "textures": [
+        "minecraft:trims/items/helmet_trim",
+        "minecraft:trims/items/chestplate_trim",
+        "minecraft:trims/items/leggings_trim",
+        "minecraft:trims/items/boots_trim"
+      ]
     }
   ]
 }
