@@ -23,20 +23,18 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
-import org.cobra.moreores.core.registry.RewardState;
+import org.cobra.moreores.core.registry.RewardDataSaver;
 import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
 import org.cobra.moreores.level.gen.BiomeModifiers;
-import org.cobra.moreores.networking.ModC2SNetworks;
-import org.cobra.moreores.networking.ModC2SPayloadRegistry;
-import org.cobra.moreores.networking.ModS2CNetworks;
-import org.cobra.moreores.networking.ModS2CPayloadRegistry;
+import org.cobra.moreores.networking.ModC2SNetworksRegistries;
+import org.cobra.moreores.networking.ModC2SPayloadRegistries;
+import org.cobra.moreores.networking.ModS2CNetworksRegistries;
+import org.cobra.moreores.networking.ModS2CPayloadRegistries;
 import org.cobra.moreores.recipe.ModRecipeSerializer;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
-import org.cobra.moreores.recipe.display.GemCrystallizingRecipeDisplay;
-import org.cobra.moreores.recipe.display.GemPolishingRecipeDisplay;
 import org.cobra.moreores.recipe.display.ModRecipeDisplays;
-import org.cobra.moreores.sound.ModBlockSoundGroup;
+import org.cobra.moreores.sound.ModSoundType;
 import org.cobra.moreores.util.VanillaLootModifiers;
 import org.cobra.moreores.village.ModVillagerProfessions;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -346,7 +344,7 @@ public class MoreOresModInitializer implements ModInitializer {
 
 
 		// ModSounds & ModBlockSoundGroups Registry
-		ModBlockSoundGroup.register();
+		ModSoundType.register();
 
 
 		// WorldGeneration Registry
@@ -378,11 +376,11 @@ public class MoreOresModInitializer implements ModInitializer {
 		
 		
 		//Networking Registry
-		ModS2CNetworks.register();
-		ModC2SNetworks.register();
-		ModS2CPayloadRegistry.registerS2CPackets();
-		ModC2SPayloadRegistry.registerC2SPackets();
-		ModC2SNetworks.registerServerC2S();
+		ModS2CNetworksRegistries.register();
+		ModC2SNetworksRegistries.register();
+		ModS2CPayloadRegistries.registerS2CPackets();
+		ModC2SPayloadRegistries.registerC2SPackets();
+		ModC2SNetworksRegistries.registerServerC2S();
 
 
 		//ModRecipeBookCategories Registry
@@ -397,7 +395,7 @@ public class MoreOresModInitializer implements ModInitializer {
 
 	public static void giveBirthdayRewards(ServerPlayer serverPlayer) {
 		ServerLevel world = serverPlayer.level();
-		RewardState state = RewardState.get(world);
+		RewardDataSaver state = RewardDataSaver.get(world);
 
 		if(state.hasClaimed(serverPlayer.getUUID())) {
 			serverPlayer.sendSystemMessage(Component.literal("⚠️ You can claim the reward only once!").withStyle(ChatFormatting.RED));

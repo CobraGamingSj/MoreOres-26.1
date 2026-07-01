@@ -3,8 +3,8 @@
   "package": "org.cobra.moreores.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "AnvilScreenHandlerMixin",
-    "ExampleMixin",
+    "AnvilMenuMixin",
+    "ExampleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

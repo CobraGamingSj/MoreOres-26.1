@@ -1,4 +1,4 @@
-package org.cobra.moreores.core;
+package org.cobra.moreores.core.registry;
 
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -34,10 +34,7 @@ import static org.cobra.moreores.MoreOresModInitializer.id;
 public class ResourceHelper {
     
     public static final class ItemResource {
-        
-        private ItemResource() {
-            
-        }
+        private ItemResource() {}
         
         public static final ItemResource INSTANCE = new ItemResource();
         
@@ -80,10 +77,7 @@ public class ResourceHelper {
     }
     
     public static final class BlockResource {
-
-        private BlockResource() {
-            
-        }
+        private BlockResource() {}
         
         public static final BlockResource INSTANCE = new BlockResource();
         
@@ -107,10 +101,7 @@ public class ResourceHelper {
     }
 
     public static final class BlockEntityResource {
-
-        private BlockEntityResource() {
-
-        }
+        private BlockEntityResource() {}
 
         public static final BlockEntityResource INSTANCE = new BlockEntityResource();
 
@@ -134,9 +125,7 @@ public class ResourceHelper {
     }
     
     public static final class MenuResource {
-        private MenuResource() {
-            
-        }
+        private MenuResource() {}
         
         public static final MenuResource INSTANCE = new MenuResource();
 
@@ -146,9 +135,7 @@ public class ResourceHelper {
     }
     
     public static final class RecipeResource {
-        private RecipeResource() {
-            
-        }
+        private RecipeResource() {}
         
         public static final RecipeResource INSTANCE = new RecipeResource();
 
@@ -173,7 +160,7 @@ public class ResourceHelper {
             return Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, id), new RecipeBookCategory());
         }
         
-        public void registerDisplay(String name, RecipeDisplay.Type<?> type) {
+        public <T extends RecipeDisplay> void registerDisplay(String name, RecipeDisplay.Type<T> type) {
             Registry.register(BuiltInRegistries.RECIPE_DISPLAY, MoreOresModInitializer.id(name), type);
         }
     } 

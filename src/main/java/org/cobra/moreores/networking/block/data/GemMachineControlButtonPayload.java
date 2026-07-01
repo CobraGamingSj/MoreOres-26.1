@@ -12,14 +12,14 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 
-public record GemPurifierButtonClickPayload(int buttonID, BlockPos pos) implements CustomPacketPayload {
-    public static final Type<GemPurifierButtonClickPayload> ID = new Type<>(MoreOresModInitializer.id("button_click"));
+public record GemMachineControlButtonPayload(int buttonID, BlockPos pos) implements CustomPacketPayload {
+    public static final Type<GemMachineControlButtonPayload> ID = new Type<>(MoreOresModInitializer.id("button_click"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierButtonClickPayload> PACKET_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemMachineControlButtonPayload> PACKET_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.VAR_INT, GemPurifierButtonClickPayload::buttonID,
-                    BlockPos.STREAM_CODEC, GemPurifierButtonClickPayload::pos,
-                    GemPurifierButtonClickPayload::new
+                    ByteBufCodecs.VAR_INT, GemMachineControlButtonPayload::buttonID,
+                    BlockPos.STREAM_CODEC, GemMachineControlButtonPayload::pos,
+                    GemMachineControlButtonPayload::new
             );
 
     public void handle(ServerPlayNetworking.Context context) {

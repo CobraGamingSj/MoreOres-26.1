@@ -11,14 +11,14 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.core.ResourceHelper;
-import org.cobra.moreores.sound.ModBlockSoundGroup;
+import org.cobra.moreores.core.registry.ResourceHelper;
+import org.cobra.moreores.sound.ModSoundType;
 
 public class ModBlocks {
 
     private static final ResourceHelper.BlockResource RESOURCE = ResourceHelper.BlockResource.INSTANCE;
     
-    public static final Block ENERGY_BLOCK = RESOURCE.register("energy_block", new EnergyBlock(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "energy_block"))).mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(256.0f, 512.0f).strength(512.0f).sound(ModBlockSoundGroup.ENERGY_BLOCK).lightLevel((state) -> {
+    public static final Block ENERGY_BLOCK = RESOURCE.register("energy_block", new EnergyBlock(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "energy_block"))).mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(256.0f, 512.0f).strength(512.0f).sound(ModSoundType.ENERGY_BLOCK).lightLevel((state) -> {
         return 30;
     })));
     public static final Block RUBY_LAMP = RESOURCE.register("ruby_lamp", new RubyLampBlock(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "ruby_lamp"))).destroyTime(0.1f).sound(SoundType.GLASS).lightLevel(state -> state.getValue(RubyLampBlock.LIT) ? 15:0)));

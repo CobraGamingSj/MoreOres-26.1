@@ -1,6 +1,6 @@
 package org.cobra.moreores.world.item.equipment;
 
-import org.cobra.moreores.core.registry.ModItemTags;
+import org.cobra.moreores.core.registry.tag.ModItemTags;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.equipment.ArmorMaterial;

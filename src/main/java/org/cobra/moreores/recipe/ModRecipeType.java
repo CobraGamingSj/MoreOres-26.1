@@ -2,7 +2,7 @@ package org.cobra.moreores.recipe;
 
 import net.minecraft.world.item.crafting.RecipeType;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.core.ResourceHelper;
+import org.cobra.moreores.core.registry.ResourceHelper;
 
 public class ModRecipeType {
     

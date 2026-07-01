@@ -2,7 +2,7 @@ package org.cobra.moreores.client.gui.screen;
 
 import net.minecraft.world.inventory.MenuType;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.core.ResourceHelper;
+import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
 import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
 

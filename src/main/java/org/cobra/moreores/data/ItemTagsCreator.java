@@ -3,20 +3,20 @@ package org.cobra.moreores.data;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.references.ItemIds;
-import org.cobra.moreores.core.ResourceHelper;
+import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.core.registry.ModItemTags;
+import org.cobra.moreores.core.registry.tag.ModItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.ItemTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ItemTagGen extends FabricTagsProvider.ItemTagsProvider {
-    public ItemTagGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
+public class ItemTagsCreator extends FabricTagsProvider.ItemTagsProvider {
+    public ItemTagsCreator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
         super(output, completableFuture);
     }
-
+    
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
 

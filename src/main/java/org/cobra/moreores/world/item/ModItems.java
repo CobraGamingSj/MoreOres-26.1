@@ -8,7 +8,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.equipment.ArmorType;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.core.ResourceHelper;
+import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.item.equipment.ArmorItem;
 import org.cobra.moreores.world.item.equipment.ModArmorMaterials;
 

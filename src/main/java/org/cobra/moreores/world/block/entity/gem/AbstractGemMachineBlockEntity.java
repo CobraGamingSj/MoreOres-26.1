@@ -26,7 +26,7 @@ import org.cobra.moreores.world.item.util.GemCategory;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.world.item.util.impl.IGemstone;
 import org.cobra.moreores.world.item.util.impl.PurificationGemstones;
-import org.cobra.moreores.networking.block.data.GemPFEnergyDataPayload;
+import org.cobra.moreores.networking.block.data.GemMachineEnergyDataPayload;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ImplementedInventory, TickableBlockEntity {
@@ -50,7 +50,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
             setChanged();
 
             for(ServerPlayer user : PlayerLookup.tracking((ServerLevel) level, getBlockPos())) {
-                ServerPlayNetworking.send(user, new GemPFEnergyDataPayload(this.amount, getBlockPos()));
+                ServerPlayNetworking.send(user, new GemMachineEnergyDataPayload(this.amount, getBlockPos()));
             }
         }
     };

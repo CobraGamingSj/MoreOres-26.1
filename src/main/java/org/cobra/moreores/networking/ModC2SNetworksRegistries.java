@@ -3,18 +3,18 @@ package org.cobra.moreores.networking;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.networking.block.data.GemCrystallizerBlockData;
 import org.cobra.moreores.networking.block.data.GemPurifierBlockData;
-import org.cobra.moreores.networking.block.data.GemPurifierButtonClickPayload;
-import org.cobra.moreores.networking.block.data.PolishingStateDataPayload;
+import org.cobra.moreores.networking.block.data.GemMachineControlButtonPayload;
+import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import org.cobra.moreores.networking.item.EnergyIngotC2SPayload;
+import org.cobra.moreores.networking.item.data.EnergyIngotC2SPayload;
 
 import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 
-public class ModC2SNetworks {
+public class ModC2SNetworksRegistries {
 
     public static void registerServerC2S() {
-        ServerPlayNetworking.registerGlobalReceiver(GemPurifierButtonClickPayload.ID, GemPurifierButtonClickPayload::handle);
-        ServerPlayNetworking.registerGlobalReceiver(PolishingStateDataPayload.ID, PolishingStateDataPayload::handle);
+        ServerPlayNetworking.registerGlobalReceiver(GemMachineControlButtonPayload.ID, GemMachineControlButtonPayload::handle);
+        ServerPlayNetworking.registerGlobalReceiver(MachineStatusDataPayload.ID, MachineStatusDataPayload::handle);
         ServerPlayNetworking.registerGlobalReceiver(GemPurifierBlockData.ID, GemPurifierBlockData::handle);
         ServerPlayNetworking.registerGlobalReceiver(GemCrystallizerBlockData.ID, GemCrystallizerBlockData::handle);
         ServerPlayNetworking.registerGlobalReceiver(EnergyIngotC2SPayload.ID, EnergyIngotC2SPayload::handle);

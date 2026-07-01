@@ -2,7 +2,7 @@ package org.cobra.moreores.world.entity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import org.cobra.moreores.core.ResourceHelper;
+import org.cobra.moreores.core.registry.ResourceHelper;
 
 public class ModEntityTypes {
 

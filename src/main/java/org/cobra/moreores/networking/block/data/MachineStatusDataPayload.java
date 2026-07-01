@@ -9,13 +9,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-public record PolishingStateDataPayload(BlockPos blockPos, String action) implements CustomPacketPayload {
-    public static final Type<PolishingStateDataPayload> ID = new Type<>(Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "polishing_state"));
+public record MachineStatusDataPayload(BlockPos blockPos, String action) implements CustomPacketPayload {
+    public static final Type<MachineStatusDataPayload> ID = new Type<>(Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "polishing_state"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, PolishingStateDataPayload> PACKET_CODEC = StreamCodec.ofMember((payload, buf) -> {
+    public static final StreamCodec<RegistryFriendlyByteBuf, MachineStatusDataPayload> PACKET_CODEC = StreamCodec.ofMember((payload, buf) -> {
         buf.writeBlockPos(payload.blockPos);
         buf.writeUtf(payload.action);
-    }, buf -> new PolishingStateDataPayload(buf.readBlockPos(), buf.readUtf()));
+    }, buf -> new MachineStatusDataPayload(buf.readBlockPos(), buf.readUtf()));
 
     public void handle(ServerPlayNetworking.Context context) {
 

@@ -11,15 +11,15 @@ import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import org.cobra.moreores.MoreOresModInitializer;
 
-public class RewardState extends SavedData {
+public class RewardDataSaver extends SavedData {
     private final Set<UUID> playerClaimedRewards = new HashSet<>();
-    public static final Codec<RewardState> CODEC = RecordCodecBuilder.create(instance ->
+    public static final Codec<RewardDataSaver> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.list(Codec.STRING).fieldOf("players").forGetter(state ->
                             state.playerClaimedRewards.stream().map(UUID::toString).toList()
                     )
             ).apply(instance, list -> {
-                RewardState state = new RewardState();
+                RewardDataSaver state = new RewardDataSaver();
                 for (String s : list) {
                     state.playerClaimedRewards.add(UUID.fromString(s));
                 }
@@ -27,12 +27,12 @@ public class RewardState extends SavedData {
             })
     );
 
-    public static final SavedDataType<RewardState> TYPE =
+    public static final SavedDataType<RewardDataSaver> TYPE =
             new SavedDataType<>(
-                    MoreOresModInitializer.id("moreores_birthday_rewards"),
-                    RewardState::new,
+                    MoreOresModInitializer.id("birthday_reward"),
+                    RewardDataSaver::new,
                     CODEC,
-                    DataFixTypes.PLAYER // Not required
+                    DataFixTypes.PLAYER
             );
 
     public boolean hasClaimed(UUID uuid) {
@@ -44,7 +44,7 @@ public class RewardState extends SavedData {
         setDirty();
     }
 
-    public static RewardState get(ServerLevel world) {
+    public static RewardDataSaver get(ServerLevel world) {
        return world.getDataStorage().computeIfAbsent(TYPE);
     }
 }

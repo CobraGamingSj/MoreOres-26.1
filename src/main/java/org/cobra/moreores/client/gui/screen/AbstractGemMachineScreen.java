@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
-import org.cobra.moreores.networking.block.data.PolishingStateDataPayload;
+import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
 import org.lwjgl.glfw.GLFW;
 
 public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu> extends AbstractContainerScreen<M> {
@@ -76,7 +76,7 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
     }
 
     private void sendPolishControlPacket(String action) {
-        ClientPlayNetworking.send(new PolishingStateDataPayload(menu.getPos(), action));
+        ClientPlayNetworking.send(new MachineStatusDataPayload(menu.getPos(), action));
     }
 
     protected abstract void renderEnergyHandler(GuiGraphicsExtractor context, int x, int y);

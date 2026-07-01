@@ -1,4 +1,4 @@
-package org.cobra.moreores.networking.item;
+package org.cobra.moreores.networking.item.data;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;

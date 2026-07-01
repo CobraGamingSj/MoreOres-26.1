@@ -1,7 +1,7 @@
 package org.cobra.moreores.world.block.entity;
 
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.core.ResourceHelper;
+import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
 import org.cobra.moreores.world.block.entity.gem.GemPurifierBlockEntity;

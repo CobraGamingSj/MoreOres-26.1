@@ -7,17 +7,17 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.networking.block.data.GemCrystallizerBlockData;
 import org.cobra.moreores.networking.block.data.GemPurifierBlockData;
-import org.cobra.moreores.networking.block.data.GemPurifierButtonClickPayload;
-import org.cobra.moreores.networking.block.data.PolishingStateDataPayload;
-import org.cobra.moreores.networking.item.EnergyIngotC2SPayload;
+import org.cobra.moreores.networking.block.data.GemMachineControlButtonPayload;
+import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
+import org.cobra.moreores.networking.item.data.EnergyIngotC2SPayload;
 
 import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 
-public class ModC2SPayloadRegistry {
+public class ModC2SPayloadRegistries {
 
     static {
-        registerC2S(GemPurifierButtonClickPayload.ID, GemPurifierButtonClickPayload.PACKET_CODEC);
-        registerC2S(PolishingStateDataPayload.ID, PolishingStateDataPayload.PACKET_CODEC);
+        registerC2S(GemMachineControlButtonPayload.ID, GemMachineControlButtonPayload.PACKET_CODEC);
+        registerC2S(MachineStatusDataPayload.ID, MachineStatusDataPayload.PACKET_CODEC);
         registerC2S(GemPurifierBlockData.ID, GemPurifierBlockData.PACKET_CODEC);
         registerC2S(GemCrystallizerBlockData.ID, GemCrystallizerBlockData.PACKET_CODEC);
         registerC2S(EnergyIngotC2SPayload.ID, EnergyIngotC2SPayload.PACKET_CODEC);

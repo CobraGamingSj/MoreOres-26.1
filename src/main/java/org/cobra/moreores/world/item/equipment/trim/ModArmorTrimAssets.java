@@ -31,5 +31,4 @@ public class ModArmorTrimAssets {
     public static MaterialAssetGroup of(String suffix) {
         return new MaterialAssetGroup(new MaterialAssetGroup.AssetInfo(suffix), Map.of());
     }
-
 }

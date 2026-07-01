@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.core.registry.ModItemTags;
+import org.cobra.moreores.core.registry.tag.ModItemTags;
 import org.lwjgl.glfw.GLFW;
 
 public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements CustomPacketPayload {

@@ -18,7 +18,7 @@ import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
-import org.cobra.moreores.core.registry.ModItemTags;
+import org.cobra.moreores.core.registry.tag.ModItemTags;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class GemCrystallizerMenu extends AbstractGemMachineMenu {

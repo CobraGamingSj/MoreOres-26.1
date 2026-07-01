@@ -19,7 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.cobra.moreores.networking.item.EnergyIngotC2SPayload;
+import org.cobra.moreores.networking.item.data.EnergyIngotC2SPayload;
 import org.cobra.moreores.world.block.ModBlocks;
 
 public class EnergyIngotItem extends Item {

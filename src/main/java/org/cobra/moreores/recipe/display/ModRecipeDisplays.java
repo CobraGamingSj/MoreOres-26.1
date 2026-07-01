@@ -1,6 +1,6 @@
 package org.cobra.moreores.recipe.display;
 
-import org.cobra.moreores.core.ResourceHelper;
+import org.cobra.moreores.core.registry.ResourceHelper;
 
 public class ModRecipeDisplays {
     

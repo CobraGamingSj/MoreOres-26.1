@@ -14,10 +14,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AnvilMenu.class)
-public abstract class AnvilScreenHandlerMixin {
+public abstract class AnvilMenuMixin {
 
     @Inject(method = "onTake", at = @At("HEAD"))
-    private void takeOutput(Player player, ItemStack stack, CallbackInfo ci) {
+    private void onTake(Player player, ItemStack stack, CallbackInfo ci) {
         System.out.println("ANVIL MIXIN TRIGGERRED");
         if(player.level().isClientSide()) return;
 

@@ -2,7 +2,7 @@ package org.cobra.moreores.recipe.book;
 
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.core.ResourceHelper;
+import org.cobra.moreores.core.registry.ResourceHelper;
 
 public class ModRecipeBookCategories {
     

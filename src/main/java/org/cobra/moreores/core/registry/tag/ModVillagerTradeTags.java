@@ -1,4 +1,4 @@
-package org.cobra.moreores.core.registry;
+package org.cobra.moreores.core.registry.tag;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;

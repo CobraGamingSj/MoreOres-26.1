@@ -12,7 +12,7 @@ import org.cobra.moreores.client.gui.screen.GemCrystallizerMenu;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.recipe.GemCrystallizerRecipe;
 import org.cobra.moreores.recipe.input.GemCrystallizationRecipeInput;
-import org.cobra.moreores.core.registry.ModItemTags;
+import org.cobra.moreores.core.registry.tag.ModItemTags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
