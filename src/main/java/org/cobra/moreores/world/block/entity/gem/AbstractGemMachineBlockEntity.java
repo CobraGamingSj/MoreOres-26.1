@@ -31,12 +31,18 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ImplementedInventory, TickableBlockEntity {
     protected final NonNullList<ItemStack> main;
-    protected MachineStatus polishingInfusionState = MachineStatus.IDLE;
-    protected MachineEnergyState energyState = MachineEnergyState.IDLE;
-    protected IGemstone gemType = IGemstone.EMPTY;
+    protected MachineStatus machineStatus = MachineStatus.IDLE;
+    protected MachineEnergyState machineEnergyState = MachineEnergyState.IDLE;
+    protected IGemstone iGemstone = IGemstone.EMPTY;
 
     public int initialProgress = 0;
 
+    protected int redstone = 0;
+    protected int maxRedstone = 10000;
+    protected int redstoneTick;
+
+    private long previousRemovedRedstoneMilestone = 0;
+    
     public AbstractGemMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.main = NonNullList.withSize(mainStackSize(), ItemStack.EMPTY);
@@ -68,8 +74,10 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         ContainerHelper.saveAllItems(view, main);
         view.putInt("Progress", initialProgress);
         view.putLong("Energy", energyStorage.amount);
-        view.storeNullable("PolishingState", MachineStatus.CODEC, polishingInfusionState);
-        view.storeNullable("EnergyState", MachineEnergyState.CODEC, energyState);
+        view.storeNullable("PolishingState", MachineStatus.CODEC, machineStatus);
+        view.storeNullable("EnergyState", MachineEnergyState.CODEC, machineEnergyState);
+        view.putInt("Redstone", redstone);
+        view.putInt("RedstoneTick", redstoneTick);
     }
 
     @Override
@@ -77,11 +85,17 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         super.loadAdditional(view);
         ContainerHelper.loadAllItems(view, main);
         initialProgress = view.getIntOr("Progress", 0);
+        redstone = view.getIntOr("Redstone", 0);
+        redstoneTick = view.getIntOr("RedstoneTick", 0);
         energyStorage.amount = view.getLongOr("Energy", 0);
-        polishingInfusionState = view.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.IDLE);
-        energyState = view.read("EnergyState", MachineEnergyState.CODEC).orElse(MachineEnergyState.IDLE);
+        machineStatus = view.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.IDLE);
+        machineEnergyState = view.read("EnergyState", MachineEnergyState.CODEC).orElse(MachineEnergyState.IDLE);
     }
 
+    public long energyAmount() {
+        return this.energyStorage.amount;
+    }
+    
     public IGemstone detectGem(ItemStack stack) {
         Item item = stack.getItem();
         for (PurificationGemstones gems : PurificationGemstones.values()) {
@@ -101,6 +115,10 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         return IGemstone.EMPTY;
     }
 
+    public int getRedstone() {
+        return this.redstone;
+    }
+    
     public abstract GemCategory category();
     
     public IGemstone getGem() {
@@ -108,7 +126,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     }
 
     public void setGem(IGemstone gem) {
-        gemType = gem;
+        iGemstone = gem;
     }
 
     public void setEnergyLevel(long energy) {
@@ -120,20 +138,34 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     }
 
     protected void increaseProgress() {
-        if(this.level.hasNeighborSignal(this.worldPosition)) {
+        if(this.level.hasNeighborSignal(this.worldPosition) || redstone > 0) {
             initialProgress += (int) 2.5;
         } else {
             initialProgress++;
         }
     }
 
+    protected void checkForEnoughRedstoneAndRemoveBucket(int slot) {
+        int amount = redstone;
+
+        int [] milestones = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
+
+        for(long milestone : milestones) {
+            if(amount >= milestone && previousRemovedRedstoneMilestone < milestone) {
+                this.removeItem(slot, 1);
+                previousRemovedRedstoneMilestone = milestone;
+                break;
+            }
+        }
+    }
+    
     protected boolean hasEnoughEnergy() {
         return this.energyStorage.amount >= 13;
     }
 
-    protected void insertEnergy() {
+    protected void giveEnergy() {
         if(!hasEnergySourceProviderItem() || energyStorage.amount >= 1_000_000) {
-            energyState = MachineEnergyState.IDLE;
+            machineEnergyState = MachineEnergyState.IDLE;
             return;
         }
         long amount = energyStack().is(ModItems.ENERGY_INGOT) ? 102 : 154;
@@ -141,48 +173,48 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         try(Transaction transaction = Transaction.openOuter()) {
             long inserted = energyStorage.insert(amount, transaction);
             transaction.commit();
-            if(inserted > 0) energyState = MachineEnergyState.INSERTING;
-            else energyState = MachineEnergyState.IDLE;
+            if(inserted > 0) machineEnergyState = MachineEnergyState.INSERTING;
+            else machineEnergyState = MachineEnergyState.IDLE;
         }
     }
 
-    protected void extractEnergy() {
+    protected void eatEnergy() {
         long amount = level.hasNeighborSignal(worldPosition) ? 64 : 13;
         try(Transaction transaction = Transaction.openOuter()) {
             energyStorage.extract(amount, transaction);
             transaction.commit();
         }
-        energyState = MachineEnergyState.EXTRACTING;
+        machineEnergyState = MachineEnergyState.EXTRACTING;
     }
 
     protected abstract boolean hasRecipe();
 
-    private void resetProgress() {
+    protected void clearProgress() {
         this.initialProgress = 0;
     }
 
     public void start() {
-        if(polishingInfusionState.isIdle() && hasRecipe() && hasEnoughEnergy()) {
-            polishingInfusionState = MachineStatus.RUNNING;
+        if(machineStatus.isIdle() && hasRecipe() && hasEnoughEnergy()) {
+            machineStatus = MachineStatus.RUNNING;
         }
     }
 
     public void pause() {
-        if(polishingInfusionState.isRunning()) {
-            polishingInfusionState = MachineStatus.PAUSED;
+        if(machineStatus.isRunning()) {
+            machineStatus = MachineStatus.PAUSED;
         }
     }
 
     public void resume() {
-        if(polishingInfusionState.isPaused()&& hasRecipe() && hasEnoughEnergy()) {
-            polishingInfusionState = MachineStatus.RUNNING;
+        if(machineStatus.isPaused()&& hasRecipe() && hasEnoughEnergy()) {
+            machineStatus = MachineStatus.RUNNING;
         }
     }
 
     public void stop() {
-        if(!polishingInfusionState.isIdle()) {
-            polishingInfusionState = MachineStatus.IDLE;
-            resetProgress();
+        if(!machineStatus.isIdle()) {
+            machineStatus = MachineStatus.IDLE;
+            clearProgress();
         }
     }
 }

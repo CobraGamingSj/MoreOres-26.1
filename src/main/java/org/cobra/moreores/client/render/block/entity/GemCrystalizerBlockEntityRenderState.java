@@ -4,11 +4,11 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizerBlockEntity;
 
 public class GemCrystalizerBlockEntityRenderState extends BlockEntityRenderState {
 
-    public GemCrystallizeBlockEntity entity;
+    public GemCrystallizerBlockEntity entity;
     public Level entityWorld;
     public BlockPos lightPos;
 
@@ -17,7 +17,7 @@ public class GemCrystalizerBlockEntityRenderState extends BlockEntityRenderState
     final ItemStackRenderState energyItemRenderState = new ItemStackRenderState();
     final ItemStackRenderState resultItemRenderState = new ItemStackRenderState();
 
-    public void setEntity(GemCrystallizeBlockEntity entity) {
+    public void setEntity(GemCrystallizerBlockEntity entity) {
         this.entity = entity;
     }
 }

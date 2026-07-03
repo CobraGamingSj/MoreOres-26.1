@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.core.registry.tag.ModItemTags;
 import org.lwjgl.glfw.GLFW;
@@ -34,7 +34,7 @@ public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements Cus
             if(alt) {
                 ItemStack heldStack = player.getItemInHand(InteractionHand.MAIN_HAND);
 
-                if(!heldStack.isEmpty() && world.getBlockEntity(pos) instanceof GemCrystallizeBlockEntity be) {
+                if(!heldStack.isEmpty() && world.getBlockEntity(pos) instanceof GemCrystallizerBlockEntity be) {
                     ItemStack energyStack = be.energyStack();
                     ItemStack inputStack = be.ingredientStack();
                     ItemStack inputBeforeStack = be.ingredientAfterStack();
@@ -42,7 +42,7 @@ public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements Cus
 
                     if(heldStack.is(ModItems.RADIANT_DUST)) {
                         if(radiantDustStack.isEmpty()) {
-                            be.setItem(GemCrystallizeBlockEntity.RADIANT_DUST_SLOT, heldStack.copyWithCount(heldStack.getCount()));
+                            be.setItem(GemCrystallizerBlockEntity.RADIANT_DUST_SLOT, heldStack.copyWithCount(heldStack.getCount()));
                             heldStack.shrink(heldStack.getCount());
                         } else if (ItemStack.isSameItem(radiantDustStack, heldStack) && radiantDustStack.getCount() < radiantDustStack.getMaxStackSize()) {
                             radiantDustStack.grow(heldStack.getCount());
@@ -53,7 +53,7 @@ public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements Cus
 
                     if(heldStack.getItem() == ModItems.ENERGY_INGOT) {
                         if(energyStack.isEmpty()) {
-                            be.setItem(GemCrystallizeBlockEntity.ENERGY_SOURCE_SLOT, heldStack.copyWithCount(heldStack.getCount()));
+                            be.setItem(GemCrystallizerBlockEntity.ENERGY_SOURCE_SLOT, heldStack.copyWithCount(heldStack.getCount()));
                             heldStack.shrink(heldStack.getCount());
                         } else if (ItemStack.isSameItem(energyStack, heldStack) && energyStack.getCount() < energyStack.getMaxStackSize()) {
                             energyStack.grow(heldStack.getCount());
@@ -64,7 +64,7 @@ public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements Cus
 
                     if(heldStack.is(ModItemTags.RAW_GEMSTONE)) {
                         if(inputStack.isEmpty()) {
-                            be.setItem(GemCrystallizeBlockEntity.INGREDIENT_BEFORE_SLOT, heldStack.copyWithCount(heldStack.getCount()));
+                            be.setItem(GemCrystallizerBlockEntity.INGREDIENT_BEFORE_SLOT, heldStack.copyWithCount(heldStack.getCount()));
                             heldStack.shrink(heldStack.getCount());
                         } else if (ItemStack.isSameItem(inputStack, heldStack)) {
                             inputStack.grow(heldStack.getCount());

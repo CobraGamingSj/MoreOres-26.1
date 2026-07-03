@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 
-public class ModS2CNetworksRegistries {
+public class ModS2CNetworkRegistries {
 
     public static void registerClientS2C(){
         ClientPlayNetworking.registerGlobalReceiver(GemMachineEnergyDataPayload.ID, GemMachineEnergyDataPayload::handlePacket);

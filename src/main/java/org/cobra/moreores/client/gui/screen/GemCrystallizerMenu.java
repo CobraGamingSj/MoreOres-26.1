@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
 import org.cobra.moreores.core.registry.tag.ModItemTags;
@@ -25,21 +25,21 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
     private final Container inventory;
     private final ContainerLevelAccess context;
     private final ContainerData propertyDelegate;
-    public final GemCrystallizeBlockEntity blockEntity;
+    public final GemCrystallizerBlockEntity blockEntity;
 
     public GemCrystallizerMenu(int syncId, Inventory playerInventory, GemCrystallizerDataSynchronizer data) {
         this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(data.blockPos()),
-                new SimpleContainerData(3));
+                new SimpleContainerData(4));
     }
 
     public GemCrystallizerMenu(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
         super(ModMenuType.GEM_CRYSTALLIZER, syncId, entity.getBlockPos());
-        checkContainerSize((Container) entity, 10);
+        checkContainerSize((Container) entity, 11);
 
         this.inventory = (Container) entity;
         this.context = ContainerLevelAccess.create(entity.getLevel(), entity.getBlockPos());
         this.propertyDelegate = delegate;
-        this.blockEntity = (GemCrystallizeBlockEntity) entity;
+        this.blockEntity = (GemCrystallizerBlockEntity) entity;
 
         this.addSlot(new Slot(inventory, 0, 47, 22) {
             @Override
@@ -77,6 +77,8 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
             }
         }); // Radiant Slot
 
+        this.addSlot(new Slot(inventory, 5, 92, 59)); // Redstone Slot
+        
         addSecondAdditionalInventory(inventory);
 
         addPlayerGenericInventory(playerInventory);
@@ -88,7 +90,7 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
     @Override
     public void addSecondAdditionalInventory(Container playerInventory) {
         for (int i = 0; i < 5; ++i) {
-            this.addSlot(new Slot(playerInventory, 5 + i, 179, 97 + i * 18));
+            this.addSlot(new Slot(playerInventory, 6 + i, 179, 97 + i * 18));
         }
     }
 
@@ -96,6 +98,10 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
         return propertyDelegate.get(0) > 0;
     }
 
+    public int getRedstoneDust() {
+        return propertyDelegate.get(3);
+    }
+    
     public int getDustCount() {
         return propertyDelegate.get(2);
     }

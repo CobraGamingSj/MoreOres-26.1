@@ -18,7 +18,6 @@ public record GemPurifierFluidDataPayload(FluidVariant var, long fluid, BlockPos
     public void handlePacket(ClientPlayNetworking.Context context) {
         ClientLevel world = context.client().level;
         if (world == null) return;
-
         if (world.getBlockEntity(this.blockPos) instanceof GemPurifierBlockEntity blockEntity) {
             blockEntity.setWaterLevel(this.var, this.fluid);
 

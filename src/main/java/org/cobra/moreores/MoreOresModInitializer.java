@@ -26,9 +26,9 @@ import org.cobra.moreores.client.gui.screen.ModMenuType;
 import org.cobra.moreores.core.registry.RewardDataSaver;
 import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
 import org.cobra.moreores.level.gen.BiomeModifiers;
-import org.cobra.moreores.networking.ModC2SNetworksRegistries;
+import org.cobra.moreores.networking.ModC2SNetworkRegistries;
 import org.cobra.moreores.networking.ModC2SPayloadRegistries;
-import org.cobra.moreores.networking.ModS2CNetworksRegistries;
+import org.cobra.moreores.networking.ModS2CNetworkRegistries;
 import org.cobra.moreores.networking.ModS2CPayloadRegistries;
 import org.cobra.moreores.recipe.ModRecipeSerializer;
 import org.cobra.moreores.recipe.ModRecipeType;
@@ -376,11 +376,11 @@ public class MoreOresModInitializer implements ModInitializer {
 		
 		
 		//Networking Registry
-		ModS2CNetworksRegistries.register();
-		ModC2SNetworksRegistries.register();
+		ModS2CNetworkRegistries.register();
+		ModC2SNetworkRegistries.register();
 		ModS2CPayloadRegistries.registerS2CPackets();
 		ModC2SPayloadRegistries.registerC2SPackets();
-		ModC2SNetworksRegistries.registerServerC2S();
+		ModC2SNetworkRegistries.registerServerC2S();
 
 
 		//ModRecipeBookCategories Registry

@@ -14,12 +14,16 @@ import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
 import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
 import org.lwjgl.glfw.GLFW;
 
-public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu> extends AbstractContainerScreen<M> {
+public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMenu> extends AbstractContainerScreen<Menu> {
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
-
-    public AbstractGemMachineScreen(M handler, Inventory inventory, Component title) {
-        super(handler, inventory, title, 207, 196);
+    protected Button start;
+    protected Button pause;
+    protected Button resume;
+    protected Button stop;
+    
+    public AbstractGemMachineScreen(Menu handler, Inventory inventory, Component title, int imageWidth, int imageHeight) {
+        super(handler, inventory, title, imageWidth, imageHeight);
     }
 
     @Override
@@ -27,14 +31,11 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
         super.init();
         titleLabelY = 1000;
         inventoryLabelY = 1000;
-
-        Button start = this.addButton("gui.button.gp.start", 0, this.leftPos + 112, topPos + 8, getStartButtonTexture(), Component.literal("Start Polishing"));
-
-        Button pause = this.addButton("gui.button.gp.pause", 1, leftPos + 160, topPos + 8, getPauseButtonTexture(), Component.literal("Pause Polishing"));
-
-        Button resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + 112, this.topPos + 56, getResumeButtonTexture(), Component.literal("Resume Polishing"));
-
-        Button stop = this.addButton("gui.button.gp.stop", 3, leftPos + 160, topPos + 56, getStopButtonTexture(), Component.literal("Stop Polishing"));
+        
+        start = this.addButton("gui.button.gp.start", 0, this.leftPos + 112, topPos + 8, getStartButtonTexture(), Component.literal("Start Polishing"));
+        pause = this.addButton("gui.button.gp.pause", 1, leftPos + 160, topPos + 8, getPauseButtonTexture(), Component.literal("Pause Polishing"));
+        resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + 112, this.topPos + 56, getResumeButtonTexture(), Component.literal("Resume Polishing"));
+        stop = this.addButton("gui.button.gp.stop", 3, leftPos + 160, topPos + 56, getStopButtonTexture(), Component.literal("Stop Polishing"));
 
         start.visible = true;
         pause.visible = true;
@@ -81,6 +82,7 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
 
     protected abstract void renderEnergyHandler(GuiGraphicsExtractor context, int x, int y);
     protected abstract void renderProgressArrow(GuiGraphicsExtractor context, int x, int y);
+    protected abstract void renderRedstoneDust(GuiGraphicsExtractor extractor, int leftPos, int topPos);
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
@@ -90,6 +92,7 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
         graphics.blit(RenderPipelines.GUI_TEXTURED, getBackgroundTexture(), i, j, 0f, 0f, this.imageWidth, this.imageHeight, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         renderEnergyHandler(graphics, i, j);
         renderProgressArrow(graphics,i, j);
+        renderRedstoneDust(graphics, i, j);
     }
 
     @Override

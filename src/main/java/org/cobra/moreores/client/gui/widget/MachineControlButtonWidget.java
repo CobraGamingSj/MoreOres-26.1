@@ -1,6 +1,6 @@
 package org.cobra.moreores.client.gui.widget;
 
-import org.cobra.moreores.networking.block.data.GemMachineControlButtonPayload;
+import org.cobra.moreores.networking.block.data.GemMachineButtonPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -26,7 +26,7 @@ public class MachineControlButtonWidget extends Button {
 
     @Override
     public void onPress(InputWithModifiers input) {
-        ClientPlayNetworking.send(new GemMachineControlButtonPayload(buttonId, pos));
+        ClientPlayNetworking.send(new GemMachineButtonPayload(buttonId, pos));
     }
 
     @Override

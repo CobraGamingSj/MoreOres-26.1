@@ -18,7 +18,6 @@ public record MachineStatusDataPayload(BlockPos blockPos, String action) impleme
     }, buf -> new MachineStatusDataPayload(buf.readBlockPos(), buf.readUtf()));
 
     public void handle(ServerPlayNetworking.Context context) {
-
         context.server().execute(() -> {
             if(context.player().level().getBlockEntity(blockPos) instanceof AbstractGemMachineBlockEntity<?> be) {
                 switch(action) {

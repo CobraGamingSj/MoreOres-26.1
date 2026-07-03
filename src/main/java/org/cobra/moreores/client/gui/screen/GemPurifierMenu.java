@@ -30,13 +30,13 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
     // Client Side Constructor
     public GemPurifierMenu(int syncId, Inventory playerInventory, GemPurifierDataSynchronizer data) {
         this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(data.blockPos()),
-                new SimpleContainerData(2));
+                new SimpleContainerData(3));
     }
 
     // Main Constructor
     public GemPurifierMenu(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData propertyDelegate) {
         super(ModMenuType.GEM_PURIFIER, syncId, blockEntity.getBlockPos());
-        checkContainerSize((Container) blockEntity, 16);
+        checkContainerSize((Container) blockEntity, 17);
 
         this.inventory = ((Container) blockEntity);
         this.context = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
@@ -61,10 +61,12 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
                 return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
             }
         }); // Energy Input
+        
         this.addSlot(new Slot(inventory, 3, 12, 20)); // Water Source
+        
+        this.addSlot(new Slot(inventory, 4, 109, 33)); // Redstone Source
 
         addFirstAdditionalInventory(inventory);
-        addSecondAdditionalInventory(inventory);
 
         addPlayerGenericInventory(playerInventory);
         addPlayerHotbarInventory(playerInventory);
@@ -76,6 +78,10 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
         return propertyDelegate.get(0) > 0;
     }
 
+    public int getRedstoneDust() {
+        return propertyDelegate.get(2);
+    }
+    
     public int progressGetter() {
         int progress = this.propertyDelegate.get(0); //Progress
         int maxProgress = this.propertyDelegate.get(1); //Max Progress
@@ -144,16 +150,30 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
         return stillValid(this.context, player, ModBlocks.GEM_PURIFIER_BLOCK);
     }
 
+    @Override
+    public void addPlayerGenericInventory(Inventory playerInventory) {
+        for (int i = 0; i < 9; ++i) {
+            for (int l = 0; l < 3; ++l) {
+                this.addSlot(new Slot(playerInventory, i * 3 + l + 9, 142 + l * 18, 11 + i * 18));
+            }
+        }
+    }
+
+    @Override
+    public void addPlayerHotbarInventory(Inventory playerInventory) {
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i, 201, 11 + i * 18));
+        }
+    }
+
     public void addFirstAdditionalInventory(Container playerInventory) {
-        for (int i = 0; i < 8; ++i) {
-            this.addSlot(new Slot(playerInventory, 4 + i, 26 + i * 18, 95));
+        for (int i = 0; i < 12; ++i) {
+            this.addSlot(new Slot(playerInventory, 5 + i, 6 + i * 18, 178));
         }
     }
 
     public void addSecondAdditionalInventory(Container playerInventory) {
-        for (int i = 0; i < 4; ++i) {
-            this.addSlot(new Slot(playerInventory, 12 +  i, 179, 115 + i * 18));
-        }
+        return;
     }
 
     @Override

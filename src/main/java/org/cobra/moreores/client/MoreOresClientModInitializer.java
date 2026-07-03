@@ -13,7 +13,7 @@ import org.cobra.moreores.client.render.block.entity.GemPurifierBlockEntityRende
 import org.cobra.moreores.client.render.item.entity.GemArrowEntityRenderer;
 import org.cobra.moreores.client.render.item.model.GemArrowEntityModel;
 import org.cobra.moreores.world.entity.ModEntityTypes;
-import org.cobra.moreores.networking.ModS2CNetworksRegistries;
+import org.cobra.moreores.networking.ModS2CNetworkRegistries;
 import net.fabricmc.api.ClientModInitializer;
 
 public class MoreOresClientModInitializer implements ClientModInitializer {
@@ -21,7 +21,7 @@ public class MoreOresClientModInitializer implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        ModS2CNetworksRegistries.registerClientS2C();
+        ModS2CNetworkRegistries.registerClientS2C();
 
         MenuScreens.register(ModMenuType.GEM_PURIFIER, GemPurifierScreen::new);
         MenuScreens.register(ModMenuType.GEM_CRYSTALLIZER, GemCrystallizerScreen::new);

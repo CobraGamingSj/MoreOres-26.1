@@ -79,22 +79,24 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     public static final int RESULT_SLOT = 1;
     public static final int ENERGY_SOURCE_SLOT = 2;
     public static final int WATER_SOURCE_SLOT = 3;
+    public static final int REDSTONE_SLOT = 4;
 
     private long lastRemovedEnergyMilestone = 0;
     private long lastRemovedWaterMilestone = 0;
 
-    protected final ContainerData propertyDelegate;
+    protected final ContainerData containerData;
     private int maxProgressTick = 384;
     private final RecipeManager.CachedCheck<GemPurifyingRecipeInput, GemPurifierRecipe> matchGetter = RecipeManager.createCheck(ModRecipeType.GEM_PURIFIER);
 
     public GemPurifierBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityTypes.GEM_PURIFIER_BLOCK_ENTITY, pos, state);
-        this.propertyDelegate = new ContainerData() {
+        this.containerData = new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {
                     case 0 -> GemPurifierBlockEntity.this.initialProgress;
                     case 1 -> GemPurifierBlockEntity.this.maxProgressTick;
+                    case 2 -> GemPurifierBlockEntity.this.redstone;
                     default -> 0;
                 };
             }
@@ -104,25 +106,30 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
                 switch (index) {
                     case 0 -> GemPurifierBlockEntity.this.initialProgress = value;
                     case 1 -> GemPurifierBlockEntity.this.maxProgressTick = value;
+                    case 2 -> GemPurifierBlockEntity.this.redstone = value;
                 }
             }
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
     }
 
+    public ItemStack redstoneStack() {
+        return getItem(REDSTONE_SLOT);
+    }
+    
     public void setWaterLevel(FluidVariant variant, long waterLevel) {
         this.fluidStorage.variant = variant;
         this.fluidStorage.amount = waterLevel;
     }
 
-    public long energyAmount() {
-        return this.energyStorage.amount;
+    public void setRedstone(int redstone) {
+        this.redstone = redstone;
     }
-
+    
     public long waterAmount() {
         return this.fluidStorage.amount;
     }
@@ -140,7 +147,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
     @Override
     public int mainStackSize() {
-        return 16;
+        return 17;
     }
 
     @Override
@@ -183,7 +190,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         fluidStorage.amount = view.getLongOr("gem_purifier.water", 0);
         fluidStorage.variant = view.read("gem_purifier.fluid.variant", FluidVariant.CODEC).orElse(FluidVariant.blank());
         waterState = view.read("WaterState", FluidState.CODEC).orElse(FluidState.IDLE);
-        gemType = view.read("GemType", PurificationGemstones.CODEC).orElse(PurificationGemstones.EMPTY);
+        iGemstone = view.read("GemType", PurificationGemstones.CODEC).orElse(PurificationGemstones.EMPTY);
     }
 
     @Override
@@ -194,7 +201,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new GemPurifierMenu(syncId, playerInventory, this, this.propertyDelegate);
+        return new GemPurifierMenu(syncId, playerInventory, this, this.containerData);
     }
 
     @Override
@@ -225,7 +232,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
     @Override
     public GemPurifierDataSynchronizer getScreenOpeningData(ServerPlayer serverPlayerEntity) {
-        return new GemPurifierDataSynchronizer(energyAmount(), fluidStorage.variant, fluidStorage.amount, this.worldPosition);
+        return new GemPurifierDataSynchronizer(this.energyAmount(), this.getRedstone(), fluidStorage.variant, fluidStorage.amount, this.worldPosition);
     }
 
     @Override
@@ -257,57 +264,71 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     // Tick Method
     // Logic per tick
     @Override
-    public void tick(Level world, BlockPos pos, BlockState state) {
-        if (world.isClientSide()) {
+    public void tick(Level level, BlockPos pos, BlockState state) {
+        if (level.isClientSide()) {
             return;
         }
 
+        redstoneTick++;
+        
         IGemstone newGem = getGem();
 
-        if (newGem != this.gemType) {
+        if (newGem != this.iGemstone) {
             setGem(newGem);
 
-            world.sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
+            level.sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
         }
 
+        ItemStack stack = redstoneStack();
+        if((stack.is(Items.REDSTONE) || level.hasNeighborSignal(pos)) && redstone <= maxRedstone) {
+            redstone += 100;
+            setChanged(level, pos, state);
+        }
+        setChanged(level, pos, state);
+        
         changeState();
 
-        if(polishingInfusionState == MachineStatus.RUNNING) {
-            energyState = MachineEnergyState.EXTRACTING;
+        if(machineStatus == MachineStatus.RUNNING) {
+            machineEnergyState = MachineEnergyState.EXTRACTING;
             if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && hasEnoughWater()) {
                 this.increaseProgress();
-                this.extractEnergy();
-                this.consumeWater();
-                if (hasPolishingFinished()) {
-                    this.getPolishedGemstone();
-                    this.resetProgress();
+                if((!level.hasNeighborSignal(pos) || redstone > 0) && redstoneTick >= 20) {
+                    redstone--;
+                    redstoneTick = 0;
                 }
-                setChanged(world, pos, state);
+                this.eatEnergy();
+                this.drinkWater();
+                if (hasPurificationEnded()) {
+                    this.getPurifiedGemstone();
+                    this.clearProgress();
+                }
+                setChanged(level, pos, state);
             } else {
-                this.resetProgress();
-                this.polishingInfusionState = MachineStatus.IDLE;
-                setChanged(world, pos, state);
+                this.clearProgress();
+                this.machineStatus = MachineStatus.IDLE;
+                setChanged(level, pos, state);
             }
-        } else if (polishingInfusionState.isPaused()) {
-            energyState = MachineEnergyState.INSERTING;
+        } else if (machineStatus.isPaused()) {
+            machineEnergyState = MachineEnergyState.INSERTING;
             waterState = FluidState.FILLING;
-            insertEnergy();
+            giveEnergy();
             fillWater();
         } else {
             if((energyAmount() < 10_000_000 && hasEnergySourceProviderItem()) || (waterAmount() < 810000 && hasWaterBucket())) {
-                energyState = MachineEnergyState.INSERTING;
-                insertEnergy();
+                machineEnergyState = MachineEnergyState.INSERTING;
+                giveEnergy();
                 waterState = FluidState.FILLING;
                 fillWater();
             } else {
-                energyState = MachineEnergyState.IDLE;
+                machineEnergyState = MachineEnergyState.IDLE;
                 waterState= FluidState.IDLE;
             }
         }
 
         checkForEnoughEnergyAndRemoveItem();
         checkForEnoughWaterAndRemoveBucket();
-        setChanged(world, pos, state);
+        checkForEnoughRedstoneAndRemoveBucket(REDSTONE_SLOT);
+        setChanged(level, pos, state);
     }
 
     @Override
@@ -344,7 +365,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         }
     }
 
-    private void consumeWater() {
+    private void drinkWater() {
         long amount = 810;
         try(Transaction transaction = Transaction.openOuter()) {
             fluidStorage.extract(FluidVariant.of(Fluids.WATER), FluidStack.convertDropletsToMb(amount), transaction);
@@ -391,11 +412,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         return this.fluidStorage.amount >= 1215;
     }
 
-    private void resetProgress() {
-        this.initialProgress = 0;
-    }
-
-    private void getPolishedGemstone() {
+    private void getPurifiedGemstone() {
         RecipeHolder<GemPurifierRecipe> recipe = currentRecipe().orElseThrow();
 
         this.removeItem(INGREDIENT_SLOT, 1);
@@ -403,13 +420,13 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         this.setItem(RESULT_SLOT, new ItemStack(recipe.value().getResult().getItem(),
                 this.resultStack().getCount() + recipe.value().getResult().getCount()));
     }
-    private boolean hasPolishingFinished() {
+    private boolean hasPurificationEnded() {
         return initialProgress >= maxProgressTick;
     }
 
     @Override
     public void increaseProgress() {
-        if(this.level.hasNeighborSignal(this.worldPosition)) {
+        if(this.level.hasNeighborSignal(this.worldPosition) || redstone > 0) {
             initialProgress += 5;
         } else {
             initialProgress++;
@@ -450,9 +467,9 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
 
     @Override
-    protected void insertEnergy() {
+    protected void giveEnergy() {
         if(!hasEnergySourceProviderItem() || energyStorage.amount >= 10_000_000) {
-            energyState = MachineEnergyState.IDLE;
+            machineEnergyState = MachineEnergyState.IDLE;
             return;
         }
         long amount = energyStack().is(ModItems.ENERGY_INGOT) ? 1024 : 1536;
@@ -460,18 +477,18 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         try(Transaction transaction = Transaction.openOuter()) {
             long inserted = energyStorage.insert(amount, transaction);
             transaction.commit();
-            if(inserted > 0) energyState = MachineEnergyState.INSERTING;
-            else energyState = MachineEnergyState.IDLE;
+            if(inserted > 0) machineEnergyState = MachineEnergyState.INSERTING;
+            else machineEnergyState = MachineEnergyState.IDLE;
         }
     }
 
     @Override
-    protected void extractEnergy() {
+    protected void eatEnergy() {
         long amount = level.hasNeighborSignal(worldPosition) ? 640 : 128;
         try(Transaction transaction = Transaction.openOuter()) {
             energyStorage.extract(amount, transaction);
             transaction.commit();
         }
-        energyState = MachineEnergyState.EXTRACTING;
+        machineEnergyState = MachineEnergyState.EXTRACTING;
     }
 }

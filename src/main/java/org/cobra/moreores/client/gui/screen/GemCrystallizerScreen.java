@@ -23,7 +23,7 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
     private static final Identifier STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
 
     public GemCrystallizerScreen(GemCrystallizerMenu handler, Inventory inventory, Component title) {
-        super(handler, inventory, title);
+        super(handler, inventory, title, 207, 196);
     }
 
     @Override
@@ -64,6 +64,18 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
         renderRadiantDust(context, this.leftPos, this.topPos);
     }
 
+    @Override
+    protected void renderRedstoneDust(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
+        int k = menu.getRedstoneDust();
+        int l = Mth.clamp((k * 16 + 10000 - 1) / 10000, 0, 16);
+
+        int startX = leftPos + 92;
+        int startY = topPos + 79;
+        int endY = topPos + 83;
+
+        extractor.fill(startX, startY, startX + l, endY, CommonColors.RED);
+    }
+
     private void renderRadiantDust(GuiGraphicsExtractor context, int x, int y) {
         int k = menu.getDustCount();
         int l = Mth.clamp((18 * k + 10000 - 1) / 10000, 0, 18);
@@ -99,11 +111,15 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
         super.extractContents(context, mouseX, mouseY, delta);
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
         int k = Mth.clamp((18 * menu.getDustCount() + 10000 - 1) / 10000, 0, 18);
+        int l = Mth.clamp((menu.getRedstoneDust() * 16 + 10000 - 1) / 10000, 0, 16);
         if (isHovering(13, 43 + 44 - energyBarSize, 16, energyBarSize, mouseX, mouseY)) {
             context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getEnergy() + " / " + this.menu.getEnergyCap() + " J").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD), mouseX, mouseY);
         }
-        if (isHovering(38 + 18 - k, 97, k, 4, mouseX, mouseY)) {
-            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getDustCount() + " Particles").withStyle(ChatFormatting.RED),  mouseX, mouseY);
+        if (isHovering(38, 97, k, 4, mouseX, mouseY)) {
+            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getDustCount() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
+        }
+        if (isHovering(92, 79, l, 4, mouseX, mouseY)) {
+            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getRedstoneDust() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
         }
     }
 }

@@ -1,5 +1,6 @@
 package org.cobra.moreores.world.block.entity.gem;
 
+import net.minecraft.world.item.Items;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemCrystallizerBlock;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -41,13 +42,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<GemCrystallizerDataSynchronizer> {
+public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<GemCrystallizerDataSynchronizer> {
 
     public static final int INGREDIENT_BEFORE_SLOT = 0;
     public static final int INGREDIENT_AFTER_SLOT = 1;
     public static final int RESULT_SLOT = 2;
     public static final int ENERGY_SOURCE_SLOT = 3;
     public static final int RADIANT_DUST_SLOT = 4;
+    public static final int REDSTONE_SLOT = 5;
 
     private long lastRemovedEnergyMilestone = 0;
 
@@ -55,19 +57,20 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
     public int maxDust = 10000;
     private int dustTick;
 
-    protected final ContainerData propertyDelegate;
+    protected final ContainerData containerData;
     private int maxProgressTicks = 300;
     private final RecipeManager.CachedCheck<GemCrystallizationRecipeInput, GemCrystallizerRecipe> matchGetter = RecipeManager.createCheck(ModRecipeType.GEM_CRYSTALLIZER);
 
-    public GemCrystallizeBlockEntity(BlockPos pos, BlockState state) {
+    public GemCrystallizerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityTypes.GEM_CRYSTALLIZE_BLOCK_ENTITY, pos, state);
-        this.propertyDelegate = new ContainerData() {
+        this.containerData = new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {
-                    case 0 -> GemCrystallizeBlockEntity.this.initialProgress;
-                    case 1 -> GemCrystallizeBlockEntity.this.maxProgressTicks;
-                    case 2 ->  GemCrystallizeBlockEntity.this.dustParticleCount;
+                    case 0 -> GemCrystallizerBlockEntity.this.initialProgress;
+                    case 1 -> GemCrystallizerBlockEntity.this.maxProgressTicks;
+                    case 2 ->  GemCrystallizerBlockEntity.this.dustParticleCount;
+                    case 3 ->  GemCrystallizerBlockEntity.this.redstone;
                     default -> 0;
                 };
             }
@@ -75,25 +78,30 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0 -> GemCrystallizeBlockEntity.this.initialProgress = value;
-                    case 1 -> GemCrystallizeBlockEntity.this.maxProgressTicks = value;
-                    case 2 -> GemCrystallizeBlockEntity.this.dustParticleCount = value;
+                    case 0 -> GemCrystallizerBlockEntity.this.initialProgress = value;
+                    case 1 -> GemCrystallizerBlockEntity.this.maxProgressTicks = value;
+                    case 2 -> GemCrystallizerBlockEntity.this.dustParticleCount = value;
+                    case 3 -> GemCrystallizerBlockEntity.this.redstone = value;
                 }
             }
 
             @Override
             public int getCount() {
-                return 3;
+                return 4;
             }
         };
     }
 
-    public void setDustCount(int dustCount) {
-        this.dustParticleCount = dustCount;
+    public ItemStack redstoneStack() {
+        return getItem(REDSTONE_SLOT);
     }
 
-    public long energyAmount() {
-        return this.energyStorage.amount;
+    public void setRedstone(int redstone) {
+        this.redstone = redstone;
+    }
+    
+    public void setDustCount(int dustCount) {
+        this.dustParticleCount = dustCount;
     }
 
     @Nullable
@@ -125,7 +133,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
         super.loadAdditional(view);
         dustParticleCount = view.getIntOr("DustCount", 0);
         dustTick = view.getIntOr("DustTick", 0);
-        gemType = view.read("GemType", CrystallizationGemstones.CODEC).orElse(CrystallizationGemstones.EMPTY);
+        iGemstone = view.read("GemType", CrystallizationGemstones.CODEC).orElse(CrystallizationGemstones.EMPTY);
     }
 
     @Override
@@ -135,7 +143,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
 
     @Override
     public int mainStackSize() {
-        return 10;
+        return 11;
     }
 
     @Override
@@ -161,7 +169,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new GemCrystallizerMenu(syncId, playerInventory, this, this.propertyDelegate);
+        return new GemCrystallizerMenu(syncId, playerInventory, this, this.containerData);
     }
 
     public ItemStack radiantDustStack() {
@@ -204,7 +212,7 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
 
     @Override
     public GemCrystallizerDataSynchronizer getScreenOpeningData(ServerPlayer serverPlayerEntity) {
-        return new GemCrystallizerDataSynchronizer(energyAmount(), this.dustParticleCount, this.worldPosition);
+        return new GemCrystallizerDataSynchronizer(this.energyAmount(), this.getRedstone(), this.dustParticleCount, this.worldPosition);
     }
 
     @Override
@@ -242,73 +250,84 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
     // Tick Method
     // Logic per tick
     @Override
-    public void tick(Level world, BlockPos pos, BlockState state) {
-        if (world.isClientSide()) {
+    public void tick(Level level, BlockPos pos, BlockState state) {
+        if (level.isClientSide()) {
             return;
         }
 
         dustTick++;
+        redstoneTick++;
 
         IGemstone newGem = getGem();
 
-        if (newGem != this.gemType) {
+        if (newGem != this.iGemstone) {
             setGem(newGem);
 
-            world.sendBlockUpdated(pos, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-            setChanged(world, pos, state);
+            level.sendBlockUpdated(pos, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+            setChanged(level, pos, state);
         }
 
         ItemStack stack = radiantDustStack();
         if(stack.is(ModItems.RADIANT_DUST) && dustParticleCount <= maxDust) {
             dustParticleCount += 2000;
             stack.shrink(1);
-            setChanged(world, pos, state);
+            setChanged(level, pos, state);
         }
-        setChanged(world, pos, state);
+        ItemStack stack1 = redstoneStack();
+        if((stack1.is(Items.REDSTONE) || level.hasNeighborSignal(pos)) && redstone <= maxRedstone) {
+            redstone += 100;
+            setChanged(level, pos, state);
+        }
+        setChanged(level, pos, state);
 
         changeState();
-        setChanged(world, pos, state);
+        setChanged(level, pos, state);
 
-        if(polishingInfusionState == MachineStatus.RUNNING) {
-            energyState = MachineEnergyState.EXTRACTING;
-            setChanged(world, pos, state);
+        if(machineStatus == MachineStatus.RUNNING) {
+            machineEnergyState = MachineEnergyState.EXTRACTING;
+            setChanged(level, pos, state);
             if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && dustParticleCount >= 15) {
                 this.increaseProgress();
-                this.extractEnergy();
+                if((!level.hasNeighborSignal(pos) || redstone > 0) && redstoneTick >= 20) {
+                    redstone--;
+                    redstoneTick = 0;
+                }
+                this.eatEnergy();
                 if(dustTick >= 20 && dustParticleCount > 0) {
                     this.dustParticleCount--;
                     this.dustTick = 0;
-                    setChanged(world, pos, state);
+                    setChanged(level, pos, state);
                 }
-                setChanged(world, pos, state);
+                setChanged(level, pos, state);
                 if (hasInfusionFinished()) {
                     this.getInfusedGem();
-                    this.resetProgress();
-                    setChanged(world, pos, state);
+                    this.clearProgress();
+                    setChanged(level, pos, state);
                 }
-                setChanged(world, pos, state);
+                setChanged(level, pos, state);
             } else {
-                this.resetProgress();
-                this.polishingInfusionState = MachineStatus.IDLE;
-                setChanged(world, pos, state);
+                this.clearProgress();
+                this.machineStatus = MachineStatus.IDLE;
+                setChanged(level, pos, state);
             }
-        } else if (polishingInfusionState.isPaused()) {
-            energyState = MachineEnergyState.INSERTING;
-            insertEnergy();
-            setChanged(world, pos, state);
+        } else if (machineStatus.isPaused()) {
+            machineEnergyState = MachineEnergyState.INSERTING;
+            giveEnergy();
+            setChanged(level, pos, state);
         } else {
             if((energyAmount() < 1_000_000 && hasEnergySourceProviderItem())) {
-                energyState = MachineEnergyState.INSERTING;
-                insertEnergy();
-                setChanged(world, pos, state);
+                machineEnergyState = MachineEnergyState.INSERTING;
+                giveEnergy();
+                setChanged(level, pos, state);
             } else {
-                energyState = MachineEnergyState.IDLE;
-                setChanged(world, pos, state);
+                machineEnergyState = MachineEnergyState.IDLE;
+                setChanged(level, pos, state);
             }
         }
 
         checkForEnoughEnergyAndRemoveItem();
-        setChanged(world, pos, state);
+        checkForEnoughRedstoneAndRemoveBucket(REDSTONE_SLOT);
+        setChanged(level, pos, state);
     }
 
     @Override
@@ -345,10 +364,6 @@ public class GemCrystallizeBlockEntity extends AbstractGemMachineBlockEntity<Gem
                 break;
             }
         }
-    }
-
-    private void resetProgress() {
-        this.initialProgress = 0;
     }
 
     private void getInfusedGem() {
