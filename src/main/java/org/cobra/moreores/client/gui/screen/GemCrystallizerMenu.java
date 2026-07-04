@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.world.block.entity.gem.GemCrystallizerBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
 import org.cobra.moreores.core.registry.tag.ModItemTags;
@@ -24,7 +24,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 public class GemCrystallizerMenu extends AbstractGemMachineMenu {
     private final Container inventory;
     private final ContainerLevelAccess context;
-    private final ContainerData propertyDelegate;
+    private final ContainerData containerData;
     public final GemCrystallizerBlockEntity blockEntity;
 
     public GemCrystallizerMenu(int syncId, Inventory playerInventory, GemCrystallizerDataSynchronizer data) {
@@ -32,37 +32,37 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
                 new SimpleContainerData(4));
     }
 
-    public GemCrystallizerMenu(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
+    public GemCrystallizerMenu(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData containerData) {
         super(ModMenuType.GEM_CRYSTALLIZER, syncId, entity.getBlockPos());
         checkContainerSize((Container) entity, 11);
 
         this.inventory = (Container) entity;
         this.context = ContainerLevelAccess.create(entity.getLevel(), entity.getBlockPos());
-        this.propertyDelegate = delegate;
+        this.containerData = containerData;
         this.blockEntity = (GemCrystallizerBlockEntity) entity;
 
         this.addSlot(new Slot(inventory, 0, 47, 22) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItemTags.GEMSTONE_BLOCKS) || stack.is(ModItemTags.RAW_GEMSTONE_BLOCKS) ||
-                        stack.is(ModItemTags.RAW_GEMSTONE) || stack.is(ModItemTags.GEMSTONE);
+                return stack.is(ModItemTags.GEMSTONE_BLOCKS) || stack.is(ModItemTags.GEMSTONE);
             }
         }); // Input Before
 
         this.addSlot(new Slot(inventory, 1, 87, 22) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItemTags.GEMSTONE_BLOCKS) || stack.is(ModItemTags.RAW_GEMSTONE_BLOCKS) ||
-                        stack.is(ModItemTags.RAW_GEMSTONE) || stack.is(ModItemTags.GEMSTONE) || stack.is(Blocks.OBSIDIAN.asItem());
+                return stack.is(ModItemTags.GEMSTONE_BLOCKS) 
+                        || stack.is(ModItemTags.GEMSTONE) || stack.is(Blocks.OBSIDIAN.asItem());
             }
         }); // Input After
 
         this.addSlot(new Slot(inventory, 2, 67, 72) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItemTags.GEMSTONE) || stack.is(ModItemTags.GEMSTONE_BLOCKS);
+                return stack.is(ModItemTags.CRYSTALLIZED);
             }
         }); // Result
+        
         this.addSlot(new Slot(inventory, 3, 13, 21) {
             @Override
             public boolean mayPlace(ItemStack stack) {
@@ -84,7 +84,7 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
         addPlayerGenericInventory(playerInventory);
         addPlayerHotbarInventory(playerInventory);
 
-        addDataSlots(delegate);
+        addDataSlots(containerData);
     }
 
     @Override
@@ -95,20 +95,20 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
     }
 
     public boolean isPolishing() {
-        return propertyDelegate.get(0) > 0;
+        return containerData.get(0) > 0;
     }
 
     public int getRedstoneDust() {
-        return propertyDelegate.get(3);
+        return containerData.get(3);
     }
     
     public int getDustCount() {
-        return propertyDelegate.get(2);
+        return containerData.get(2);
     }
 
     public int progressGetter() {
-        int progress = this.propertyDelegate.get(0); //Progress
-        int maxProgress = this.propertyDelegate.get(1); //Max Progress
+        int progress = this.containerData.get(0); //Progress
+        int maxProgress = this.containerData.get(1); //Max Progress
         int progressArrowSize = 28; //Height of progress arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize/ maxProgress : 0;

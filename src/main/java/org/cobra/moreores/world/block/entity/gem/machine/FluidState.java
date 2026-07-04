@@ -1,4 +1,4 @@
-package org.cobra.moreores.world.block.entity.gem;
+package org.cobra.moreores.world.block.entity.gem.machine;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;

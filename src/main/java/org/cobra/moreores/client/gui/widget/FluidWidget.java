@@ -56,6 +56,9 @@ public class FluidWidget implements Renderable, LayoutElement {
         BlockAndTintGetter world = Minecraft.getInstance().level;
         if(world == null) return;
         TextureAtlasSprite sprite = set.get(fluidState).stillMaterial().sprite();
+        if(set.get(fluidState).tintSource() == null) {
+            return;
+        }
         int tintColor = set.get(fluidState).tintSource().colorInWorld(world.getBlockState(blockPos), world, blockPos);
         float red = (tintColor >> 16 & 0xFF) /255F;
         float green = (tintColor >> 8 & 0xFF) /255F;

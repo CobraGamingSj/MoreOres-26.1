@@ -1,4 +1,4 @@
-package org.cobra.moreores.world.block.entity.gem;
+package org.cobra.moreores.world.block.entity.gem.machine;
 
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -41,7 +41,8 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     protected int maxRedstone = 10000;
     protected int redstoneTick;
 
-    private long previousRemovedRedstoneMilestone = 0;
+    protected long previousRemovedEnergyMilestone = 0;
+    protected long previousRemovedRedstoneMilestone = 0;
     
     public AbstractGemMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -121,7 +122,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     
     public abstract GemCategory category();
     
-    public IGemstone getGem() {
+    public IGemstone getGemstone() {
         return detectGem(resultStack());
     }
 
@@ -129,7 +130,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         iGemstone = gem;
     }
 
-    public void setEnergyLevel(long energy) {
+    public void setEnergyAmount(long energy) {
         this.energyStorage.amount = Math.min(energy, getEnergyCapacity());
     }
 
@@ -145,13 +146,35 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         }
     }
 
-    protected void checkForEnoughRedstoneAndRemoveBucket(int slot) {
+    protected void checkForEnoughEnergyAndConsumeSingle(int energySlot) {
+        if(energyAmount() > 10000000) {
+            energyStorage.amount = 10000000;
+        }
+        
+        long energy = this.energyAmount();
+
+        long [] milestones = {1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000, 10000000};
+
+        for(long milestone : milestones) {
+            if(energy == milestone && previousRemovedEnergyMilestone < milestone) {
+                this.removeItem(energySlot, 1);
+                previousRemovedEnergyMilestone = milestone;
+                break;
+            }
+        }
+    }
+    
+    protected void checkForEnoughRedstoneAndConsumeSingle(int slot) {
+        if(redstone > 10000) {
+            redstone = 10000;
+        }
+        
         int amount = redstone;
 
         int [] milestones = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
 
         for(long milestone : milestones) {
-            if(amount >= milestone && previousRemovedRedstoneMilestone < milestone) {
+            if(amount == milestone && previousRemovedRedstoneMilestone < milestone) {
                 this.removeItem(slot, 1);
                 previousRemovedRedstoneMilestone = milestone;
                 break;

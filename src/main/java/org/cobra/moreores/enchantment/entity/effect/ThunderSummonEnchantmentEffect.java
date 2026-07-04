@@ -1,6 +1,7 @@
 package org.cobra.moreores.enchantment.entity.effect;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -26,6 +27,18 @@ public record ThunderSummonEnchantmentEffect() implements EnchantmentEntityEffec
             EntityTypes.LIGHTNING_BOLT.spawn(world, user.blockPosition(), EntitySpawnReason.TRIGGERED);
             EntityTypes.LIGHTNING_BOLT.spawn(world, user.blockPosition(), EntitySpawnReason.TRIGGERED);
             EntityTypes.TNT.spawn(world, user.blockPosition(), EntitySpawnReason.TRIGGERED).setFuse(0);
+        }
+        if(level == 4) {
+            EntityTypes.LIGHTNING_BOLT.spawn(world, user.getOnPos(), EntitySpawnReason.TRIGGERED);
+            EntityTypes.LIGHTNING_BOLT.spawn(world, user.getOnPos(), EntitySpawnReason.TRIGGERED);
+            EntityTypes.LIGHTNING_BOLT.spawn(world, user.getOnPos(), EntitySpawnReason.TRIGGERED);
+            EntityTypes.LIGHTNING_BOLT.spawn(world, user.getOnPos(), EntitySpawnReason.TRIGGERED);
+            EntityTypes.TNT.spawn(world, new BlockPos(user.getBlockX(), user.getBlockY(), user.getBlockZ()), EntitySpawnReason.TRIGGERED).setFuse(0);
+            EntityTypes.TNT.spawn(world, new BlockPos(user.getBlockX() + 2, user.getBlockY(), user.getBlockZ()), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityTypes.TNT.spawn(world, new BlockPos(user.getBlockX() - 2, user.getBlockY(), user.getBlockZ()), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityTypes.TNT.spawn(world, new BlockPos(user.getBlockX(), user.getBlockY() + 2, user.getBlockZ()), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityTypes.TNT.spawn(world, new BlockPos(user.getBlockX(), user.getBlockY(), user.getBlockZ() + 2), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityTypes.TNT.spawn(world, new BlockPos(user.getBlockX(), user.getBlockY(), user.getBlockZ() - 2), EntitySpawnReason.TRIGGERED).setFuse(10);
         }
     }
 

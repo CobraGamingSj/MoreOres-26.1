@@ -397,19 +397,12 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .unlockedBy(getHasName(ModItems.ECLIPSE_GEM), has(ModItems.ECLIPSE_GEM))
                         .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.RADIANT_BOW)));
 
-                shaped(RecipeCategory.MISC, ModItems.GEM_ARROW, 32)
-                        .pattern("abc")
-                        .pattern("def")
-                        .pattern("ghi")
-                        .define('a', ModItems.RADIANT_AMETHYST)
-                        .define('b', ModItems.MOONSTONE)
-                        .define('c', ModItems.LIMESTONE)
-                        .define('d', ModItems.QUARTSIDIAN)
-                        .define('e', Items.ARROW)
-                        .define('f', ModItems.ALEXANDRITE)
-                        .define('g', ModItems.ORANGE_ZIRCON)
-                        .define('h', ModItems.OPAL)
-                        .define('i', ModItems.GRANDIDIERITE)
+                shaped(RecipeCategory.MISC, ModItems.GEM_ARROW)
+                        .pattern("###")
+                        .pattern("#a#")
+                        .pattern("###")
+                        .define('a', Items.ARROW)
+                        .define('#', ModItemTags.CRYSTALLIZED)
                         .unlockedBy(getHasName(Items.ARROW), has(Items.ARROW))
                         .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.GEM_ARROW)));
             }

@@ -1,4 +1,4 @@
-package org.cobra.moreores.world.block.entity.gem;
+package org.cobra.moreores.world.block.entity.gem.machine;
 
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemPurifierBlock;
@@ -81,15 +81,14 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     public static final int WATER_SOURCE_SLOT = 3;
     public static final int REDSTONE_SLOT = 4;
 
-    private long lastRemovedEnergyMilestone = 0;
-    private long lastRemovedWaterMilestone = 0;
+    private long previousRemovedFluidMilestone = 0;
 
     protected final ContainerData containerData;
     private int maxProgressTick = 384;
     private final RecipeManager.CachedCheck<GemPurifyingRecipeInput, GemPurifierRecipe> matchGetter = RecipeManager.createCheck(ModRecipeType.GEM_PURIFIER);
 
     public GemPurifierBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntityTypes.GEM_PURIFIER_BLOCK_ENTITY, pos, state);
+        super(ModBlockEntityTypes.GEM_PURIFIER, pos, state);
         this.containerData = new ContainerData() {
             @Override
             public int get(int index) {
@@ -121,7 +120,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         return getItem(REDSTONE_SLOT);
     }
     
-    public void setWaterLevel(FluidVariant variant, long waterLevel) {
+    public void setFluid(FluidVariant variant, long waterLevel) {
         this.fluidStorage.variant = variant;
         this.fluidStorage.amount = waterLevel;
     }
@@ -179,16 +178,16 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     public void saveAdditional(ValueOutput view) {
         super.saveAdditional(view);
         view.putLong("gem_purifier.water", fluidStorage.amount);
-        view.storeNullable("gem_purifier.fluid.variant", FluidVariant.CODEC, fluidStorage.variant);
+        view.storeNullable("gem_purifier.fluidAmount.variant", FluidVariant.CODEC, fluidStorage.variant);
         view.storeNullable("WaterState", FluidState.CODEC, waterState);
-        view.storeNullable("GemType", PurificationGemstones.CODEC, getGem());
+        view.storeNullable("GemType", PurificationGemstones.CODEC, getGemstone());
     }
 
     @Override
     public void loadAdditional(ValueInput view) {
         super.loadAdditional(view);
         fluidStorage.amount = view.getLongOr("gem_purifier.water", 0);
-        fluidStorage.variant = view.read("gem_purifier.fluid.variant", FluidVariant.CODEC).orElse(FluidVariant.blank());
+        fluidStorage.variant = view.read("gem_purifier.fluidAmount.variant", FluidVariant.CODEC).orElse(FluidVariant.blank());
         waterState = view.read("WaterState", FluidState.CODEC).orElse(FluidState.IDLE);
         iGemstone = view.read("GemType", PurificationGemstones.CODEC).orElse(PurificationGemstones.EMPTY);
     }
@@ -271,7 +270,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
         redstoneTick++;
         
-        IGemstone newGem = getGem();
+        IGemstone newGem = getGemstone();
 
         if (newGem != this.iGemstone) {
             setGem(newGem);
@@ -281,13 +280,11 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
         ItemStack stack = redstoneStack();
         if((stack.is(Items.REDSTONE) || level.hasNeighborSignal(pos)) && redstone <= maxRedstone) {
-            redstone += 100;
+            redstone += 10;
             setChanged(level, pos, state);
         }
-        setChanged(level, pos, state);
         
         changeState();
-
         if(machineStatus == MachineStatus.RUNNING) {
             machineEnergyState = MachineEnergyState.EXTRACTING;
             if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && hasEnoughWater()) {
@@ -325,15 +322,15 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
             }
         }
 
-        checkForEnoughEnergyAndRemoveItem();
-        checkForEnoughWaterAndRemoveBucket();
-        checkForEnoughRedstoneAndRemoveBucket(REDSTONE_SLOT);
+        checkForEnoughEnergyAndConsumeSingle(ENERGY_SOURCE_SLOT);
+        checkForEnoughWaterAndConsumeSingle();
+        checkForEnoughRedstoneAndConsumeSingle(REDSTONE_SLOT);
         setChanged(level, pos, state);
     }
 
     @Override
-    public PurificationGemstones getGem() {
-        IGemstone gem = super.getGem();
+    public PurificationGemstones getGemstone() {
+        IGemstone gem = super.getGemstone();
         if(gem instanceof PurificationGemstones p) {
             return p;
         }
@@ -343,7 +340,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     private void changeState() {
         BlockState state = getBlockState();
 
-        state = state.setValue(GemPurifierBlock.IS_POLISHING, getGem());
+        state = state.setValue(GemPurifierBlock.IS_POLISHING, getGemstone());
 
 
         if(state != getBlockState()) {
@@ -374,30 +371,20 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         waterState = FluidState.EMPTYING;
     }
 
-    private void checkForEnoughEnergyAndRemoveItem() {
-        long energy = this.energyStorage.amount;
-
-        long [] milestones = {1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 8000000, 10000000};
-
-        for(long milestone : milestones) {
-            if(energy >= milestone && lastRemovedEnergyMilestone < milestone) {
-                this.removeItem(ENERGY_SOURCE_SLOT, 1);
-                lastRemovedEnergyMilestone = milestone;
-                break;
-            }
+    private void checkForEnoughWaterAndConsumeSingle() {
+        if(fluidStorage.amount > 810000) {
+            fluidStorage.amount = 810000;
         }
-    }
-
-    private void checkForEnoughWaterAndRemoveBucket() {
+        
         long water = this.fluidStorage.amount;
 
         long [] milestones = {81000, 162000, 243000, 324000, 405000, 486000, 567000, 648000, 729000, 810000};
 
         for(long milestone : milestones) {
-            if(water >= milestone && lastRemovedWaterMilestone < milestone) {
+            if(water == milestone && previousRemovedFluidMilestone < milestone) {
                 this.removeItem(WATER_SOURCE_SLOT, 1);
                 this.setItem(WATER_SOURCE_SLOT, new ItemStack(Items.BUCKET, 1));
-                lastRemovedWaterMilestone = milestone;
+                previousRemovedFluidMilestone = milestone;
                 break;
             }
         }

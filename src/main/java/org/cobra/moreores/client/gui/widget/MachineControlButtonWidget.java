@@ -9,24 +9,25 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
+import net.minecraft.network.chat.Component;
 
 public class MachineControlButtonWidget extends Button {
     private final Identifier texture;
-    private final int buttonId;
+    private final int buttonIndex;
     private final BlockPos pos;
 
-    public MachineControlButtonWidget(int x, int y, net.minecraft.network.chat.Component message, Identifier texture, int buttonId, BlockPos pos) {
+    public MachineControlButtonWidget(int x, int y, Component message, Identifier texture, int buttonIndex, BlockPos pos) {
         super(x, y, 32, 32, message, btn -> {
 
         }, DEFAULT_NARRATION);
         this.texture = texture;
-        this.buttonId = buttonId;
+        this.buttonIndex = buttonIndex;
         this.pos = pos;
     }
 
     @Override
     public void onPress(InputWithModifiers input) {
-        ClientPlayNetworking.send(new GemMachineButtonPayload(buttonId, pos));
+        ClientPlayNetworking.send(new GemMachineButtonPayload(buttonIndex, pos));
     }
 
     @Override

@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.world.block.entity.gem.GemPurifierBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
 import org.cobra.moreores.core.registry.tag.ModItemTags;
@@ -24,7 +24,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelper {
     private final Container inventory;
     private final ContainerLevelAccess context;
-    private final ContainerData propertyDelegate;
+    private final ContainerData containerData;
     public final GemPurifierBlockEntity blockEntity;
 
     // Client Side Constructor
@@ -34,13 +34,13 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
     }
 
     // Main Constructor
-    public GemPurifierMenu(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData propertyDelegate) {
+    public GemPurifierMenu(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData containerData) {
         super(ModMenuType.GEM_PURIFIER, syncId, blockEntity.getBlockPos());
         checkContainerSize((Container) blockEntity, 17);
 
         this.inventory = ((Container) blockEntity);
         this.context = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
-        this.propertyDelegate = propertyDelegate;
+        this.containerData = containerData;
         this.blockEntity = (GemPurifierBlockEntity) blockEntity;
 
         this.addSlot(new Slot(inventory, 0, 79, 11) {
@@ -71,20 +71,20 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
         addPlayerGenericInventory(playerInventory);
         addPlayerHotbarInventory(playerInventory);
 
-        addDataSlots(propertyDelegate);
+        addDataSlots(containerData);
     }
 
     public boolean isPolishing() {
-        return propertyDelegate.get(0) > 0;
+        return containerData.get(0) > 0;
     }
 
     public int getRedstoneDust() {
-        return propertyDelegate.get(2);
+        return containerData.get(2);
     }
     
     public int progressGetter() {
-        int progress = this.propertyDelegate.get(0); //Progress
-        int maxProgress = this.propertyDelegate.get(1); //Max Progress
+        int progress = this.containerData.get(0); //Progress
+        int maxProgress = this.containerData.get(1); //Max Progress
         int progressArrowSize = 27; //Height of progress arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize/ maxProgress : 0;

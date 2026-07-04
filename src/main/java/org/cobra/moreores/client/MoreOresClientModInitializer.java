@@ -26,9 +26,9 @@ public class MoreOresClientModInitializer implements ClientModInitializer {
         MenuScreens.register(ModMenuType.GEM_PURIFIER, GemPurifierScreen::new);
         MenuScreens.register(ModMenuType.GEM_CRYSTALLIZER, GemCrystallizerScreen::new);
 
-        BlockEntityRenderers.register(ModBlockEntityTypes.GEM_PURIFIER_BLOCK_ENTITY, GemPurifierBlockEntityRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntityTypes.GEM_CRYSTALLIZE_BLOCK_ENTITY, GemCrystallizerBlockEntityRenderer::new);
+        BlockEntityRenderers.register(ModBlockEntityTypes.GEM_PURIFIER, GemPurifierBlockEntityRenderer::new);
+        BlockEntityRenderers.register(ModBlockEntityTypes.GEM_CRYSTALLIZER, GemCrystallizerBlockEntityRenderer::new);
         ModelLayerRegistry.registerModelLayer(GemArrowEntityModel.ARROW, GemArrowEntityModel::getTexturedModelData);
-        EntityRenderers.register(ModEntityTypes.GEM_ARROW_ENTITY, GemArrowEntityRenderer::new);
+        EntityRenderers.register(ModEntityTypes.GEM_ARROW, GemArrowEntityRenderer::new);
     }
 }

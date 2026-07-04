@@ -18,10 +18,10 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu>
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
     private static final Identifier TEXTURE = MoreOresModInitializer.id("textures/gui/container/gem_purifier/gem_purifier_gui_test.png");
-    private static final Identifier START_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/start.png");
-    private static final Identifier PAUSE_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/pause.png");
-    private static final Identifier RESUME_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/resume.png");
-    private static final Identifier STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
+    private static final Identifier START_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/start.png"),
+        PAUSE_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/pause.png"),
+        RESUME_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/resume.png"),
+        STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
 
     public GemPurifierScreen(GemPurifierMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title, 226, 201);
@@ -32,11 +32,6 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu>
         super.init();
 
         addRenderableOnly(FluidWidget.creator(menu.blockEntity.fluidStorage).boundingPos(this.leftPos + 10, this.topPos + 42, 20, 44).posSupplier(menu.blockEntity::getBlockPos).create());
-        
-        start = this.addButton("gui.button.gp.start", 0, this.leftPos + 32, topPos + 92, START_BUTTON, Component.literal("Start Polishing"));
-        pause = this.addButton("gui.button.gp.pause", 1, leftPos + 80, topPos + 92, PAUSE_BUTTON, Component.literal("Pause Polishing"));
-        resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + 32, this.topPos + 140, RESUME_BUTTON, Component.literal("Resume Polishing"));
-        stop = this.addButton("gui.button.gp.stop", 3, leftPos + 80, topPos + 140, STOP_BUTTON, Component.literal("Stop Polishing"));
     }
 
     @Override
@@ -65,6 +60,46 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu>
     }
 
     @Override
+    protected int getStartButtonPosX() {
+        return 32;
+    }
+
+    @Override
+    protected int getStartButtonPosY() {
+        return 92;
+    }
+
+    @Override
+    protected int getPauseButtonPosX() {
+        return 80;
+    }
+
+    @Override
+    protected int getPauseButtonPosY() {
+        return 92;
+    }
+
+    @Override
+    protected int getResumeButtonPosX() {
+        return 32;
+    }
+
+    @Override
+    protected int getResumeButtonPosY() {
+        return 140;
+    }
+
+    @Override
+    protected int getStopButtonPosX() {
+        return 80;
+    }
+
+    @Override
+    protected int getStopButtonPosY() {
+        return 140;
+    }
+
+    @Override
     public void renderProgressArrow(GuiGraphicsExtractor context, int leftPos, int topPos) {
         if(this.menu.isPolishing()) {
             context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos + 83, topPos + 31, 207, 0, 10, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
@@ -80,7 +115,7 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu>
         int startY = topPos + 53;
         int endY = topPos + 57;
         
-        extractor.fill(startX, startY, startX + l, endY, CommonColors.RED);
+        extractor.fillGradient(startX, startY, startX + l, endY, CommonColors.RED, CommonColors.SOFT_RED);
     }
 
     @Override

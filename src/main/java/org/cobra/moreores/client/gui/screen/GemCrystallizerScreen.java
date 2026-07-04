@@ -17,10 +17,10 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
     private static final Identifier TEXTURE = MoreOresModInitializer.id("textures/gui/container/gem_crystallizer/gem_crystallizer_gui.png");
-    private static final Identifier START_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/start.png");
-    private static final Identifier PAUSE_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/pause.png");
-    private static final Identifier RESUME_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/resume.png");
-    private static final Identifier STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
+    private static final Identifier START_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/start.png"), 
+            PAUSE_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/pause.png"), 
+            RESUME_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/resume.png"), 
+            STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
 
     public GemCrystallizerScreen(GemCrystallizerMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title, 207, 196);
@@ -52,6 +52,46 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
     }
 
     @Override
+    protected int getStartButtonPosX() {
+        return 112;
+    }
+
+    @Override
+    protected int getStartButtonPosY() {
+        return 8;
+    }
+
+    @Override
+    protected int getPauseButtonPosX() {
+        return 160;
+    }
+
+    @Override
+    protected int getPauseButtonPosY() {
+        return 8;
+    }
+
+    @Override
+    protected int getResumeButtonPosX() {
+        return 112;
+    }
+
+    @Override
+    protected int getResumeButtonPosY() {
+        return 56;
+    }
+
+    @Override
+    protected int getStopButtonPosX() {
+        return 160;
+    }
+
+    @Override
+    protected int getStopButtonPosY() {
+        return 56;
+    }
+
+    @Override
     protected void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if(this.menu.isPolishing()) {
             context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 41, 207, 0, 11, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
@@ -73,7 +113,7 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
         int startY = topPos + 79;
         int endY = topPos + 83;
 
-        extractor.fill(startX, startY, startX + l, endY, CommonColors.RED);
+        extractor.fillGradient(startX, startY, startX + l, endY, CommonColors.RED, -7667712);
     }
 
     private void renderRadiantDust(GuiGraphicsExtractor context, int x, int y) {
@@ -108,6 +148,7 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
 
     @Override
     public void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        extractBackground(context, mouseX, mouseY, delta);
         super.extractContents(context, mouseX, mouseY, delta);
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
         int k = Mth.clamp((18 * menu.getDustCount() + 10000 - 1) / 10000, 0, 18);

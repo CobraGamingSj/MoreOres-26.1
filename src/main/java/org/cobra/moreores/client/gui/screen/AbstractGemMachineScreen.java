@@ -17,10 +17,6 @@ import org.lwjgl.glfw.GLFW;
 public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMenu> extends AbstractContainerScreen<Menu> {
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
-    protected Button start;
-    protected Button pause;
-    protected Button resume;
-    protected Button stop;
     
     public AbstractGemMachineScreen(Menu handler, Inventory inventory, Component title, int imageWidth, int imageHeight) {
         super(handler, inventory, title, imageWidth, imageHeight);
@@ -32,10 +28,10 @@ public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMe
         titleLabelY = 1000;
         inventoryLabelY = 1000;
         
-        start = this.addButton("gui.button.gp.start", 0, this.leftPos + 112, topPos + 8, getStartButtonTexture(), Component.literal("Start Polishing"));
-        pause = this.addButton("gui.button.gp.pause", 1, leftPos + 160, topPos + 8, getPauseButtonTexture(), Component.literal("Pause Polishing"));
-        resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + 112, this.topPos + 56, getResumeButtonTexture(), Component.literal("Resume Polishing"));
-        stop = this.addButton("gui.button.gp.stop", 3, leftPos + 160, topPos + 56, getStopButtonTexture(), Component.literal("Stop Polishing"));
+        Button start = this.addButton("gui.button.gp.start", 0, this.leftPos + getStartButtonPosX(), topPos + getStartButtonPosY(), getStartButtonTexture(), Component.literal("Start Polishing"));
+        Button pause = this.addButton("gui.button.gp.pause", 1, leftPos + getPauseButtonPosX(), topPos + getPauseButtonPosY(), getPauseButtonTexture(), Component.literal("Pause Polishing"));
+        Button resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + getResumeButtonPosX(), this.topPos + getResumeButtonPosY(), getResumeButtonTexture(), Component.literal("Resume Polishing"));
+        Button stop = this.addButton("gui.button.gp.stop", 3, leftPos + getStopButtonPosX(), topPos + getStopButtonPosY(), getStopButtonTexture(), Component.literal("Stop Polishing"));
 
         start.visible = true;
         pause.visible = true;
@@ -43,8 +39,8 @@ public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMe
         stop.visible = true;
     }
 
-    protected Button addButton(String translation, int buttonId, int x, int y, Identifier texture, Component tooltip) {
-        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonId, menu.getPos());
+    protected Button addButton(String translation, int buttonIndex, int x, int y, Identifier texture, Component tooltip) {
+        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonIndex, menu.getPos());
         button.setTooltip(Tooltip.create(tooltip));
         return this.addRenderableWidget(button);
     }
@@ -54,6 +50,19 @@ public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMe
     protected abstract Identifier getPauseButtonTexture();
     protected abstract Identifier getResumeButtonTexture();
     protected abstract Identifier getStopButtonTexture();
+
+    protected abstract int getStartButtonPosX();
+    protected abstract int getStartButtonPosY();
+
+    protected abstract int getPauseButtonPosX();
+    protected abstract int getPauseButtonPosY();
+
+    protected abstract int getResumeButtonPosX();
+    protected abstract int getResumeButtonPosY();
+
+    protected abstract int getStopButtonPosX();
+    protected abstract int getStopButtonPosY();
+
 
     @Override
     public boolean keyPressed(KeyEvent input) {

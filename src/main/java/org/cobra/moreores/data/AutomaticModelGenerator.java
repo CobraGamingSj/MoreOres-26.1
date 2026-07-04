@@ -93,14 +93,18 @@ public class AutomaticModelGenerator extends FabricModelProvider {
                 }
                 
                 if(assetKey != null) {
+                    boolean generated = false;
                     for (Map.Entry<String, Identifier> entry : trimPrefixes.entrySet()) {
                         String suffix = entry.getKey();
                         Identifier prefix = entry.getValue();
                         if(path.endsWith(suffix)) {
                             itemModelGenerator.generateTrimmableItem(item, assetKey, prefix, false);
+                            generated = true;
                         }
                     }
-                    continue;
+                    if(generated) {
+                        continue;
+                    }
                 }
                 
                 if(item instanceof RadiantBowItem bow) {

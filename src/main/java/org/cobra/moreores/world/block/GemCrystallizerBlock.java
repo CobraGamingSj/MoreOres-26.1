@@ -31,7 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.entity.TickableBlockEntity;
-import org.cobra.moreores.world.block.entity.gem.GemCrystallizerBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.networking.block.data.GemCrystallizerBlockData;
 import org.jetbrains.annotations.Nullable;
@@ -108,7 +108,7 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
         }
 
         if(world.getBlockEntity(pos) instanceof GemCrystallizerBlockEntity be) {
-            newState = newState.setValue(IS_POLISHING, be.getGem());
+            newState = newState.setValue(IS_POLISHING, be.getGemstone());
         }
 
         world.setBlock(pos, newState, Block.UPDATE_ALL);

@@ -1,7 +1,7 @@
 package org.cobra.moreores.networking.block.data;
 
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.world.block.entity.gem.GemPurifierBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 import org.cobra.moreores.client.gui.screen.GemPurifierMenu;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -12,7 +12,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public record GemPurifierDataSynchronizer(long energy, int redstone, FluidVariant fluidVariant, long fluid, BlockPos blockPos) implements CustomPacketPayload {
+public record GemPurifierDataSynchronizer(long energyAmount, int redstone, FluidVariant fluidVariant, long fluidAmount, BlockPos blockPos) implements CustomPacketPayload {
 
     public static final Type<GemPurifierDataSynchronizer> ID = new Type<>(MoreOresModInitializer.id("pos_sync"));
 
@@ -21,24 +21,24 @@ public record GemPurifierDataSynchronizer(long energy, int redstone, FluidVarian
         if (world == null) return;
 
         if (world.getBlockEntity(this.blockPos) instanceof GemPurifierBlockEntity blockEntity) {
-            blockEntity.setEnergyLevel(this.energy);
+            blockEntity.setEnergyAmount(this.energyAmount);
             blockEntity.setRedstone(this.redstone);
-            blockEntity.setWaterLevel(this.fluidVariant, this.fluid);
+            blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
 
             if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.blockEntity.getBlockPos().equals(this.blockPos)) {
-                blockEntity.setEnergyLevel(this.energy);
+                blockEntity.setEnergyAmount(this.energyAmount);
                 blockEntity.setRedstone(this.redstone);
-                blockEntity.setWaterLevel(this.fluidVariant, this.fluid);
+                blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
             }
         }
     }
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierDataSynchronizer> PACKET_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.LONG, GemPurifierDataSynchronizer::energy,
+                    ByteBufCodecs.LONG, GemPurifierDataSynchronizer::energyAmount,
                     ByteBufCodecs.INT, GemPurifierDataSynchronizer::redstone,
                     FluidVariant.PACKET_CODEC, GemPurifierDataSynchronizer::fluidVariant,
-                    ByteBufCodecs.LONG, GemPurifierDataSynchronizer::fluid,
+                    ByteBufCodecs.LONG, GemPurifierDataSynchronizer::fluidAmount,
                     BlockPos.STREAM_CODEC, GemPurifierDataSynchronizer::blockPos,
                     GemPurifierDataSynchronizer::new
             );
