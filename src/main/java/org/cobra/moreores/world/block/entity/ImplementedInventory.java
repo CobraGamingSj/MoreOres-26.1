@@ -195,6 +195,10 @@ public interface ImplementedInventory extends WorldlyContainer {
         return result;
     }
 
+    default void removeItem(int slot) {
+        removeItem(slot, 1);
+    }
+    
     /**
      * Removes the current inputBefore in the {@code slot} and returns it.
      *

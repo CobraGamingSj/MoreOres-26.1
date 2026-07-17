@@ -371,7 +371,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
         for(long milestone : milestones) {
             if(water >= milestone && previousRemovedWaterMilestone < milestone) {
-                this.removeItem(FLUID_SOURCE_SLOT, 1);
+                this.removeItem(FLUID_SOURCE_SLOT);
                 this.setItem(FLUID_SOURCE_SLOT, new ItemStack(Items.BUCKET, 1));
                 previousRemovedWaterMilestone = milestone;
                 break;
@@ -395,11 +395,14 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     private void getPolishedGemstone() {
         RecipeHolder<GemPurifierRecipe> recipe = currentRecipe().orElseThrow();
 
-        this.removeItem(INGREDIENT_SLOT, 1);
+        this.removeItem(INGREDIENT_SLOT);
 
         this.setItem(RESULT_SLOT, new ItemStack(recipe.value().getResult().getItem(),
                 this.resultStack().getCount() + recipe.value().getResult().getCount()));
+        
+        extractedEnergyAmount = 0;
     }
+    
     private boolean hasPolishingFinished() {
         return initialProgress >= maxProgressTick;
     }

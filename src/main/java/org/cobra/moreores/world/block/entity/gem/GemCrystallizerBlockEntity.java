@@ -343,7 +343,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
 
         for(long milestone : milestones) {
             if(energy >= milestone && previousRemovedEnergyMilestone < milestone) {
-                this.removeItem(slot, 1);
+                this.removeItem(slot);
                 previousRemovedEnergyMilestone = milestone;
                 break;
             }
@@ -361,7 +361,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
 
         for(long milestone : milestones) {
             if(energy >= milestone && previousRemovedRadiantDustMilestone < milestone) {
-                this.removeItem(RADIANT_DUST_SLOT, 1);
+                this.removeItem(RADIANT_DUST_SLOT);
                 previousRemovedRadiantDustMilestone = milestone;
                 break;
             }
@@ -375,12 +375,15 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     private void getCrystallizedGemstone() {
         RecipeHolder<GemCrystallizerRecipe> recipe = currentRecipe().orElseThrow();
 
-        this.removeItem(INGREDIENT_BEFORE_SLOT, 1);
-        this.removeItem(INGREDIENT_AFTER_SLOT, 1);
+        this.removeItem(INGREDIENT_BEFORE_SLOT);
+        this.removeItem(INGREDIENT_AFTER_SLOT);
 
         this.setItem(RESULT_SLOT, new ItemStack(recipe.value().getResult().getItem(),
                 this.resultStack().getCount() + recipe.value().getResult().getCount()));
+        
+        extractedEnergyAmount = 0;
     }
+    
     private boolean hasCrystallizationFinished() {
         return initialProgress >= maxProgressTicks;
     }
