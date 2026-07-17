@@ -12,7 +12,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.client.gui.widget.MachineButtonWidget;
 import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
-import org.cobra.moreores.world.block.entity.gem.AbstractGemMachineBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.machine.AbstractGemMachineBlockEntity;
 import org.lwjgl.glfw.GLFW;
 
 public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlockEntity<?>, M extends AbstractGemMachineMenu<T>> extends AbstractContainerScreen<M> {

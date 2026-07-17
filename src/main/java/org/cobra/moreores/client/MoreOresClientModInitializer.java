@@ -8,7 +8,7 @@ import org.cobra.moreores.world.block.entity.ModBlockEntityType;
 import org.cobra.moreores.client.gui.screen.GemCrystallizerScreen;
 import org.cobra.moreores.client.gui.screen.GemPurifierScreen;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
-import org.cobra.moreores.client.render.block.entity.GemInfusionBlockEntityRenderer;
+import org.cobra.moreores.client.render.block.entity.GemCrystallizerBlockEntityRenderer;
 import org.cobra.moreores.client.render.block.entity.GemPurifierBlockEntityRenderer;
 import org.cobra.moreores.client.render.item.entity.GemArrowEntityRenderer;
 import org.cobra.moreores.client.render.item.model.GemArrowEntityModel;
@@ -23,15 +23,12 @@ public class MoreOresClientModInitializer implements ClientModInitializer {
 
         ModS2CNetworks.registerClientS2C();
 
-//        BlockRenderLayerMap.putBlock(ModBlocks.GEM_PURIFIER_BLOCK, ChunkSectionLayer.TRANSLUCENT);
-//        BlockRenderLayerMap.putBlock(ModBlocks.GEM_CRYSTALLIZER_BLOCK, ChunkSectionLayer.TRANSLUCENT);
-
         MenuScreens.register(ModMenuType.GEM_PURIFIER, GemPurifierScreen::new);
         MenuScreens.register(ModMenuType.GEM_CRYSTALLIZER, GemCrystallizerScreen::new);
 
         BlockEntityRenderers.register(ModBlockEntityType.GEM_PURIFIER, GemPurifierBlockEntityRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntityType.GEM_CRYSTALLIZER, GemInfusionBlockEntityRenderer::new);
+        BlockEntityRenderers.register(ModBlockEntityType.GEM_CRYSTALLIZER, GemCrystallizerBlockEntityRenderer::new);
         ModelLayerRegistry.registerModelLayer(GemArrowEntityModel.ARROW, GemArrowEntityModel::getTexturedModelData);
-        EntityRenderers.register(ModEntityTypes.GEM_ARROW_ENTITY, GemArrowEntityRenderer::new);
+        EntityRenderers.register(ModEntityTypes.GEM_ARROW, GemArrowEntityRenderer::new);
     }
 }

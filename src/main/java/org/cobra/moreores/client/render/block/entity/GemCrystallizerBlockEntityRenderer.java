@@ -17,14 +17,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import org.cobra.moreores.world.block.GemPurifierBlock;
-import org.cobra.moreores.world.block.entity.gem.GemCrystallizerBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer<GemCrystallizerBlockEntity, GemInfusionBlockEntityRenderState> {
+public final class GemCrystallizerBlockEntityRenderer implements BlockEntityRenderer<GemCrystallizerBlockEntity, GemCrystallizerBlockEntityRenderState> {
     private final BlockEntityRendererProvider.Context context;
     private final ItemModelResolver itemModelManager;
 
-    public GemInfusionBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public GemCrystallizerBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         this.context = context;
         this.itemModelManager = context.itemModelResolver();
     }
@@ -97,7 +97,7 @@ public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer
     }
 
     @Override
-    public void extractRenderState(GemCrystallizerBlockEntity blockEntity, GemInfusionBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(GemCrystallizerBlockEntity blockEntity, GemCrystallizerBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
         state.setEntity(blockEntity);
         state.entityWorld = blockEntity.getLevel();
@@ -114,7 +114,7 @@ public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer
     }
 
     @Override
-    public void submit(GemInfusionBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState camera) {
+    public void submit(GemCrystallizerBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState camera) {
         GemCrystallizerBlockEntity entity = state.entity;
         if (entity == null || entity.getLevel() == null) return;
 
@@ -134,8 +134,8 @@ public final class GemInfusionBlockEntityRenderer implements BlockEntityRenderer
     }
 
     @Override
-    public GemInfusionBlockEntityRenderState createRenderState() {
-        return new GemInfusionBlockEntityRenderState();
+    public GemCrystallizerBlockEntityRenderState createRenderState() {
+        return new GemCrystallizerBlockEntityRenderState();
     }
 
     public BlockEntityRendererProvider.Context context() {

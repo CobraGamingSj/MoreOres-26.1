@@ -1,4 +1,4 @@
-package org.cobra.moreores.world.block.entity.gem;
+package org.cobra.moreores.world.block.entity.gem.machine;
 
 import net.minecraft.world.item.Items;
 import org.cobra.moreores.recipe.ModRecipeType;

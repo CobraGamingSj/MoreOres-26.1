@@ -10,11 +10,11 @@ import org.cobra.moreores.MoreOresModInitializer;
 
 public class ModEntityTypes {
 
-    private static final ResourceKey<EntityType<?>> GEM_ARROW = ResourceKey.create(Registries.ENTITY_TYPE, MoreOresModInitializer.id("gem_arrow"));
+    private static final ResourceKey<EntityType<?>> GEM_ARROW_KEY = ResourceKey.create(Registries.ENTITY_TYPE, MoreOresModInitializer.id("gem_arrow"));
     
-    public static final EntityType<GemArrowEntity> GEM_ARROW_ENTITY = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+    public static final EntityType<GemArrowEntity> GEM_ARROW = Registry.register(BuiltInRegistries.ENTITY_TYPE,
             MoreOresModInitializer.id("gem_arrow"),
             EntityType.Builder.<GemArrowEntity>of(GemArrowEntity::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f).clientTrackingRange(4).noLootTable().updateInterval(20).eyeHeight(0.13f).build(GEM_ARROW));
+                    .sized(0.5f, 0.5f).clientTrackingRange(4).noLootTable().updateInterval(20).eyeHeight(0.13f).build(GEM_ARROW_KEY));
     
 }

@@ -20,7 +20,7 @@ public class GemArrowItem extends Item implements ProjectileItem {
 
     @Override
     public Projectile asProjectile(Level world, Position pos, ItemStack stack, Direction direction) {
-        GemArrowEntity gemArrowEntity = new GemArrowEntity(ModEntityTypes.GEM_ARROW_ENTITY, world);
+        GemArrowEntity gemArrowEntity = new GemArrowEntity(ModEntityTypes.GEM_ARROW, world);
         gemArrowEntity.pickup = AbstractArrow.Pickup.ALLOWED;
         return gemArrowEntity;
     }

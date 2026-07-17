@@ -18,7 +18,7 @@ public class GemArrowEntity extends AbstractArrow {
     }
     
     public GemArrowEntity(Level world, LivingEntity owner, ItemStack stack, @Nullable ItemStack shotFrom) {
-        super(ModEntityTypes.GEM_ARROW_ENTITY, owner, world, stack, shotFrom);
+        super(ModEntityTypes.GEM_ARROW, owner, world, stack, shotFrom);
     }
 
     @Override
