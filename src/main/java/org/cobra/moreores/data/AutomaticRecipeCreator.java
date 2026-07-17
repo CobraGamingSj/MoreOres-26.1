@@ -5,8 +5,8 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.client.recipe.GemCrystallizerRecipeJsonBuilder;
-import org.cobra.moreores.client.recipe.GemPolishingRecipeJsonBuilder;
+import org.cobra.moreores.client.recipe.GemCrystallizerRecipeBuilder;
+import org.cobra.moreores.client.recipe.GemPolishingRecipeBuilder;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimPatterns;
 import org.cobra.moreores.core.registry.ModItemTags;
@@ -22,7 +22,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
@@ -295,7 +294,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                 trimSmithing(ModItems.GUARDIAN_ARMOR_TRIM_SMITHING_TEMPLATE,
                         ModArmorTrimPatterns.GUARDIAN, ResourceKey.create(Registries.RECIPE, Identifier.withDefaultNamespace(getItemName(ModItems.GUARDIAN_ARMOR_TRIM_SMITHING_TEMPLATE) + "_smithing_trim")));
 
-                GemCrystallizerRecipeJsonBuilder.createQuartsidian()
+                GemCrystallizerRecipeBuilder.createQuartsidian()
                         .criterion(getHasName(Items.QUARTZ), has(Items.QUARTZ))
                         .criterion(getHasName(Blocks.OBSIDIAN), has(Blocks.OBSIDIAN))
                         .offerTo(output, getSimpleRecipeName(ModItems.QUARTSIDIAN));
@@ -408,12 +407,12 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
         };
     }
 
-    public GemPolishingRecipeJsonBuilder createGemPurifying(Ingredient input, Item result) {
-        return GemPolishingRecipeJsonBuilder.create(input, new ItemStackTemplate(result), RecipeCategory.MISC);
+    public GemPolishingRecipeBuilder createGemPurifying(Ingredient input, Item result) {
+        return GemPolishingRecipeBuilder.create(input, new ItemStackTemplate(result), RecipeCategory.MISC);
     }
 
-    public GemCrystallizerRecipeJsonBuilder createGemInfusion(Ingredient inputBefore, Item result) {
-        return GemCrystallizerRecipeJsonBuilder.create(inputBefore, new ItemStackTemplate(result), RecipeCategory.MISC);
+    public GemCrystallizerRecipeBuilder createGemInfusion(Ingredient inputBefore, Item result) {
+        return GemCrystallizerRecipeBuilder.create(inputBefore, new ItemStackTemplate(result), RecipeCategory.MISC);
     }
 
     @Override

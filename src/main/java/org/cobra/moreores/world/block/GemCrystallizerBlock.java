@@ -31,7 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.entity.TickableBlockEntity;
-import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.networking.block.data.GemCrystallizerBlockData;
 import org.jetbrains.annotations.Nullable;
@@ -69,15 +69,15 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new GemCrystallizeBlockEntity(pos, state);
+        return new GemCrystallizerBlockEntity(pos, state);
     }
 
     @Override
     protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
         if (state.getBlock() != state.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof GemCrystallizeBlockEntity) {
-                Containers.dropContents(world, pos, (GemCrystallizeBlockEntity) blockEntity);
+            if (blockEntity instanceof GemCrystallizerBlockEntity) {
+                Containers.dropContents(world, pos, (GemCrystallizerBlockEntity) blockEntity);
                 world.updateNeighbourForOutputSignal(pos,this);
             }
             super.affectNeighborsAfterRemoval(state, world, pos, moved);
@@ -107,8 +107,8 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
             newState = newState.setValue(REDSTONE_POWERED, false);
         }
 
-        if(world.getBlockEntity(pos) instanceof GemCrystallizeBlockEntity be) {
-            newState = newState.setValue(IS_POLISHING, be.getGem());
+        if(world.getBlockEntity(pos) instanceof GemCrystallizerBlockEntity be) {
+            newState = newState.setValue(IS_POLISHING, be.gemstone());
         }
 
         world.setBlock(pos, newState, Block.UPDATE_ALL);
@@ -126,7 +126,7 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
             }
         }
 
-        MenuProvider screenHandlerFactory = ((GemCrystallizeBlockEntity) world.getBlockEntity(pos));
+        MenuProvider screenHandlerFactory = ((GemCrystallizerBlockEntity) world.getBlockEntity(pos));
         if (screenHandlerFactory != null) {
                 player.openMenu(screenHandlerFactory);
         }

@@ -1,9 +1,5 @@
 package org.cobra.moreores.client.gui.widget;
 
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderingRegistry;
-import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRenderHandler;
-import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.minecraft.ChatFormatting;
@@ -20,7 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import org.cobra.moreores.client.gui.util.ScreenHelperUtils;
+import org.cobra.moreores.client.gui.util.FluidUtils;
 import org.cobra.moreores.util.FluidStack;
 
 import java.util.List;
@@ -43,8 +39,8 @@ public class FluidWidget implements Renderable, LayoutElement {
         this.pos = pos;
     }
 
-    public static Builder builder(SingleVariantStorage<FluidVariant> fluidStorage) {
-        return new Builder(fluidStorage);
+    public static Creator creator(SingleVariantStorage<FluidVariant> fluidStorage) {
+        return new Creator(fluidStorage);
     }
 
     @Override
@@ -64,7 +60,7 @@ public class FluidWidget implements Renderable, LayoutElement {
         float red = (tintColor >> 16 & 0xFF) /255F;
         float green = (tintColor >> 8 & 0xFF) /255F;
         float blue = (tintColor & 0xFF) /255F;
-        ScreenHelperUtils.extractTiledFluidSprite(extractor, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, 1F, red, green, blue);
+        FluidUtils.extractTiledFluidSprite(extractor, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, 1F, red, green, blue);
 
         if(isPointWithinBounds(this.x, this.y, this.width, this.height, mouseX, mouseY)) {
             drawTooltip(extractor, mouseX, mouseY);
@@ -124,62 +120,62 @@ public class FluidWidget implements Renderable, LayoutElement {
     @Override
     public void visitWidgets(Consumer<AbstractWidget> consumer) {}
 
-    public static class Builder {
+    public static class Creator {
         private final SingleVariantStorage<FluidVariant> fluidStorage;
         private Supplier<BlockPos> posSupplier = () -> null;
         private int x, y;
         private int width, height;
 
-        public Builder(SingleVariantStorage<FluidVariant> fluidStorage) {
+        public Creator(SingleVariantStorage<FluidVariant> fluidStorage) {
             this.fluidStorage = fluidStorage;
         }
 
-        public Builder x(int x) {
+        public Creator x(int x) {
             this.x = x;
             return this;
         }
 
-        public Builder y(int y) {
+        public Creator y(int y) {
             this.y = y;
             return this;
         }
 
-        public Builder position(int x, int y) {
+        public Creator position(int x, int y) {
             this.x = x;
             this.y = y;
             return this;
         }
 
-        public Builder width(int width) {
+        public Creator width(int width) {
             this.width = width;
             return this;
         }
 
-        public Builder height(int height) {
+        public Creator height(int height) {
             this.height = height;
             return this;
         }
 
-        public Builder size(int width, int height) {
-            this.width = width;
-            this.height = height;
-            return this;
-        }
-
-        public Builder bounds(int x, int y, int width, int height) {
-            this.x = x;
-            this.y = y;
+        public Creator size(int width, int height) {
             this.width = width;
             this.height = height;
             return this;
         }
 
-        public Builder posSupplier(Supplier<BlockPos> posSupplier) {
+        public Creator bounds(int x, int y, int width, int height) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            return this;
+        }
+
+        public Creator posSupplier(Supplier<BlockPos> posSupplier) {
             this.posSupplier = posSupplier;
             return this;
         }
 
-        public FluidWidget build() {
+        public FluidWidget create() {
             return new FluidWidget(this.fluidStorage, this.x, this.y, this.width, this.height, this.posSupplier);
         }
     }

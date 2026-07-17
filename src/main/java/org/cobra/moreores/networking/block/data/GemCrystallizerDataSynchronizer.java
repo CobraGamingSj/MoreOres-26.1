@@ -1,7 +1,7 @@
 package org.cobra.moreores.networking.block.data;
 
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.world.block.entity.gem.GemCrystallizeBlockEntity;
+import org.cobra.moreores.world.block.entity.gem.GemCrystallizerBlockEntity;
 import org.cobra.moreores.client.gui.screen.GemPurifierMenu;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -11,7 +11,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public record GemCrystallizerDataSynchronizer(long energy, int dustCount, BlockPos blockPos) implements CustomPacketPayload {
+public record GemCrystallizerDataSynchronizer(long energyAmount, int redstone, int dustCount, BlockPos blockPos) implements CustomPacketPayload {
 
     public static final Type<GemCrystallizerDataSynchronizer> ID = new Type<>(MoreOresModInitializer.id("data_pos_sync"));
 
@@ -19,12 +19,14 @@ public record GemCrystallizerDataSynchronizer(long energy, int dustCount, BlockP
         ClientLevel world = context.client().level;
         if (world == null) return;
 
-        if (world.getBlockEntity(this.blockPos) instanceof GemCrystallizeBlockEntity blockEntity) {
-            blockEntity.setEnergyLevel(this.energy);
+        if (world.getBlockEntity(this.blockPos) instanceof GemCrystallizerBlockEntity blockEntity) {
+            blockEntity.setEnergyAmount(this.energyAmount);
+            blockEntity.setRedstone(this.redstone);
             blockEntity.setDustCount(this.dustCount);
 
-            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.blockEntity.getBlockPos().equals(this.blockPos)) {
-                blockEntity.setEnergyLevel(this.energy);
+            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
+                blockEntity.setEnergyAmount(this.energyAmount);
+                blockEntity.setRedstone(this.redstone);
                 blockEntity.setDustCount(this.dustCount);
             }
         }
@@ -32,7 +34,8 @@ public record GemCrystallizerDataSynchronizer(long energy, int dustCount, BlockP
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizerDataSynchronizer> PACKET_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.LONG, GemCrystallizerDataSynchronizer::energy,
+                    ByteBufCodecs.LONG, GemCrystallizerDataSynchronizer::energyAmount,
+                    ByteBufCodecs.INT, GemCrystallizerDataSynchronizer::redstone,
                     ByteBufCodecs.INT, GemCrystallizerDataSynchronizer::dustCount,
                     BlockPos.STREAM_CODEC, GemCrystallizerDataSynchronizer::blockPos,
                     GemCrystallizerDataSynchronizer::new

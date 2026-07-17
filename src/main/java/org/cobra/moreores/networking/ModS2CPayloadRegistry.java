@@ -12,11 +12,11 @@ import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 @SuppressWarnings("Same PaR VAL")
 public class ModS2CPayloadRegistry {
     static {
-       registerS2C(GemPFEnergyDataPayload.ID, GemPFEnergyDataPayload.PACKET_CODEC);
+       registerS2C(GemMachineEnergyDataPayload.ID, GemMachineEnergyDataPayload.PACKET_CODEC);
        registerS2C(GemPurifierFluidDataPayload.ID, GemPurifierFluidDataPayload.PACKET_CODEC);
        registerS2C(GemPurifierDataSynchronizer.ID, GemPurifierDataSynchronizer.PACKET_CODEC);
        registerS2C(GemCrystallizerDataSynchronizer.ID, GemCrystallizerDataSynchronizer.PACKET_CODEC);
-       registerS2C(PolishingStateDataPayload.ID, PolishingStateDataPayload.PACKET_CODEC);
+       registerS2C(MachineStatusDataPayload.ID, MachineStatusDataPayload.PACKET_CODEC);
     }
 
     public static<T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> id, StreamCodec<RegistryFriendlyByteBuf, T> packetCodec) {

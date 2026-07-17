@@ -24,7 +24,7 @@ public class ModEnchantments {
                 Enchantment.definition(
                         items.getOrThrow(ItemTags.SWORDS),
                         5,
-                        3,
+                        4,
                         Enchantment.dynamicCost(7, 10),
                         Enchantment.dynamicCost(25, 9),
                         2,

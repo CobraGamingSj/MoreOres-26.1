@@ -12,7 +12,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public record GemPurifierFluidDataPayload(FluidVariant var, long fluid, BlockPos blockPos) implements CustomPacketPayload {
+public record GemPurifierFluidDataPayload(FluidVariant fluidVariant, long fluidAmount, BlockPos blockPos) implements CustomPacketPayload {
     public static final Type<GemPurifierFluidDataPayload> ID = new Type<>(MoreOresModInitializer.id("pos_fluid"));
 
     public void handlePacket(ClientPlayNetworking.Context context) {
@@ -20,18 +20,18 @@ public record GemPurifierFluidDataPayload(FluidVariant var, long fluid, BlockPos
         if (world == null) return;
 
         if (world.getBlockEntity(this.blockPos) instanceof GemPurifierBlockEntity blockEntity) {
-            blockEntity.setWaterLevel(this.var, this.fluid);
+            blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
 
-            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.blockEntity.getBlockPos().equals(this.blockPos)) {
-                blockEntity.setWaterLevel(this.var, this.fluid);
+            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
+                blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
             }
         }
     }
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierFluidDataPayload> PACKET_CODEC =
             StreamCodec.composite(
-                    FluidVariant.PACKET_CODEC, GemPurifierFluidDataPayload::var,
-                    ByteBufCodecs.LONG, GemPurifierFluidDataPayload::fluid,
+                    FluidVariant.PACKET_CODEC, GemPurifierFluidDataPayload::fluidVariant,
+                    ByteBufCodecs.LONG, GemPurifierFluidDataPayload::fluidAmount,
                     BlockPos.STREAM_CODEC, GemPurifierFluidDataPayload::blockPos,
                     GemPurifierFluidDataPayload::new
             );

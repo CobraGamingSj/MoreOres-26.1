@@ -2,7 +2,8 @@ package org.cobra.moreores.client.recipe;
 
 import net.minecraft.world.item.ItemStackTemplate;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.recipe.GemPurifierRecipe;
+import org.cobra.moreores.world.item.ModItems;
+import org.cobra.moreores.recipe.GemCrystallizerRecipe;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import net.minecraft.advancements.Advancement;
@@ -14,41 +15,48 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.level.block.Blocks;
 
-public class GemPolishingRecipeJsonBuilder {
-    private final Ingredient ingredient;
+public class GemCrystallizerRecipeBuilder {
+    private final Ingredient ingredientBefore;
+    private final Ingredient ingredientAfter;
     private final ItemStackTemplate output;
     private final RecipeCategory category;
     private final Map<String, Criterion<?>> criterion = new LinkedHashMap<>();
 
-    public GemPolishingRecipeJsonBuilder(Ingredient ingredient, ItemStackTemplate output, RecipeCategory category) {
-        this.ingredient = ingredient;
+    public GemCrystallizerRecipeBuilder(Ingredient ingredientBefore, Ingredient ingredientAfter, ItemStackTemplate output, RecipeCategory category) {
+        this.ingredientBefore = ingredientBefore;
+        this.ingredientAfter = ingredientAfter;
         this.output = output;
         this.category = category;
     }
 
-    public static GemPolishingRecipeJsonBuilder create(Ingredient ingredient, ItemStackTemplate result, RecipeCategory category) {
-        return new GemPolishingRecipeJsonBuilder(ingredient, result, category);
+    public static GemCrystallizerRecipeBuilder create(Ingredient ingredientBefore, ItemStackTemplate result, RecipeCategory category) {
+        return new GemCrystallizerRecipeBuilder(ingredientBefore, Ingredient.of(ModItems.RADIANT), result, category);
     }
 
-    public GemPolishingRecipeJsonBuilder criterion(String name, Criterion<?> criterion) {
+    public static GemCrystallizerRecipeBuilder createQuartsidian() {
+        return new GemCrystallizerRecipeBuilder(Ingredient.of(Items.QUARTZ), Ingredient.of(Blocks.OBSIDIAN.asItem()), new ItemStackTemplate(Blocks.OBSIDIAN.asItem()), RecipeCategory.MISC);
+    }
+
+    public GemCrystallizerRecipeBuilder criterion(String name, Criterion<?> criterion) {
         this.criterion.put(name, criterion);
         return this;
     }
 
     public void offerTo(RecipeOutput exporter, String name) {
-        ResourceKey<Recipe<?>> recipeId = ResourceKey.create(Registries.RECIPE, MoreOresModInitializer.id(name + "_polishing"));
+        ResourceKey<Recipe<?>> recipeId = ResourceKey.create(Registries.RECIPE, MoreOresModInitializer.id(name + "_crystallizing"));
         this.validate(recipeId);
         Advancement.Builder builder = exporter.advancement()
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
                 .rewards(AdvancementRewards.Builder.recipe(recipeId))
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criterion.forEach(builder::addCriterion);
-        GemPurifierRecipe gemPolishingRecipe = new GemPurifierRecipe(this.ingredient, this.output);
-        exporter.accept(recipeId, gemPolishingRecipe, builder.build(recipeId.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
+        GemCrystallizerRecipe gemcrystallizerRecipe = new GemCrystallizerRecipe(this.ingredientBefore, this.ingredientAfter, this.output);
+        exporter.accept(recipeId, gemcrystallizerRecipe, builder.build(recipeId.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 
     private void validate(ResourceKey<Recipe<?>> recipeId) {

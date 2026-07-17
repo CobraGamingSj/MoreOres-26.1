@@ -108,7 +108,7 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
         }
 
         if(world.getBlockEntity(pos) instanceof GemPurifierBlockEntity be) {
-            newState = newState.setValue(IS_POLISHING, be.getGem());
+            newState = newState.setValue(IS_POLISHING, be.gemstone());
         }
 
         world.setBlock(pos, newState, Block.UPDATE_ALL);

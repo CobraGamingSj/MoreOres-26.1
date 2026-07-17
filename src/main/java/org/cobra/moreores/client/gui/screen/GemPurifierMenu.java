@@ -1,7 +1,5 @@
 package org.cobra.moreores.client.gui.screen;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -11,37 +9,32 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.gem.GemPurifierBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
 import org.cobra.moreores.core.registry.ModItemTags;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelper {
+public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEntity> {
     private final Container inventory;
     private final ContainerLevelAccess context;
-    private final ContainerData propertyDelegate;
-    public final GemPurifierBlockEntity blockEntity;
+    private final ContainerData containerData;
 
     // Client Side Constructor
     public GemPurifierMenu(int syncId, Inventory playerInventory, GemPurifierDataSynchronizer data) {
         this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(data.blockPos()),
-                new SimpleContainerData(2));
+                new SimpleContainerData(3));
     }
 
     // Main Constructor
-    public GemPurifierMenu(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData propertyDelegate) {
-        super(ModMenuType.GEM_PURIFIER, syncId, blockEntity.getBlockPos());
-        checkContainerSize((Container) blockEntity, 16);
+    public GemPurifierMenu(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData containerData) {
+        super(ModMenuType.GEM_PURIFIER, syncId, blockEntity.getBlockPos(), (GemPurifierBlockEntity) blockEntity);
+        checkContainerSize((Container) blockEntity, 17);
 
         this.inventory = ((Container) blockEntity);
         this.context = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
-        this.propertyDelegate = propertyDelegate;
-        this.blockEntity = (GemPurifierBlockEntity) blockEntity;
+        this.containerData = containerData;
 
         this.addSlot(new Slot(inventory, 0, 79, 11) {
             @Override
@@ -63,22 +56,27 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
         }); // Energy Input
         this.addSlot(new Slot(inventory, 3, 12, 20)); // Water Source
 
+        this.addSlot(new Slot(inventory, 4, 109, 33)); // Redstone Source
+        
         addFirstAdditionalInventory(inventory);
-        addSecondAdditionalInventory(inventory);
 
         addPlayerGenericInventory(playerInventory);
         addPlayerHotbarInventory(playerInventory);
 
-        addDataSlots(propertyDelegate);
+        addDataSlots(containerData);
     }
 
     public boolean isPolishing() {
-        return propertyDelegate.get(0) > 0;
+        return containerData.get(0) > 0;
     }
 
+    public int getRedstoneDust() {
+        return containerData.get(2);
+    }
+    
     public int progressGetter() {
-        int progress = this.propertyDelegate.get(0); //Progress
-        int maxProgress = this.propertyDelegate.get(1); //Max Progress
+        int progress = this.containerData.get(0); //Progress
+        int maxProgress = this.containerData.get(1); //Max Progress
         int progressArrowSize = 27; //Height of progress arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize/ maxProgress : 0;
@@ -144,38 +142,26 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
         return stillValid(this.context, player, ModBlocks.GEM_PURIFIER_BLOCK);
     }
 
-    public void addFirstAdditionalInventory(Container playerInventory) {
-        for (int i = 0; i < 8; ++i) {
-            this.addSlot(new Slot(playerInventory, 4 + i, 26 + i * 18, 95));
-        }
-    }
-
-    public void addSecondAdditionalInventory(Container playerInventory) {
-        for (int i = 0; i < 4; ++i) {
-            this.addSlot(new Slot(playerInventory, 12 +  i, 179, 115 + i * 18));
+    @Override
+    public void addPlayerGenericInventory(Inventory playerInventory) {
+        for (int i = 0; i < 9; ++i) {
+            for (int l = 0; l < 3; ++l) {
+                this.addSlot(new Slot(playerInventory, i * 3 + l + 9, 142 + l * 18, 11 + i * 18));
+            }
         }
     }
 
     @Override
-    public BlockEntity getBlockEntity(BlockPos pos, BlockState state, Level world) {
-        return this.blockEntity;
+    public void addPlayerHotbarInventory(Inventory playerInventory) {
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i, 201, 11 + i * 18));
+        }
     }
 
-    public long getEnergy() {
-        return this.blockEntity.energyAmount();
-    }
-
-    public long getEnergyCap() {
-        return this.blockEntity.energyStorage.getCapacity();
-    }
-
-    public float getEnergyPercent() {
-        SimpleEnergyStorage energyStorage = this.blockEntity.energyStorage;
-        long energy = energyStorage.getAmount();
-        long maxEnergy = energyStorage.getCapacity();
-        if (maxEnergy == 0 || energy == 0)
-            return 0.0F;
-
-        return Mth.clamp((float) energy / (float) maxEnergy, 0.0F, 1.0F);
+    @Override
+    public void addFirstAdditionalInventory(Container playerInventory) {
+        for (int i = 0; i < 12; ++i) {
+            this.addSlot(new Slot(playerInventory, 5 + i, 6 + i * 18, 178));
+        }
     }
 }

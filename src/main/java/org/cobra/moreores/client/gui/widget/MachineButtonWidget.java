@@ -10,23 +10,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 
-public class MachineControlButtonWidget extends Button {
+public class MachineButtonWidget extends Button {
     private final Identifier texture;
-    private final int buttonId;
+    private final int buttonIndex;
     private final BlockPos pos;
 
-    public MachineControlButtonWidget(int x, int y, net.minecraft.network.chat.Component message, Identifier texture, int buttonId, BlockPos pos) {
+    public MachineButtonWidget(int x, int y, net.minecraft.network.chat.Component message, Identifier background, int buttonIndex, BlockPos pos) {
         super(x, y, 32, 32, message, btn -> {
 
         }, DEFAULT_NARRATION);
-        this.texture = texture;
-        this.buttonId = buttonId;
+        this.texture = background;
+        this.buttonIndex = buttonIndex;
         this.pos = pos;
     }
 
     @Override
     public void onPress(InputWithModifiers input) {
-        ClientPlayNetworking.send(new GemPurifierButtonClickPayload(buttonId, pos));
+        ClientPlayNetworking.send(new GemPurifierButtonClickPayload(buttonIndex, pos));
     }
 
     @Override

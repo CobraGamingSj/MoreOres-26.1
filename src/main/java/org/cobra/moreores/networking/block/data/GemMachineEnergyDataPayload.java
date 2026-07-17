@@ -11,27 +11,27 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public record GemPFEnergyDataPayload(long energy, BlockPos blockPos) implements CustomPacketPayload {
-    public static final Type<GemPFEnergyDataPayload> ID = new Type<>(MoreOresModInitializer.id("pos_energy"));
+public record GemMachineEnergyDataPayload(long energyAmount, BlockPos blockPos) implements CustomPacketPayload {
+    public static final Type<GemMachineEnergyDataPayload> ID = new Type<>(MoreOresModInitializer.id("pos_energy"));
 
     public void handlePacket(ClientPlayNetworking.Context context) {
         ClientLevel world = context.client().level;
         if (world == null) return;
 
         if (world.getBlockEntity(this.blockPos) instanceof AbstractGemMachineBlockEntity<?> blockEntity) {
-            blockEntity.setEnergyLevel(this.energy);
+            blockEntity.setEnergyAmount(this.energyAmount);
 
-            if (context.player().containerMenu instanceof AbstractGemMachineMenu screenHandler && screenHandler.getPos().equals(this.blockPos)) {
-                blockEntity.setEnergyLevel(this.energy);
+            if (context.player().containerMenu instanceof AbstractGemMachineMenu<?> screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
+                blockEntity.setEnergyAmount(this.energyAmount);
             }
         }
     }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemPFEnergyDataPayload> PACKET_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemMachineEnergyDataPayload> PACKET_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.LONG, GemPFEnergyDataPayload::energy,
-                    BlockPos.STREAM_CODEC, GemPFEnergyDataPayload::blockPos,
-                    GemPFEnergyDataPayload::new
+                    ByteBufCodecs.LONG, GemMachineEnergyDataPayload::energyAmount,
+                    BlockPos.STREAM_CODEC, GemMachineEnergyDataPayload::blockPos,
+                    GemMachineEnergyDataPayload::new
             );
 
     @Override

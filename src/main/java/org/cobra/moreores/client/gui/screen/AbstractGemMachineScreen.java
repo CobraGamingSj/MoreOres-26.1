@@ -10,16 +10,17 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
-import org.cobra.moreores.networking.block.data.PolishingStateDataPayload;
+import org.cobra.moreores.client.gui.widget.MachineButtonWidget;
+import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
+import org.cobra.moreores.world.block.entity.gem.AbstractGemMachineBlockEntity;
 import org.lwjgl.glfw.GLFW;
 
-public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu> extends AbstractContainerScreen<M> {
+public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlockEntity<?>, M extends AbstractGemMachineMenu<T>> extends AbstractContainerScreen<M> {
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
 
-    public AbstractGemMachineScreen(M handler, Inventory inventory, Component title) {
-        super(handler, inventory, title, 207, 196);
+    public AbstractGemMachineScreen(M menu, Inventory inventory, Component title, int imageWidth, int imageHeight) {
+        super(menu, inventory, title, imageWidth, imageHeight);
     }
 
     @Override
@@ -28,13 +29,10 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
         titleLabelY = 1000;
         inventoryLabelY = 1000;
 
-        Button start = this.addButton("gui.button.gp.start", 0, this.leftPos + 112, topPos + 8, getStartButtonTexture(), Component.literal("Start Polishing"));
-
-        Button pause = this.addButton("gui.button.gp.pause", 1, leftPos + 160, topPos + 8, getPauseButtonTexture(), Component.literal("Pause Polishing"));
-
-        Button resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + 112, this.topPos + 56, getResumeButtonTexture(), Component.literal("Resume Polishing"));
-
-        Button stop = this.addButton("gui.button.gp.stop", 3, leftPos + 160, topPos + 56, getStopButtonTexture(), Component.literal("Stop Polishing"));
+        Button start = this.addButton("gui.button.gp.start", 0, this.leftPos + getStartButtonPosX(), this.topPos + getStartButtonPosY(), getStartButtonTexture(), menu instanceof GemPurifierMenu ? Component.literal("Start Purification") : Component.literal("Start Crystallization"));
+        Button pause = this.addButton("gui.button.gp.pause", 1, this.leftPos + getPauseButtonPosX(), this.topPos + getPauseButtonPosY(), getPauseButtonTexture(), menu instanceof GemPurifierMenu ? Component.literal("Pause Purification") : Component.literal("Pause Crystallization"));
+        Button resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + getResumeButtonPosX(), this.topPos + getResumeButtonPosY(), getResumeButtonTexture(), menu instanceof GemPurifierMenu ? Component.literal("Resume Purification") : Component.literal("Resume Crystallization"));
+        Button stop = this.addButton("gui.button.gp.stop", 3, this.leftPos + getStopButtonPosX(), this.topPos + getStopButtonPosY(), getStopButtonTexture(), menu instanceof GemPurifierMenu ? Component.literal("Stop Purification") : Component.literal("Stop Crystallization"));
 
         start.visible = true;
         pause.visible = true;
@@ -42,8 +40,8 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
         stop.visible = true;
     }
 
-    protected Button addButton(String translation, int buttonId, int x, int y, Identifier texture, Component tooltip) {
-        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonId, menu.getPos());
+    private Button addButton(String translation, int buttonIndex, int leftPos, int topPos, Identifier background, Component tooltip) {
+        Button button = new MachineButtonWidget(leftPos, topPos, Component.translatable(translation), background, buttonIndex, menu.getBlockPos());
         button.setTooltip(Tooltip.create(tooltip));
         return this.addRenderableWidget(button);
     }
@@ -54,6 +52,18 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
     protected abstract Identifier getResumeButtonTexture();
     protected abstract Identifier getStopButtonTexture();
 
+    protected abstract int getStartButtonPosX();
+    protected abstract int getStartButtonPosY();
+
+    protected abstract int getPauseButtonPosX();
+    protected abstract int getPauseButtonPosY();
+
+    protected abstract int getResumeButtonPosX();
+    protected abstract int getResumeButtonPosY();
+
+    protected abstract int getStopButtonPosX();
+    protected abstract int getStopButtonPosY();
+    
     @Override
     public boolean keyPressed(KeyEvent input) {
         if(input.input() == GLFW.GLFW_KEY_S) {
@@ -76,11 +86,12 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
     }
 
     private void sendPolishControlPacket(String action) {
-        ClientPlayNetworking.send(new PolishingStateDataPayload(menu.getPos(), action));
+        ClientPlayNetworking.send(new MachineStatusDataPayload(menu.getBlockPos(), action));
     }
 
-    protected abstract void renderEnergyHandler(GuiGraphicsExtractor context, int x, int y);
-    protected abstract void renderProgressArrow(GuiGraphicsExtractor context, int x, int y);
+    protected abstract void renderEnergyHandler(GuiGraphicsExtractor graphics, int leftPos, int topPos);
+    protected abstract void renderProgressArrow(GuiGraphicsExtractor graphics, int leftPos, int topPos);
+    protected abstract void renderRedstoneDust(GuiGraphicsExtractor graphics, int leftPos, int topPos);
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
@@ -90,12 +101,13 @@ public abstract class AbstractGemMachineScreen<M extends AbstractGemMachineMenu>
         graphics.blit(RenderPipelines.GUI_TEXTURED, getBackgroundTexture(), i, j, 0f, 0f, this.imageWidth, this.imageHeight, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         renderEnergyHandler(graphics, i, j);
         renderProgressArrow(graphics,i, j);
+        renderRedstoneDust(graphics, i, j);
     }
 
     @Override
-    public void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        extractBackground(context, mouseX, mouseY, delta);
-        super.extractContents(context, mouseX, mouseY, delta);
-        extractTooltip(context, mouseX, mouseY);
+    public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        extractBackground(graphics, mouseX, mouseY, delta);
+        super.extractContents(graphics, mouseX, mouseY, delta);
+        extractTooltip(graphics, mouseX, mouseY);
     }
 }

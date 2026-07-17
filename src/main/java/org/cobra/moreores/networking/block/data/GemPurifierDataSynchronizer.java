@@ -12,7 +12,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public record GemPurifierDataSynchronizer(long energy, FluidVariant fluidVariant, long fluid, BlockPos blockPos) implements CustomPacketPayload {
+public record GemPurifierDataSynchronizer(long energyAmount, int redstone, FluidVariant fluidVariant, long fluidAmount, BlockPos blockPos) implements CustomPacketPayload {
 
     public static final Type<GemPurifierDataSynchronizer> ID = new Type<>(MoreOresModInitializer.id("pos_sync"));
 
@@ -21,21 +21,24 @@ public record GemPurifierDataSynchronizer(long energy, FluidVariant fluidVariant
         if (world == null) return;
 
         if (world.getBlockEntity(this.blockPos) instanceof GemPurifierBlockEntity blockEntity) {
-            blockEntity.setEnergyLevel(this.energy);
-            blockEntity.setWaterLevel(this.fluidVariant, this.fluid);
+            blockEntity.setEnergyAmount(this.energyAmount);
+            blockEntity.setRedstone(this.redstone);
+            blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
 
-            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.blockEntity.getBlockPos().equals(this.blockPos)) {
-                blockEntity.setEnergyLevel(this.energy);
-                blockEntity.setWaterLevel(this.fluidVariant, this.fluid);
+            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
+                blockEntity.setEnergyAmount(this.energyAmount);
+                blockEntity.setRedstone(this.redstone);
+                blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
             }
         }
     }
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierDataSynchronizer> PACKET_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.LONG, GemPurifierDataSynchronizer::energy,
+                    ByteBufCodecs.LONG, GemPurifierDataSynchronizer::energyAmount,
+                    ByteBufCodecs.INT, GemPurifierDataSynchronizer::redstone,
                     FluidVariant.PACKET_CODEC, GemPurifierDataSynchronizer::fluidVariant,
-                    ByteBufCodecs.LONG, GemPurifierDataSynchronizer::fluid,
+                    ByteBufCodecs.LONG, GemPurifierDataSynchronizer::fluidAmount,
                     BlockPos.STREAM_CODEC, GemPurifierDataSynchronizer::blockPos,
                     GemPurifierDataSynchronizer::new
             );

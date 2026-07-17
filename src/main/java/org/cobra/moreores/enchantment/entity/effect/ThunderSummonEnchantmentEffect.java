@@ -1,6 +1,7 @@
 package org.cobra.moreores.enchantment.entity.effect;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -26,6 +27,17 @@ public record ThunderSummonEnchantmentEffect() implements EnchantmentEntityEffec
             EntityType.LIGHTNING_BOLT.spawn(world, user.blockPosition(), EntitySpawnReason.TRIGGERED);
             EntityType.LIGHTNING_BOLT.spawn(world, user.blockPosition(), EntitySpawnReason.TRIGGERED);
             EntityType.TNT.spawn(world, user.blockPosition(), EntitySpawnReason.TRIGGERED).setFuse(0);
+        }
+        if(level == 4) {
+            for (int i = 0; i < 6; i++) {
+                EntityType.LIGHTNING_BOLT.spawn(world, user.getOnPos(), EntitySpawnReason.TRIGGERED);
+            }
+            EntityType.TNT.spawn(world, new BlockPos(user.getBlockX(), user.getBlockY(), user.getBlockZ()), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityType.TNT.spawn(world, new BlockPos(user.getBlockX() + 2, user.getBlockY(), user.getBlockZ()), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityType.TNT.spawn(world, new BlockPos(user.getBlockX() - 2, user.getBlockY(), user.getBlockZ()), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityType.TNT.spawn(world, new BlockPos(user.getBlockX(), user.getBlockY() + 2, user.getBlockZ()), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityType.TNT.spawn(world, new BlockPos(user.getBlockX(), user.getBlockY(), user.getBlockZ() + 2), EntitySpawnReason.TRIGGERED).setFuse(10);
+            EntityType.TNT.spawn(world, new BlockPos(user.getBlockX(), user.getBlockY(), user.getBlockZ() - 2), EntitySpawnReason.TRIGGERED).setFuse(10);
         }
     }
 
