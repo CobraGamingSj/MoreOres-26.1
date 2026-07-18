@@ -55,10 +55,10 @@ public class ModBlocks {
     public static final Block KASHMIR_SAPPHIRE_BLOCK = RESOURCE.register("kashmir_sapphire_block", Block::new);
 
     public static final Block GEM_PURIFIER_BLOCK = RESOURCE.register("gem_purifier_block", new GemPurifierBlock(BlockBehaviour.Properties.of()
-            .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "gem_purifier_block"))).strength(5f).strength(2.75f, 3f)
+            .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "gem_purifier_block"))).strength(5f, 30f)
             .lightLevel(state -> state.getValue(GemPurifierBlock.REDSTONE_POWERED) ? 5 : 0).requiresCorrectToolForDrops().noOcclusion().sound(SoundType.HEAVY_CORE)));
     public static final Block GEM_CRYSTALLIZER_BLOCK = RESOURCE.register("gem_crystallizer_block", new GemCrystallizerBlock(BlockBehaviour.Properties.of()
-            .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "gem_crystallizer_block"))).strength(5f).strength(2.75f, 3f)
+            .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "gem_crystallizer_block"))).strength(5f, 30f)
             .lightLevel(state -> state.getValue(GemCrystallizerBlock.REDSTONE_POWERED) ? 5 : 0).requiresCorrectToolForDrops().noOcclusion().sound(SoundType.HEAVY_CORE)));
 
     public static final Block RAW_RUBY_BLOCK = RESOURCE.register("raw_ruby_block", new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "raw_ruby_block"))).mapColor(MapColor.NETHER).requiresCorrectToolForDrops().strength(6.0f, 6.0f).strength(6.0f)));
@@ -107,7 +107,7 @@ public class ModBlocks {
         for(Block block : BuiltInRegistries.BLOCK) {
             Identifier id = BuiltInRegistries.BLOCK.getKey(block);
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
-                String name = MoreOresModInitializer.formatName((id.getPath()));
+                String name = MoreOresModInitializer.formatIdName((id.getPath()));
                 blockCount++;
                 MoreOresModInitializer.LOGGER.info("Registering Block: {}, for {} mod", name, MoreOresModInitializer.MOD_ID);
             }

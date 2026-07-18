@@ -10,17 +10,14 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
 import org.cobra.moreores.core.registry.RewardDataSaver;
@@ -53,7 +50,7 @@ public class MoreOresModInitializer implements ModInitializer {
 		return Identifier.fromNamespaceAndPath(MOD_ID, id);
 	}
 
-	public static String formatName(String path) {
+	public static String formatIdName(String path) {
 		String[] words = path.split("_");
 		StringBuilder builder = new StringBuilder();
 
@@ -69,11 +66,7 @@ public class MoreOresModInitializer implements ModInitializer {
 		}
 		return builder.toString();
 	}
-
-	public static ResourceKey<Recipe<?>> recipeKey(String id) {
-		return ResourceKey.create(Registries.RECIPE, id(id));
-	}
-
+	
 
 	// Gemstones Item Group
 	public static final CreativeModeTab GEMSTONES = FabricCreativeModeTab.builder()

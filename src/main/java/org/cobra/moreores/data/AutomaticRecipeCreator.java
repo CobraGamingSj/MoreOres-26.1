@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.client.recipe.GemCrystallizerRecipeJsonBuilder;
 import org.cobra.moreores.client.recipe.GemPolishingRecipeJsonBuilder;
@@ -192,7 +193,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                                         .define('b', Items.DIAMOND)
                                         .unlockedBy(getHasName(ModBlocks.RUBY_BLOCK), has(ModBlocks.RUBY_BLOCK))
                                         .unlockedBy(getHasName(Items.DIAMOND), has(Items.DIAMOND))
-                                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.RADIANT) + "_from_ruby"));
+                                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.RADIANT) + "_from_ruby"));
                                 nineBlockStorageRecipes(RecipeCategory.MISC, ModItems.RADIANT, RecipeCategory.MISC, ModBlocks.RADIANT_BLOCK);
                                 continue;
                             }
@@ -205,12 +206,12 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                                         .define('b', Blocks.TNT)
                                         .unlockedBy(getHasName(ModItems.RADIANT), has(ModItems.RADIANT))
                                         .unlockedBy(getHasName(Blocks.TNT), has(Blocks.TNT))
-                                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModBlocks.ENERGY_BLOCK) + "_from_radiant"));
+                                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModBlocks.ENERGY_BLOCK) + "_from_radiant"));
 
                                 shapeless(RecipeCategory.MISC, ModItems.ENERGY_INGOT, 9)
                                         .unlockedBy(getHasName(ModBlocks.ENERGY_BLOCK), has(ModItems.ENERGY_INGOT))
                                         .requires(ModItems.ENERGY_INGOT)
-                                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.ENERGY_INGOT)));
+                                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.ENERGY_INGOT)));
                                 continue;
                             }
 
@@ -233,7 +234,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                             .define('b', inputItem)
                             .unlockedBy(getHasName(ModItems.SAPPHIRE),  has(ModItems.SAPPHIRE))
                             .unlockedBy(getHasName(inputItem), has(inputItem))
-                            .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(outputItem)));
+                            .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(outputItem)));
                 }
 
                 for (Map.Entry<Item, SmithingData> entry : SMITHING_DATA.entrySet()) {
@@ -247,7 +248,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                             ? RecipeCategory.TOOLS : RecipeCategory.COMBAT;
                     SmithingTransformRecipeBuilder.smithing(Ingredient.of(template), Ingredient.of(baseItem), tag(tag), category, result)
                             .unlocks(getHasName(ModItems.RUBY), has(tag))
-                            .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(result) + "_smithing"));
+                            .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(result) + "_smithing"));
                 }
 
                 for (var entry: SMELTABLES.entrySet()) {
@@ -329,7 +330,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .define('b', ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE)
                         .define('c', Blocks.STONE)
                         .unlockedBy(getHasName(ModItems.RUBY), has(ModItems.RUBY))
-                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE) + "_duplication"));
+                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE) + "_duplication"));
 
                 shaped(RecipeCategory.MISC, ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE, 2)
                         .pattern("aba")
@@ -339,7 +340,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .define('b', ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE)
                         .define('c', ModBlocks.RUBY_BLOCK)
                         .unlockedBy(getHasName(ModItems.RUBY), has(ModItems.RUBY))
-                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE) + "_duplication"));
+                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE) + "_duplication"));
 
                 shaped(RecipeCategory.MISC, ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE)
                         .pattern("aba")
@@ -350,7 +351,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .define('c', ModItems.RUBY)
                         .unlockedBy(getHasName(ModItems.RUBY), has(ModItems.RUBY))
                         .unlockedBy(getHasName(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), has(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE))
-                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE)));
+                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE)));
 
                 shaped(RecipeCategory.MISC, ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE)
                         .pattern("aba")
@@ -361,7 +362,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .define('c', ModItems.SAPPHIRE)
                         .unlockedBy(getHasName(ModItems.SAPPHIRE), has(ModItems.SAPPHIRE))
                         .unlockedBy(getHasName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE), has(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE))
-                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE)));
+                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE)));
                 
                 shaped(RecipeCategory.MISC, ModItems.CRYSTAL_OF_ECLIPSE)
                         .pattern("###")
@@ -370,7 +371,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .define('#', ModItems.ECLIPSE_GEM_CRYSTALS)
                         .define('A', Blocks.SAND)
                         .unlockedBy(getHasName(Blocks.SAND), has(Blocks.SAND))
-                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.CRYSTAL_OF_ECLIPSE)));
+                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.CRYSTAL_OF_ECLIPSE)));
                 
                 shaped(RecipeCategory.MISC, ModItems.ECLIPSE_GEM)
                         .pattern("abc")
@@ -386,7 +387,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .define('h', ModItems.OPAL)
                         .define('i', ModItems.GRANDIDIERITE)
                         .unlockedBy(getHasName(ModItems.CRYSTAL_OF_ECLIPSE), has(ModItems.CRYSTAL_OF_ECLIPSE))
-                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.ECLIPSE_GEM)));
+                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.ECLIPSE_GEM)));
                 
                 shaped(RecipeCategory.COMBAT, ModItems.RADIANT_BOW)
                         .pattern(" ab")
@@ -395,7 +396,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .define('a', Items.STRING)
                         .define('b', ModItems.ECLIPSE_GEM)
                         .unlockedBy(getHasName(ModItems.ECLIPSE_GEM), has(ModItems.ECLIPSE_GEM))
-                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.RADIANT_BOW)));
+                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.RADIANT_BOW)));
 
                 shaped(RecipeCategory.MISC, ModItems.GEM_ARROW)
                         .pattern("###")
@@ -404,7 +405,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .define('a', Items.ARROW)
                         .define('#', ModItemTags.CRYSTALLIZED)
                         .unlockedBy(getHasName(Items.ARROW), has(Items.ARROW))
-                        .save(output, MoreOresModInitializer.recipeKey(getSimpleRecipeName(ModItems.GEM_ARROW)));
+                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.GEM_ARROW)));
             }
         };
     }

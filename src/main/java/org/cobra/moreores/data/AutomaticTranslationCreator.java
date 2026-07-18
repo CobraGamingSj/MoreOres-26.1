@@ -3,6 +3,7 @@ package org.cobra.moreores.data;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.item.GemItem;
 import org.cobra.moreores.world.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
@@ -42,35 +43,36 @@ public class AutomaticTranslationCreator extends FabricLanguageProvider {
         translationBuilder.add("enchantment.moreores.thunder_striker",  "Thunder Striker");
         translationBuilder.add("entity.minecraft.villager.jeweller",  "Jeweller");
         translationBuilder.add("trim_pattern.moreores.guardian",  "Guardian Armor Trim");
-        translationBuilder.add("trim_material.moreores.blue_garnet",  "Blue Garnet Material");
-        translationBuilder.add("trim_material.moreores.green_garnet",  "Green Garnet Material");
-        translationBuilder.add("trim_material.moreores.green_sapphire",  "Green Sapphire Material");
-        translationBuilder.add("trim_material.moreores.sapphire",  "Sapphire Material");
-        translationBuilder.add("trim_material.moreores.ruby",  "Ruby Material");
-        translationBuilder.add("trim_material.moreores.radiant",  "Radiant Material");
-        translationBuilder.add("trim_material.moreores.pyrope",  "Pyrope Material");
-        translationBuilder.add("trim_material.moreores.jade",  "Jade Material");
         translationBuilder.add("entity.moreores.gem_arrow",  "Gem Arrow");
 
         for (Item item :  BuiltInRegistries.ITEM) {
             Identifier id = BuiltInRegistries.ITEM.getKey(item);
 
             if (id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
-
-                if(item == ModItems.RADIANT || item == ModItems.RADIANT_DUST || item == ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE || item == ModItems.GUARDIAN_ARMOR_TRIM_SMITHING_TEMPLATE ||
-                item == ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE || item == ModBlocks.GEM_CRYSTALLIZER_BLOCK.asItem() || item == ModBlocks.GEM_PURIFIER_BLOCK.asItem()) {
+                if(item instanceof GemItem gemItem) {
+                    if (gemItem == ModItems.RADIANT) {
+                        translationBuilder.add(ModItems.RADIANT, "§1Radiant§r");
+                        translationBuilder.add("trim_material.moreores.radiant", "Radiant Material");
+                        continue;
+                    }
+                    String gemIdentifiedPath = BuiltInRegistries.ITEM.getKey(gemItem).getPath();
+                    translationBuilder.add(gemItem, MoreOresModInitializer.formatIdName(gemIdentifiedPath));
+                    translationBuilder.add("trim_material." + MoreOresModInitializer.MOD_ID + "." + gemIdentifiedPath, MoreOresModInitializer.formatIdName(gemIdentifiedPath) + " Material");
                     continue;
                 }
 
+                if(item == ModItems.RADIANT_DUST || item == ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE || item == ModItems.GUARDIAN_ARMOR_TRIM_SMITHING_TEMPLATE ||
+                item == ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE || item == ModBlocks.GEM_CRYSTALLIZER_BLOCK.asItem() || item == ModBlocks.GEM_PURIFIER_BLOCK.asItem()) {
+                    continue;
+                }
+                
                 String path = id.getPath();
 
-                String translatedName = MoreOresModInitializer.formatName(path);
+                String translatedName = MoreOresModInitializer.formatIdName(path);
 
                 translationBuilder.add(item, translatedName);
             }
         }
-
-        translationBuilder.add(ModItems.RADIANT, "§1Radiant§r");
         translationBuilder.add(ModItems.RADIANT_DUST, "§2Radiant Dust§r");
         translationBuilder.add(ModBlocks.GEM_PURIFIER_BLOCK, "Gem Purifier");
         translationBuilder.add(ModBlocks.GEM_CRYSTALLIZER_BLOCK, "Gem Crystallizer");

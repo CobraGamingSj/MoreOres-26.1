@@ -187,4 +187,8 @@ public class ResourceHelper {
     public static ResourceKey<Block> blockKey(String id) {
         return ResourceKey.create(Registries.BLOCK, id(id));
     }
+
+    public static ResourceKey<Recipe<?>> recipeKey(String id) {
+        return ResourceKey.create(Registries.RECIPE, id(id));
+    }
 }

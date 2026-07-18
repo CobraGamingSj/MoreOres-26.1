@@ -229,7 +229,7 @@ public class ModItems {
                 continue;
             }
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
-                String name = MoreOresModInitializer.formatName(id.getPath());
+                String name = MoreOresModInitializer.formatIdName(id.getPath());
                 if(item == GEM_DETECTOR) {
                     continue;
                 }

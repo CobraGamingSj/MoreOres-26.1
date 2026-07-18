@@ -1,5 +1,7 @@
 package org.cobra.moreores.world.block.entity.gem.machine;
 
+import com.mojang.serialization.Codec;
+import net.minecraft.util.StringRepresentable;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemPurifierBlock;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -123,10 +125,6 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     public void setFluid(FluidVariant variant, long waterLevel) {
         this.fluidStorage.variant = variant;
         this.fluidStorage.amount = waterLevel;
-    }
-
-    public void setRedstone(int redstone) {
-        this.redstone = redstone;
     }
     
     public long waterAmount() {
@@ -286,7 +284,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         
         changeState();
         if(machineStatus == MachineStatus.RUNNING) {
-            machineEnergyState = MachineEnergyState.EXTRACTING;
+            energyState = MachineStatus.EnergyState.EXTRACTING;
             if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && hasEnoughWater()) {
                 this.increaseProgress();
                 if((!level.hasNeighborSignal(pos) || redstone > 0) && redstoneTick >= 20) {
@@ -306,18 +304,18 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
                 setChanged(level, pos, state);
             }
         } else if (machineStatus.isPaused()) {
-            machineEnergyState = MachineEnergyState.INSERTING;
+            energyState = MachineStatus.EnergyState.INSERTING;
             waterState = FluidState.FILLING;
             giveEnergy();
             fillWater();
         } else {
             if((energyAmount() < 10_000_000 && hasEnergySourceProviderItem()) || (waterAmount() < 810000 && hasWaterBucket())) {
-                machineEnergyState = MachineEnergyState.INSERTING;
+                energyState = MachineStatus.EnergyState.INSERTING;
                 giveEnergy();
                 waterState = FluidState.FILLING;
                 fillWater();
             } else {
-                machineEnergyState = MachineEnergyState.IDLE;
+                energyState = MachineStatus.EnergyState.IDLE;
                 waterState= FluidState.IDLE;
             }
         }
@@ -456,7 +454,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     @Override
     protected void giveEnergy() {
         if(!hasEnergySourceProviderItem() || energyStorage.amount >= 10_000_000) {
-            machineEnergyState = MachineEnergyState.IDLE;
+            energyState = MachineStatus.EnergyState.IDLE;
             return;
         }
         long amount = energyStack().is(ModItems.ENERGY_INGOT) ? 1024 : 1536;
@@ -464,8 +462,8 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         try(Transaction transaction = Transaction.openOuter()) {
             long inserted = energyStorage.insert(amount, transaction);
             transaction.commit();
-            if(inserted > 0) machineEnergyState = MachineEnergyState.INSERTING;
-            else machineEnergyState = MachineEnergyState.IDLE;
+            if(inserted > 0) energyState = MachineStatus.EnergyState.INSERTING;
+            else energyState = MachineStatus.EnergyState.IDLE;
         }
     }
 
@@ -476,6 +474,25 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
             energyStorage.extract(amount, transaction);
             transaction.commit();
         }
-        machineEnergyState = MachineEnergyState.EXTRACTING;
+        energyState = MachineStatus.EnergyState.EXTRACTING;
+    }
+
+    public enum FluidState implements StringRepresentable {
+        IDLE("idle"),
+        FILLING("filling"),
+        EMPTYING("emptying");
+    
+        private final String name;
+    
+        FluidState(String name) {
+            this.name = name;
+        }
+    
+        public static final Codec<FluidState> CODEC = StringRepresentable.fromEnum(FluidState::values);
+    
+        @Override
+        public String getSerializedName() {
+            return this.name;
+        }
     }
 }

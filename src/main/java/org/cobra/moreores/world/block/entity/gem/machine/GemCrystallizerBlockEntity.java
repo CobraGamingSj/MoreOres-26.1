@@ -96,10 +96,6 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         return getItem(REDSTONE_SLOT);
     }
 
-    public void setRedstone(int redstone) {
-        this.redstone = redstone;
-    }
-    
     public void setRadiantDust(int dustCount) {
         this.dustParticleCount = dustCount;
     }
@@ -280,7 +276,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
 
         changeState();
         if(machineStatus == MachineStatus.RUNNING) {
-            machineEnergyState = MachineEnergyState.EXTRACTING;
+            energyState = MachineStatus.EnergyState.EXTRACTING;
             setChanged(level, pos, state);
             if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && dustParticleCount >= 15) {
                 this.increaseProgress();
@@ -307,16 +303,16 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
                 setChanged(level, pos, state);
             }
         } else if (machineStatus.isPaused()) {
-            machineEnergyState = MachineEnergyState.INSERTING;
+            energyState = MachineStatus.EnergyState.INSERTING;
             giveEnergy();
             setChanged(level, pos, state);
         } else {
             if((energyAmount() < 1_000_000 && hasEnergySourceProviderItem())) {
-                machineEnergyState = MachineEnergyState.INSERTING;
+                energyState = MachineStatus.EnergyState.INSERTING;
                 giveEnergy();
                 setChanged(level, pos, state);
             } else {
-                machineEnergyState = MachineEnergyState.IDLE;
+                energyState = MachineStatus.EnergyState.IDLE;
                 setChanged(level, pos, state);
             }
         }

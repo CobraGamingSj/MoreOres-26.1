@@ -1,5 +1,6 @@
 package org.cobra.moreores.world.block.entity.gem.machine;
 
+import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -9,6 +10,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +34,7 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ImplementedInventory, TickableBlockEntity {
     protected final NonNullList<ItemStack> main;
     protected MachineStatus machineStatus = MachineStatus.IDLE;
-    protected MachineEnergyState machineEnergyState = MachineEnergyState.IDLE;
+    protected MachineStatus.EnergyState energyState = MachineStatus.EnergyState.IDLE;
     protected IGemstone iGemstone = IGemstone.EMPTY;
 
     public int initialProgress = 0;
@@ -76,7 +78,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         view.putInt("Progress", initialProgress);
         view.putLong("Energy", energyStorage.amount);
         view.storeNullable("PolishingState", MachineStatus.CODEC, machineStatus);
-        view.storeNullable("EnergyState", MachineEnergyState.CODEC, machineEnergyState);
+        view.storeNullable("EnergyState", MachineStatus.EnergyState.CODEC, energyState);
         view.putInt("Redstone", redstone);
         view.putInt("RedstoneTick", redstoneTick);
     }
@@ -90,7 +92,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         redstoneTick = view.getIntOr("RedstoneTick", 0);
         energyStorage.amount = view.getLongOr("Energy", 0);
         machineStatus = view.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.IDLE);
-        machineEnergyState = view.read("EnergyState", MachineEnergyState.CODEC).orElse(MachineEnergyState.IDLE);
+        energyState = view.read("EnergyState", MachineStatus.EnergyState.CODEC).orElse(MachineStatus.EnergyState.IDLE);
     }
 
     public long energyAmount() {
@@ -181,6 +183,10 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
             }
         }
     }
+
+    public void setRedstone(int redstone) {
+        this.redstone = redstone;
+    }
     
     protected boolean hasEnoughEnergy() {
         return this.energyStorage.amount >= 13;
@@ -188,7 +194,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
 
     protected void giveEnergy() {
         if(!hasEnergySourceProviderItem() || energyStorage.amount >= 1_000_000) {
-            machineEnergyState = MachineEnergyState.IDLE;
+            energyState = MachineStatus.EnergyState.IDLE;
             return;
         }
         long amount = energyStack().is(ModItems.ENERGY_INGOT) ? 102 : 154;
@@ -196,8 +202,8 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         try(Transaction transaction = Transaction.openOuter()) {
             long inserted = energyStorage.insert(amount, transaction);
             transaction.commit();
-            if(inserted > 0) machineEnergyState = MachineEnergyState.INSERTING;
-            else machineEnergyState = MachineEnergyState.IDLE;
+            if(inserted > 0) energyState = MachineStatus.EnergyState.INSERTING;
+            else energyState = MachineStatus.EnergyState.IDLE;
         }
     }
 
@@ -207,7 +213,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
             energyStorage.extract(amount, transaction);
             transaction.commit();
         }
-        machineEnergyState = MachineEnergyState.EXTRACTING;
+        energyState = MachineStatus.EnergyState.EXTRACTING;
     }
 
     protected abstract boolean hasRecipe();
@@ -238,6 +244,56 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         if(!machineStatus.isIdle()) {
             machineStatus = MachineStatus.IDLE;
             clearProgress();
+        }
+    }
+
+    public enum MachineStatus implements StringRepresentable {
+        IDLE("idle"),
+        RUNNING("running"),
+        PAUSED("paused");
+    
+        private final String name;
+    
+        MachineStatus(String name) {
+            this.name = name;
+        }
+    
+        public static final Codec<MachineStatus> CODEC = StringRepresentable.fromEnum(MachineStatus::values);
+    
+        public boolean isIdle() {
+            return this == IDLE;
+        }
+    
+        public boolean isRunning() {
+            return this == RUNNING;
+        }
+    
+        public boolean isPaused() {
+            return this == PAUSED;
+        }
+    
+        @Override
+        public String getSerializedName() {
+            return this.name;
+        }
+    
+        public enum EnergyState implements StringRepresentable {
+            IDLE("idle"),
+            INSERTING("inserting"),
+            EXTRACTING("extracting");
+        
+            private final String name;
+        
+            EnergyState(String name) {
+                this.name = name;
+            }
+        
+            public static final Codec<EnergyState> CODEC = StringRepresentable.fromEnum(EnergyState::values);
+        
+            @Override
+            public String getSerializedName() {
+                return this.name;
+            }
         }
     }
 }
