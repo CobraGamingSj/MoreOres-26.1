@@ -14,7 +14,7 @@ import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.core.registry.tag.ModItemTags;
+import org.cobra.moreores.tags.ModItemTags;
 import org.lwjgl.glfw.GLFW;
 
 public record GemPurifierBlockData(int keyCode, BlockPos pos) implements CustomPacketPayload {

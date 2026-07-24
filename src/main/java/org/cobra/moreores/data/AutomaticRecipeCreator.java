@@ -10,7 +10,7 @@ import org.cobra.moreores.client.recipe.GemCrystallizerRecipeJsonBuilder;
 import org.cobra.moreores.client.recipe.GemPolishingRecipeJsonBuilder;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimPatterns;
-import org.cobra.moreores.core.registry.tag.ModItemTags;
+import org.cobra.moreores.tags.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;

@@ -1,4 +1,4 @@
-package org.cobra.moreores.core.registry.tag;
+package org.cobra.moreores.tags;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -8,15 +8,13 @@ import org.cobra.moreores.MoreOresModInitializer;
 
 public class ModItemTags {
 
-    public static final TagKey<Item> GEMSTONE = of("rare/gemstone");
-    public static final TagKey<Item> CRYSTALLIZED_GEMSTONES = of("rare/crystallized_gemstone");
-    public static final TagKey<Item> CRYSTALLIZED = of("rare/crystallized");
-    public static final TagKey<Item> GEMSTONE_BLOCKS = of("rare/gemstone_blocks");
-    public static final TagKey<Item> CRYSTALLIZED_GEMSTONE_BLOCKS = of("rare/crystallized_gemstone_blocks");
     public static final TagKey<Item> RAW_GEMSTONE = of("rare/raw_gemstone");
     public static final TagKey<Item> RAW_GEMSTONE_BLOCKS = of("rare/raw_gemstone_blocks");
-    public static final TagKey<Item> METAL = of("is_metal");
-    public static final TagKey<Item> RARE = of("rare/rare");
+    public static final TagKey<Item> GEMSTONE = of("rare/gemstone");
+    public static final TagKey<Item> GEMSTONE_BLOCKS = of("rare/gemstone_blocks");
+    public static final TagKey<Item> CRYSTALLIZED_GEMSTONES = of("rare/crystallized_gemstone");
+    public static final TagKey<Item> CRYSTALLIZED = of("rare/crystallized");
+    public static final TagKey<Item> CRYSTALLIZED_GEMSTONE_BLOCKS = of("rare/crystallized_gemstone_blocks");
     public static final TagKey<Item> REPAIRS_RUBY_ARMOR = of("repairs_ruby_armor");
     public static final TagKey<Item> REPAIRS_SAPPHIRE_ARMOR = of("repairs_sapphire_armor");
     public static final TagKey<Item> REPAIRS_RADIANT_ARMOR = of("repairs_radiant_armor");

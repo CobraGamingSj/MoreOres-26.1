@@ -6,7 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.BlockTags;
 import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.core.registry.tag.ModBlockTags;
+import org.cobra.moreores.tags.ModBlockTags;
 
 import java.util.concurrent.CompletableFuture;
 

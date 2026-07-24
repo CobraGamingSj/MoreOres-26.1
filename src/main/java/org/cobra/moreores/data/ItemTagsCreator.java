@@ -6,7 +6,7 @@ import net.minecraft.references.ItemIds;
 import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.core.registry.tag.ModItemTags;
+import org.cobra.moreores.tags.ModItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.ItemTags;
 
@@ -243,15 +243,6 @@ public class ItemTagsCreator extends FabricTagsProvider.ItemTagsProvider {
         
         tag(ItemTags.BOW_ENCHANTABLE)
                 .add(ResourceHelper.obtainKey(ModItems.RADIANT_BOW));
-        
-        tag(ModItemTags.METAL)
-                .add(ItemIds.IRON_INGOT)
-                .add(ItemIds.COPPER_INGOT)
-                .add(ItemIds.GOLD_INGOT);
-
-        tag(ModItemTags.RARE)
-                .addTag(ModItemTags.GEMSTONE)
-                .addTag(ModItemTags.METAL);
 
         tag(ModItemTags.REPAIRS_RUBY_ARMOR)
                 .add(ResourceHelper.obtainKey(ModItems.RUBY));

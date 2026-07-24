@@ -14,7 +14,7 @@ import org.cobra.moreores.world.block.entity.ModBlockEntityTypes;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.recipe.input.GemPurifyingRecipeInput;
-import org.cobra.moreores.core.registry.tag.ModItemTags;
+import org.cobra.moreores.tags.ModItemTags;
 import org.cobra.moreores.client.gui.screen.GemPurifierMenu;
 import org.cobra.moreores.util.FluidStack;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
