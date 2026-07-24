@@ -13,5 +13,6 @@ public class ModRecipeBookCategories {
     
     public static void register() {
         MoreOresModInitializer.LOGGER.info("Loading ModRecipeBookCategory for " + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

@@ -25,5 +25,6 @@ public class ModS2CPayloadRegistries {
 
     public static void registerS2CPackets() {
         LOGGER.info("Loading ModS2CPackets for " + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

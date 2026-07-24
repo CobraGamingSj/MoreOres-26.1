@@ -2,25 +2,18 @@ package org.cobra.moreores.util;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 
-public class FluidStack {
-    private FluidVariant variant;
-    private long amount;
-
-    public FluidStack(FluidVariant variant, long amount) {
-        this.variant = variant;
-        this.amount = amount;
-    }
+public record FluidStack(FluidVariant variant, long amount) {
 
     public FluidVariant getVariant() {
         return variant;
     }
 
-    public long getAmount() {
+    public long getFluidAmount() {
         return amount;
     }
 
-    public long setAmount(long amount) {
-        return this.amount = amount;
+    public FluidStack withAmount(long newAmount) {
+        return new FluidStack(this.variant, newAmount);
     }
 
     public static long convertDropletsToMb(long drops) {

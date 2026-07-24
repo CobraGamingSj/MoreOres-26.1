@@ -115,5 +115,6 @@ public class BiomeModifiers {
                 GenerationStep.Decoration.UNDERGROUND_ORES, ModOrePlacedFeatures.ORE_PYROPE_LARGE);
 
         MoreOresModInitializer.LOGGER.info("Setting Up world generation for Custom Ores for " + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

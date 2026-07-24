@@ -13,5 +13,6 @@ public class ModRecipeSerializer {
     
     public static void register() {
         MoreOresModInitializer.LOGGER.info("Loading ModRecipeSerializer for" + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

@@ -9,6 +9,7 @@ public class ModRecipeDisplays {
     public static void register() {
         RESOURCE.registerDisplay("gem_purifying", GemPolishingRecipeDisplay.SERIALIZER);
         RESOURCE.registerDisplay("gem_crystallizing", GemCrystallizingRecipeDisplay.SERIALIZER);
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
     
 }

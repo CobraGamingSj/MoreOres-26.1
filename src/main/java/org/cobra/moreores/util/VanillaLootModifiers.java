@@ -92,5 +92,6 @@ public class VanillaLootModifiers {
         });
 
         MoreOresModInitializer.LOGGER.info("Modifying VanillaLootTables for " + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

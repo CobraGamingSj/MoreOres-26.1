@@ -22,5 +22,6 @@ public class ModC2SNetworkRegistries {
 
     public static void register() {
         LOGGER.info("Loading ModServerC2SNetworks for" + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

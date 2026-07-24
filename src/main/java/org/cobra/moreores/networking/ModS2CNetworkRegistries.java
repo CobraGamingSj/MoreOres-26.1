@@ -20,5 +20,6 @@ public class ModS2CNetworkRegistries {
 
     public static void register() {
         LOGGER.info("Loading ModS2CNetworks for" + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

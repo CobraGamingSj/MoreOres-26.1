@@ -364,15 +364,6 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                         .unlockedBy(getHasName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE), has(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE))
                         .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE)));
                 
-                shaped(RecipeCategory.MISC, ModItems.CRYSTAL_OF_ECLIPSE)
-                        .pattern("###")
-                        .pattern("#AA")
-                        .pattern("AAA")
-                        .define('#', ModItems.ECLIPSE_GEM_CRYSTALS)
-                        .define('A', Blocks.SAND)
-                        .unlockedBy(getHasName(Blocks.SAND), has(Blocks.SAND))
-                        .save(output, ResourceHelper.recipeKey(getSimpleRecipeName(ModItems.CRYSTAL_OF_ECLIPSE)));
-                
                 shaped(RecipeCategory.MISC, ModItems.ECLIPSE_GEM)
                         .pattern("abc")
                         .pattern("def")

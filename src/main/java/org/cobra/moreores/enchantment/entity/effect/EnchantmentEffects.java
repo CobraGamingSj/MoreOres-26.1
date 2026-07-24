@@ -19,5 +19,6 @@ public class EnchantmentEffects {
 
     public static void register() {
         LOGGER.info("Loading EnchantmentEffects for " + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

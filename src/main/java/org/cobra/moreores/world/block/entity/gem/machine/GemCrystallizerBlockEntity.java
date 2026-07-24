@@ -317,8 +317,8 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
             }
         }
 
-        checkForEnoughEnergyAndConsumeSingle(ENERGY_SOURCE_SLOT);
-        checkForEnoughRedstoneAndConsumeSingle(REDSTONE_SLOT);
+        validateEnergyAmount(ENERGY_SOURCE_SLOT);
+        validateRedstoneAmount(REDSTONE_SLOT);
         checkForEnoughRadiantDustAndConsumeSingle();
         setChanged(level, pos, state);
     }
@@ -333,7 +333,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     }
 
     @Override
-    protected void checkForEnoughEnergyAndConsumeSingle(int energySlot) {
+    protected void validateEnergyAmount(int energySlot) {
         if(energyAmount() > 1000000) {
             energyStorage.amount = 1000000;
         }

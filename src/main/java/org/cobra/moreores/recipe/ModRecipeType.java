@@ -15,5 +15,6 @@ public class ModRecipeType {
     
     public static void register() {
         MoreOresModInitializer.LOGGER.info("Loading ModRecipeType for " + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

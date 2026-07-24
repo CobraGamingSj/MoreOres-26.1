@@ -3,6 +3,7 @@ package org.cobra.moreores.village;
 import com.google.common.collect.ImmutableSet;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PoiHelper;
+import net.minecraft.resources.Identifier;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.data.village.TradeSets;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -47,6 +48,16 @@ public class ModVillagerProfessions {
     }
 
     public static void register() {
-        MoreOresModInitializer.LOGGER.info("Loading ModVillagerProfessions for " + MoreOresModInitializer.MOD_ID + " mod.");
+        int count = 0;
+        for (VillagerProfession profession : BuiltInRegistries.VILLAGER_PROFESSION) {
+            Identifier id = BuiltInRegistries.VILLAGER_PROFESSION.getKey(profession);
+            if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
+                String name = MoreOresModInitializer.formatIdName(id.getPath());
+                count++;
+                MoreOresModInitializer.LOGGER.info("Registering Villager Profession: {}, for {} mod.", name, MoreOresModInitializer.MOD_ID);
+            }
+        }
+        MoreOresModInitializer.LOGGER.info("Registered {} Villager Profession(s) for {} mod.", count, MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

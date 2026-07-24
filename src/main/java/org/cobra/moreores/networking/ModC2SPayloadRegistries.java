@@ -29,6 +29,7 @@ public class ModC2SPayloadRegistries {
     
     public static void registerC2SPackets() {
         LOGGER.info("Loading ModC2SPackets for " + MoreOresModInitializer.MOD_ID + " mod.");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
     
 }

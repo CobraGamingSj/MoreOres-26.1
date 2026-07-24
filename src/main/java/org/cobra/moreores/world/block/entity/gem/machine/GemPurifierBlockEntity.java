@@ -320,9 +320,9 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
             }
         }
 
-        checkForEnoughEnergyAndConsumeSingle(ENERGY_SOURCE_SLOT);
+        validateEnergyAmount(ENERGY_SOURCE_SLOT);
         checkForEnoughWaterAndConsumeSingle();
-        checkForEnoughRedstoneAndConsumeSingle(REDSTONE_SLOT);
+        validateRedstoneAmount(REDSTONE_SLOT);
         setChanged(level, pos, state);
     }
 

@@ -113,5 +113,6 @@ public class ModBlocks {
             }
         }
         MoreOresModInitializer.LOGGER.info("Registered {} Blocks for {} mod", blockCount, MoreOresModInitializer.MOD_ID);
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }

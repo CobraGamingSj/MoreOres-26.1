@@ -25,5 +25,6 @@ public class ModBlockEntityTypes {
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyStorage, GEM_CRYSTALLIZER);
         FluidStorage.SIDED.registerForBlockEntity(((blockEntity, direction) -> blockEntity.fluidStorage), GEM_PURIFIER);
         MoreOresModInitializer.LOGGER.info("Loading ModBlockEntityTypes for {} mod.", MoreOresModInitializer.MOD_ID);
+        System.out.println("------------------------------------------------------------------------------------------------------------------------");
     }
 }
