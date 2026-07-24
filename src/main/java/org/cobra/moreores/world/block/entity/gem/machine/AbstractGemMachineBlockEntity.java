@@ -142,13 +142,13 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
 
     protected void increaseProgress() {
         if(this.level.hasNeighborSignal(this.worldPosition) || redstone > 0) {
-            initialProgress += (int) 2.5;
+            initialProgress += 3;
         } else {
             initialProgress++;
         }
     }
 
-    protected void checkForEnoughEnergyAndConsumeSingle(int energySlot) {
+    protected void validateEnergyAmount(int energySlot) {
         if(energyAmount() > 10000000) {
             energyStorage.amount = 10000000;
         }
@@ -166,7 +166,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         }
     }
     
-    protected void checkForEnoughRedstoneAndConsumeSingle(int slot) {
+    protected void validateRedstoneAmount(int slot) {
         if(redstone > 10000) {
             redstone = 10000;
         }
