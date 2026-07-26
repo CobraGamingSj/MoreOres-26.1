@@ -21,7 +21,7 @@ public record GemPurifierFluidDataPayload(FluidVariant fluidVariant, long fluidA
         if (world.getBlockEntity(this.blockPos) instanceof GemPurifierBlockEntity blockEntity) {
             blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
 
-            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.blockEntity.getBlockPos().equals(this.blockPos)) {
+            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
                 blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
             }
         }

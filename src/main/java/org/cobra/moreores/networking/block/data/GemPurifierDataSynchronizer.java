@@ -25,7 +25,7 @@ public record GemPurifierDataSynchronizer(long energyAmount, int redstone, Fluid
             blockEntity.setRedstone(this.redstone);
             blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
 
-            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.blockEntity.getBlockPos().equals(this.blockPos)) {
+            if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
                 blockEntity.setEnergyAmount(this.energyAmount);
                 blockEntity.setRedstone(this.redstone);
                 blockEntity.setFluid(this.fluidVariant, this.fluidAmount);

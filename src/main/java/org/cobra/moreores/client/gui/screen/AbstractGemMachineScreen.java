@@ -12,14 +12,15 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
 import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
+import org.cobra.moreores.world.block.entity.gem.machine.AbstractGemMachineBlockEntity;
 import org.lwjgl.glfw.GLFW;
 
-public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMenu> extends AbstractContainerScreen<Menu> {
+public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlockEntity<?>, Menu extends AbstractGemMachineMenu<T>> extends AbstractContainerScreen<Menu> {
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
     
-    public AbstractGemMachineScreen(Menu handler, Inventory inventory, Component title, int imageWidth, int imageHeight) {
-        super(handler, inventory, title, imageWidth, imageHeight);
+    public AbstractGemMachineScreen(Menu menu, Inventory inventory, Component title, int imageWidth, int imageHeight) {
+        super(menu, inventory, title, imageWidth, imageHeight);
     }
 
     @Override
@@ -28,10 +29,10 @@ public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMe
         titleLabelY = 1000;
         inventoryLabelY = 1000;
         
-        Button start = this.addButton("gui.button.gp.start", 0, this.leftPos + getStartButtonPosX(), topPos + getStartButtonPosY(), getStartButtonTexture(), Component.literal("Start Polishing"));
-        Button pause = this.addButton("gui.button.gp.pause", 1, leftPos + getPauseButtonPosX(), topPos + getPauseButtonPosY(), getPauseButtonTexture(), Component.literal("Pause Polishing"));
-        Button resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + getResumeButtonPosX(), this.topPos + getResumeButtonPosY(), getResumeButtonTexture(), Component.literal("Resume Polishing"));
-        Button stop = this.addButton("gui.button.gp.stop", 3, leftPos + getStopButtonPosX(), topPos + getStopButtonPosY(), getStopButtonTexture(), Component.literal("Stop Polishing"));
+        Button start = this.addButton("gui.button.gp.start", 0, this.leftPos + getStartButtonPosX(), topPos + getStartButtonPosY(), getStartButtonTexture(), menu instanceof GemPurifierMenu ? Component.literal("Start Purification") : Component.literal("Start Crystallization"));
+        Button pause = this.addButton("gui.button.gp.pause", 1, leftPos + getPauseButtonPosX(), topPos + getPauseButtonPosY(), getPauseButtonTexture(), menu instanceof GemPurifierMenu ? Component.literal("Pause Purification") : Component.literal("Pause Crystallization"));
+        Button resume = this.addButton("gui.button.gp.resume", 2, this.leftPos + getResumeButtonPosX(), this.topPos + getResumeButtonPosY(), getResumeButtonTexture(), menu instanceof GemPurifierMenu ? Component.literal("Resume Purification") : Component.literal("Resume Crystallization"));
+        Button stop = this.addButton("gui.button.gp.stop", 3, leftPos + getStopButtonPosX(), topPos + getStopButtonPosY(), getStopButtonTexture(), menu instanceof GemPurifierMenu ? Component.literal("Stop Purification") : Component.literal("Stop Crystallization"));
 
         start.visible = true;
         pause.visible = true;
@@ -40,7 +41,7 @@ public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMe
     }
 
     protected Button addButton(String translation, int buttonIndex, int x, int y, Identifier texture, Component tooltip) {
-        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonIndex, menu.getPos());
+        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonIndex, menu.getBlockPos());
         button.setTooltip(Tooltip.create(tooltip));
         return this.addRenderableWidget(button);
     }
@@ -86,7 +87,7 @@ public abstract class AbstractGemMachineScreen<Menu extends AbstractGemMachineMe
     }
 
     private void sendPolishControlPacket(String action) {
-        ClientPlayNetworking.send(new MachineStatusDataPayload(menu.getPos(), action));
+        ClientPlayNetworking.send(new MachineStatusDataPayload(menu.getBlockPos(), action));
     }
 
     protected abstract void renderEnergyHandler(GuiGraphicsExtractor context, int x, int y);

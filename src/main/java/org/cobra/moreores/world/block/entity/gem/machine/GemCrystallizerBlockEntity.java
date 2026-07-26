@@ -121,7 +121,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         super.saveAdditional(view);
         view.putInt("DustCount", dustParticleCount);
         view.putInt("DustTick", dustTick);
-        view.storeNullable("GemType", CrystallizationGemstones.CODEC, getGemstone());
+        view.storeNullable("GemType", CrystallizationGemstones.CODEC, gemstone());
     }
 
     @Override
@@ -129,7 +129,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         super.loadAdditional(view);
         dustParticleCount = view.getIntOr("DustCount", 0);
         dustTick = view.getIntOr("DustTick", 0);
-        iGemstone = view.read("GemType", CrystallizationGemstones.CODEC).orElse(CrystallizationGemstones.EMPTY);
+        gemstone = view.read("GemType", CrystallizationGemstones.CODEC).orElse(CrystallizationGemstones.NONE);
     }
 
     @Override
@@ -254,10 +254,10 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         dustTick++;
         redstoneTick++;
 
-        IGemstone newGem = getGemstone();
+        IGemstone newGem = gemstone();
 
-        if (newGem != this.iGemstone) {
-            setGem(newGem);
+        if (newGem != this.gemstone) {
+            setGemstone(newGem);
 
             level.sendBlockUpdated(pos, getBlockState(), getBlockState(), Block.UPDATE_ALL);
             setChanged(level, pos, state);
@@ -278,8 +278,8 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         if(machineStatus == MachineStatus.RUNNING) {
             energyState = MachineStatus.EnergyState.EXTRACTING;
             setChanged(level, pos, state);
-            if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && dustParticleCount >= 15) {
-                this.increaseProgress();
+            if (isResultSlotEmptyOrReceivable() && checkRecipe() && hasRequiredEnergyAmount() && dustParticleCount >= 15) {
+                this.continueTickingProgress();
                 if((!level.hasNeighborSignal(pos) || redstone > 0) && redstoneTick >= 20) {
                     redstone--;
                     redstoneTick = 0;
@@ -307,7 +307,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
             giveEnergy();
             setChanged(level, pos, state);
         } else {
-            if((energyAmount() < 1_000_000 && hasEnergySourceProviderItem())) {
+            if((energyAmount() < 1_000_000 && hasEnergySource())) {
                 energyState = MachineStatus.EnergyState.INSERTING;
                 giveEnergy();
                 setChanged(level, pos, state);
@@ -324,12 +324,12 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     }
 
     @Override
-    public CrystallizationGemstones getGemstone() {
-        IGemstone gem = super.getGemstone();
+    public CrystallizationGemstones gemstone() {
+        IGemstone gem = super.gemstone();
         if(gem instanceof CrystallizationGemstones c) {
             return c;
         }
-        return CrystallizationGemstones.EMPTY;
+        return CrystallizationGemstones.NONE;
     }
 
     @Override
@@ -354,7 +354,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     private void changeState() {
         BlockState state = getBlockState();
 
-        state = state.setValue(GemCrystallizerBlock.IS_POLISHING, getGemstone());
+        state = state.setValue(GemCrystallizerBlock.IS_POLISHING, gemstone());
 
 
         if(state != getBlockState()) {
@@ -393,10 +393,10 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         return initialProgress >= maxProgressTicks;
     }
 
-    protected boolean hasRecipe() {
+    protected boolean checkRecipe() {
         Optional<RecipeHolder<GemCrystallizerRecipe>> recipe = currentRecipe();
 
-        return recipe.isPresent() && hasEnoughEnergy() && canInsertCountIntoResultSlot(recipe.get().value().getResult())
+        return recipe.isPresent() && hasRequiredEnergyAmount() && canInsertCountIntoResultSlot(recipe.get().value().getResult())
                 && canInsertItemIntoResultSlot(recipe.get().value().getResult().getItem());
     }
 

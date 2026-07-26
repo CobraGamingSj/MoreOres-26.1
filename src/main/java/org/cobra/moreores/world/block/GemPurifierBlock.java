@@ -52,13 +52,13 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
     protected GemPurifierBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(REDSTONE_POWERED, false)
-                .setValue(IS_POLISHING, PurificationGemstones.EMPTY));
+                .setValue(IS_POLISHING, PurificationGemstones.NONE));
     }
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getClockWise()).setValue(REDSTONE_POWERED, ctx.getLevel().hasNeighborSignal(ctx.getClickedPos()))
-                .setValue(IS_POLISHING, PurificationGemstones.EMPTY);
+                .setValue(IS_POLISHING, PurificationGemstones.NONE);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
         }
 
         if(world.getBlockEntity(pos) instanceof GemPurifierBlockEntity be) {
-            newState = newState.setValue(IS_POLISHING, be.getGemstone());
+            newState = newState.setValue(IS_POLISHING, be.gemstone());
         }
 
         world.setBlock(pos, newState, Block.UPDATE_ALL);

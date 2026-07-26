@@ -9,7 +9,7 @@ public interface IGemstone {
     GemCategory category();
     Item[] items();
     
-    IGemstone EMPTY = new IGemstone() {
+    IGemstone NONE = new IGemstone() {
         @Override
         public String getName() {
             return "empty";

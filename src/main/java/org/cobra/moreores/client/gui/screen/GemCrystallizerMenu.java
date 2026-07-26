@@ -21,11 +21,10 @@ import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
 import org.cobra.moreores.tags.ModItemTags;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class GemCrystallizerMenu extends AbstractGemMachineMenu {
+public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerBlockEntity> {
     private final Container inventory;
     private final ContainerLevelAccess context;
     private final ContainerData containerData;
-    public final GemCrystallizerBlockEntity blockEntity;
 
     public GemCrystallizerMenu(int syncId, Inventory playerInventory, GemCrystallizerDataSynchronizer data) {
         this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(data.blockPos()),
@@ -33,13 +32,12 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
     }
 
     public GemCrystallizerMenu(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData containerData) {
-        super(ModMenuType.GEM_CRYSTALLIZER, syncId, entity.getBlockPos());
+        super(ModMenuType.GEM_CRYSTALLIZER, syncId, entity.getBlockPos(), (GemCrystallizerBlockEntity)  entity);
         checkContainerSize((Container) entity, 11);
 
         this.inventory = (Container) entity;
         this.context = ContainerLevelAccess.create(entity.getLevel(), entity.getBlockPos());
         this.containerData = containerData;
-        this.blockEntity = (GemCrystallizerBlockEntity) entity;
 
         this.addSlot(new Slot(inventory, 0, 47, 22) {
             @Override
@@ -66,7 +64,7 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
         this.addSlot(new Slot(inventory, 3, 13, 21) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+                return stack.is(ModItemTags.HAS_ENERGY);
             }
         }); // Energy Input
 
@@ -168,7 +166,7 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
     }
 
     private boolean isValidEnergyItem(ItemStack stack) {
-        return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+        return stack.is(ModItemTags.HAS_ENERGY);
     }
 
     private boolean isRadiantDust(ItemStack stack) {
@@ -178,28 +176,5 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(this.context, player, ModBlocks.GEM_CRYSTALLIZER_BLOCK);
-    }
-
-    @Override
-    public BlockEntity getBlockEntity(BlockPos pos, BlockState state, Level world) {
-        return this.blockEntity;
-    }
-
-    public long getEnergy() {
-        return this.blockEntity.energyAmount();
-    }
-
-    public long getEnergyCap() {
-        return this.blockEntity.energyStorage.getCapacity();
-    }
-
-    public float getEnergyPercent() {
-        SimpleEnergyStorage energyStorage = this.blockEntity.energyStorage;
-        long energy = energyStorage.getAmount();
-        long maxEnergy = energyStorage.getCapacity();
-        if (maxEnergy == 0 || energy == 0)
-            return 0.0F;
-
-        return Mth.clamp((float) energy / (float) maxEnergy, 0.0F, 1.0F);
     }
 }

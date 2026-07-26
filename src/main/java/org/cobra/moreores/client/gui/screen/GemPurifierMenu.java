@@ -15,17 +15,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
 import org.cobra.moreores.tags.ModItemTags;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelper {
+public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEntity> {
     private final Container inventory;
     private final ContainerLevelAccess context;
     private final ContainerData containerData;
-    public final GemPurifierBlockEntity blockEntity;
 
     // Client Side Constructor
     public GemPurifierMenu(int syncId, Inventory playerInventory, GemPurifierDataSynchronizer data) {
@@ -35,13 +35,12 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
 
     // Main Constructor
     public GemPurifierMenu(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData containerData) {
-        super(ModMenuType.GEM_PURIFIER, syncId, blockEntity.getBlockPos());
+        super(ModMenuType.GEM_PURIFIER, syncId, blockEntity.getBlockPos(), (GemPurifierBlockEntity) blockEntity);
         checkContainerSize((Container) blockEntity, 17);
 
         this.inventory = ((Container) blockEntity);
         this.context = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
         this.containerData = containerData;
-        this.blockEntity = (GemPurifierBlockEntity) blockEntity;
 
         this.addSlot(new Slot(inventory, 0, 79, 11) {
             @Override
@@ -58,7 +57,7 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
         this.addSlot(new Slot(inventory, 2, 40, 20) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+                return stack.is(ModItemTags.HAS_ENERGY);
             }
         }); // Energy Input
         
@@ -170,32 +169,5 @@ public class GemPurifierMenu extends AbstractGemMachineMenu implements MenuHelpe
         for (int i = 0; i < 12; ++i) {
             this.addSlot(new Slot(playerInventory, 5 + i, 6 + i * 18, 178));
         }
-    }
-
-    public void addSecondAdditionalInventory(Container playerInventory) {
-        return;
-    }
-
-    @Override
-    public BlockEntity getBlockEntity(BlockPos pos, BlockState state, Level world) {
-        return this.blockEntity;
-    }
-
-    public long getEnergy() {
-        return this.blockEntity.energyAmount();
-    }
-
-    public long getEnergyCap() {
-        return this.blockEntity.energyStorage.getCapacity();
-    }
-
-    public float getEnergyPercent() {
-        SimpleEnergyStorage energyStorage = this.blockEntity.energyStorage;
-        long energy = energyStorage.getAmount();
-        long maxEnergy = energyStorage.getCapacity();
-        if (maxEnergy == 0 || energy == 0)
-            return 0.0F;
-
-        return Mth.clamp((float) energy / (float) maxEnergy, 0.0F, 1.0F);
     }
 }

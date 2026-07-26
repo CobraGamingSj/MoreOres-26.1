@@ -20,6 +20,10 @@ public class ItemTagsCreator extends FabricTagsProvider.ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
 
+        tag(ModItemTags.HAS_ENERGY)
+                .add(ResourceHelper.obtainKey(ModItems.ENERGY_INGOT))
+                .add(ResourceHelper.obtainKey(ModBlocks.ENERGY_BLOCK.asItem()));
+        
         tag(ModItemTags.CRYSTALLIZED)
                 .add(ResourceHelper.obtainKey(ModItems.CRIMSON_GARNET))
                 .add(ResourceHelper.obtainKey(ModItems.CRYSTALLITE))

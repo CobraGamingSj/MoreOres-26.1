@@ -35,10 +35,12 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     protected final NonNullList<ItemStack> main;
     protected MachineStatus machineStatus = MachineStatus.IDLE;
     protected MachineStatus.EnergyState energyState = MachineStatus.EnergyState.IDLE;
-    protected IGemstone iGemstone = IGemstone.EMPTY;
+    protected IGemstone gemstone = IGemstone.NONE;
 
     public int initialProgress = 0;
 
+    long energyExtracted = 0;
+    
     protected int redstone = 0;
     protected int maxRedstone = 10000;
     protected int redstoneTick;
@@ -115,7 +117,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
                 }
             }
         }
-        return IGemstone.EMPTY;
+        return IGemstone.NONE;
     }
 
     public int getRedstone() {
@@ -124,23 +126,23 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     
     public abstract GemCategory category();
     
-    public IGemstone getGemstone() {
+    public IGemstone gemstone() {
         return detectGem(resultStack());
     }
 
-    public void setGem(IGemstone gem) {
-        iGemstone = gem;
+    public void setGemstone(IGemstone gemstone) {
+        this.gemstone = gemstone;
     }
 
     public void setEnergyAmount(long energy) {
         this.energyStorage.amount = Math.min(energy, getEnergyCapacity());
     }
 
-    protected boolean hasEnergySourceProviderItem() {
+    protected boolean hasEnergySource() {
         return this.energyStack().is(ModItems.ENERGY_INGOT) || this.energyStack().is(ModBlocks.ENERGY_BLOCK.asItem());
     }
 
-    protected void increaseProgress() {
+    protected void continueTickingProgress() {
         if(this.level.hasNeighborSignal(this.worldPosition) || redstone > 0) {
             initialProgress += 3;
         } else {
@@ -188,12 +190,12 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         this.redstone = redstone;
     }
     
-    protected boolean hasEnoughEnergy() {
+    protected boolean hasRequiredEnergyAmount() {
         return this.energyStorage.amount >= 13;
     }
 
     protected void giveEnergy() {
-        if(!hasEnergySourceProviderItem() || energyStorage.amount >= 1_000_000) {
+        if(!hasEnergySource() || energyStorage.amount >= 1_000_000) {
             energyState = MachineStatus.EnergyState.IDLE;
             return;
         }
@@ -210,40 +212,46 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     protected void eatEnergy() {
         long amount = level.hasNeighborSignal(worldPosition) ? 64 : 13;
         try(Transaction transaction = Transaction.openOuter()) {
-            energyStorage.extract(amount, transaction);
+            long extracted = energyStorage.extract(amount, transaction);
+            energyExtracted +=  extracted;
             transaction.commit();
         }
         energyState = MachineStatus.EnergyState.EXTRACTING;
     }
 
-    protected abstract boolean hasRecipe();
+    protected abstract boolean checkRecipe();
 
     protected void clearProgress() {
         this.initialProgress = 0;
     }
 
-    public void start() {
-        if(machineStatus.isIdle() && hasRecipe() && hasEnoughEnergy()) {
+    public void startProcess() {
+        if(machineStatus.isIdle() && checkRecipe() && hasRequiredEnergyAmount()) {
             machineStatus = MachineStatus.RUNNING;
         }
     }
 
-    public void pause() {
+    public void pauseProcess() {
         if(machineStatus.isRunning()) {
             machineStatus = MachineStatus.PAUSED;
         }
     }
 
-    public void resume() {
-        if(machineStatus.isPaused()&& hasRecipe() && hasEnoughEnergy()) {
+    public void resumeProcess() {
+        if(machineStatus.isPaused()&& checkRecipe() && hasRequiredEnergyAmount()) {
             machineStatus = MachineStatus.RUNNING;
         }
     }
 
-    public void stop() {
+    public void stopProcess() {
         if(!machineStatus.isIdle()) {
             machineStatus = MachineStatus.IDLE;
             clearProgress();
+            try(Transaction transaction = Transaction.openOuter()) {
+                this.energyStorage.insert(energyExtracted, transaction);
+                transaction.commit();
+            }
+            this.energyExtracted = 0;
         }
     }
 

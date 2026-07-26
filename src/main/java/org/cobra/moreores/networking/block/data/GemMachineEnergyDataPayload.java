@@ -21,7 +21,7 @@ public record GemMachineEnergyDataPayload(long energyAmount, BlockPos blockPos) 
         if (world.getBlockEntity(this.blockPos) instanceof AbstractGemMachineBlockEntity<?> blockEntity) {
             blockEntity.setEnergyAmount(this.energyAmount);
 
-            if (context.player().containerMenu instanceof AbstractGemMachineMenu screenHandler && screenHandler.getPos().equals(this.blockPos)) {
+            if (context.player().containerMenu instanceof AbstractGemMachineMenu screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
                 blockEntity.setEnergyAmount(this.energyAmount);
             }
         }

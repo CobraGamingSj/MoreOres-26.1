@@ -178,7 +178,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         view.putLong("gem_purifier.water", fluidStorage.amount);
         view.storeNullable("gem_purifier.fluidAmount.variant", FluidVariant.CODEC, fluidStorage.variant);
         view.storeNullable("WaterState", FluidState.CODEC, waterState);
-        view.storeNullable("GemType", PurificationGemstones.CODEC, getGemstone());
+        view.storeNullable("GemType", PurificationGemstones.CODEC, gemstone());
     }
 
     @Override
@@ -187,7 +187,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         fluidStorage.amount = view.getLongOr("gem_purifier.water", 0);
         fluidStorage.variant = view.read("gem_purifier.fluidAmount.variant", FluidVariant.CODEC).orElse(FluidVariant.blank());
         waterState = view.read("WaterState", FluidState.CODEC).orElse(FluidState.IDLE);
-        iGemstone = view.read("GemType", PurificationGemstones.CODEC).orElse(PurificationGemstones.EMPTY);
+        gemstone = view.read("GemType", PurificationGemstones.CODEC).orElse(PurificationGemstones.NONE);
     }
 
     @Override
@@ -268,10 +268,10 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
         redstoneTick++;
         
-        IGemstone newGem = getGemstone();
+        IGemstone newGem = gemstone();
 
-        if (newGem != this.iGemstone) {
-            setGem(newGem);
+        if (newGem != this.gemstone) {
+            setGemstone(newGem);
 
             level.sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
         }
@@ -285,8 +285,8 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         changeState();
         if(machineStatus == MachineStatus.RUNNING) {
             energyState = MachineStatus.EnergyState.EXTRACTING;
-            if (isResultSlotEmptyOrReceivable() && hasRecipe() && hasEnoughEnergy() && hasEnoughWater()) {
-                this.increaseProgress();
+            if (isResultSlotEmptyOrReceivable() && checkRecipe() && hasRequiredEnergyAmount() && hasEnoughWater()) {
+                this.continueTickingProgress();
                 if((!level.hasNeighborSignal(pos) || redstone > 0) && redstoneTick >= 20) {
                     redstone--;
                     redstoneTick = 0;
@@ -309,7 +309,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
             giveEnergy();
             fillWater();
         } else {
-            if((energyAmount() < 10_000_000 && hasEnergySourceProviderItem()) || (waterAmount() < 810000 && hasWaterBucket())) {
+            if((energyAmount() < 10_000_000 && hasEnergySource()) || (waterAmount() < 810000 && hasWaterBucket())) {
                 energyState = MachineStatus.EnergyState.INSERTING;
                 giveEnergy();
                 waterState = FluidState.FILLING;
@@ -321,26 +321,23 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         }
 
         validateEnergyAmount(ENERGY_SOURCE_SLOT);
-        checkForEnoughWaterAndConsumeSingle();
+        validateFluidAmount();
         validateRedstoneAmount(REDSTONE_SLOT);
         setChanged(level, pos, state);
     }
 
     @Override
-    public PurificationGemstones getGemstone() {
-        IGemstone gem = super.getGemstone();
+    public PurificationGemstones gemstone() {
+        IGemstone gem = super.gemstone();
         if(gem instanceof PurificationGemstones p) {
             return p;
         }
-        return PurificationGemstones.EMPTY;
+        return PurificationGemstones.NONE;
     }
 
     private void changeState() {
         BlockState state = getBlockState();
-
-        state = state.setValue(GemPurifierBlock.IS_POLISHING, getGemstone());
-
-
+        state = state.setValue(GemPurifierBlock.IS_POLISHING, gemstone());
         if(state != getBlockState()) {
             level.setBlock(worldPosition, state, Block.UPDATE_ALL);
         }
@@ -366,10 +363,10 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
             fluidStorage.extract(FluidVariant.of(Fluids.WATER), FluidStack.convertDropletsToMb(amount), transaction);
             transaction.commit();
         }
-        waterState = FluidState.EMPTYING;
+        waterState = FluidState.DRINKING;
     }
 
-    private void checkForEnoughWaterAndConsumeSingle() {
+    private void validateFluidAmount() {
         if(fluidStorage.amount > 810000) {
             fluidStorage.amount = 810000;
         }
@@ -389,7 +386,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
 
     @Override
-    protected boolean hasEnoughEnergy() {
+    protected boolean hasRequiredEnergyAmount() {
         return this.energyStorage.amount >= 128;
     }
 
@@ -398,7 +395,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
 
     private void getPurifiedGemstone() {
-        RecipeHolder<GemPurifierRecipe> recipe = currentRecipe().orElseThrow();
+        RecipeHolder<GemPurifierRecipe> recipe = getCurrentRecipe().orElseThrow();
 
         this.removeItem(INGREDIENT_SLOT, 1);
 
@@ -410,7 +407,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
 
     @Override
-    public void increaseProgress() {
+    public void continueTickingProgress() {
         if(this.level.hasNeighborSignal(this.worldPosition) || redstone > 0) {
             initialProgress += 5;
         } else {
@@ -419,10 +416,10 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
 
     @Override
-    protected boolean hasRecipe() {
-        Optional<RecipeHolder<GemPurifierRecipe>> recipe = currentRecipe();
+    protected boolean checkRecipe() {
+        Optional<RecipeHolder<GemPurifierRecipe>> recipe = getCurrentRecipe();
 
-        return recipe.isPresent() && hasEnoughEnergy() && canInsertCountIntoResultSlot(recipe.get().value().getResult())
+        return recipe.isPresent() && hasRequiredEnergyAmount() && canInsertCountIntoResultSlot(recipe.get().value().getResult())
                 && canInsertItemIntoResultSlot(recipe.get().value().getResult().getItem());
     }
 
@@ -430,7 +427,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         return this.fluidStack().is(Items.WATER_BUCKET);
     }
 
-    private Optional<RecipeHolder<GemPurifierRecipe>> currentRecipe() {
+    private Optional<RecipeHolder<GemPurifierRecipe>> getCurrentRecipe() {
         ServerLevel serverWorld = (ServerLevel) level;
         if(serverWorld == null) {
             return Optional.empty();
@@ -453,7 +450,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
     @Override
     protected void giveEnergy() {
-        if(!hasEnergySourceProviderItem() || energyStorage.amount >= 10_000_000) {
+        if(!hasEnergySource() || energyStorage.amount >= 10_000_000) {
             energyState = MachineStatus.EnergyState.IDLE;
             return;
         }
@@ -471,7 +468,8 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     protected void eatEnergy() {
         long amount = level.hasNeighborSignal(worldPosition) ? 640 : 128;
         try(Transaction transaction = Transaction.openOuter()) {
-            energyStorage.extract(amount, transaction);
+            long extracted = energyStorage.extract(amount, transaction);
+            energyExtracted += extracted;
             transaction.commit();
         }
         energyState = MachineStatus.EnergyState.EXTRACTING;
@@ -480,7 +478,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     public enum FluidState implements StringRepresentable {
         IDLE("idle"),
         FILLING("filling"),
-        EMPTYING("emptying");
+        DRINKING("emptying");
     
         private final String name;
     

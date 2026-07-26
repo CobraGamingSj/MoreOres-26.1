@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -12,9 +13,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.client.gui.widget.FluidWidget;
+import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
+
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu> {
+public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlockEntity, GemPurifierMenu> {
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
     private static final Identifier TEXTURE = MoreOresModInitializer.id("textures/gui/container/gem_purifier/gem_purifier_gui_test.png");
@@ -23,8 +27,11 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu>
         RESUME_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/resume.png"),
         STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
 
-    public GemPurifierScreen(GemPurifierMenu handler, Inventory inventory, Component title) {
-        super(handler, inventory, title, 226, 201);
+    private final CyclingSlotBackground energyIngotSlotIcon = new CyclingSlotBackground(2);
+    private final CyclingSlotBackground inputSlotIcon = new CyclingSlotBackground(0);
+    
+    public GemPurifierScreen(GemPurifierMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title, 226, 201);
     }
 
     @Override
@@ -100,6 +107,21 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu>
     }
 
     @Override
+    protected void containerTick() {
+        super.containerTick();
+        this.energyIngotSlotIcon.tick(getEnergyIngotSlotTexture());
+        this.inputSlotIcon.tick(getInputSlotTexture());
+    }
+
+    private List<Identifier> getEnergyIngotSlotTexture() {
+        return List.of(MoreOresModInitializer.id("container/slot/empty_ingot"), MoreOresModInitializer.id("container/slot/energy_ingot_faded"));
+    }
+
+    private List<Identifier> getInputSlotTexture() {
+        return List.of(MoreOresModInitializer.id("container/slot/empty_raw_gem"));
+    }
+    
+    @Override
     public void renderProgressArrow(GuiGraphicsExtractor context, int leftPos, int topPos) {
         if(this.menu.isPolishing()) {
             context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos + 83, topPos + 31, 207, 0, 10, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
@@ -118,6 +140,17 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierMenu>
         extractor.fillGradient(startX, startY, startX + l, endY, CommonColors.RED, CommonColors.SOFT_RED);
     }
 
+    @Override
+    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        super.extractBackground(context, mouseX, mouseY, delta);
+        if(this.menu.getBlockEntity().energyStack().isEmpty()) {
+            this.energyIngotSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
+        }
+        if(this.menu.getBlockEntity().ingredientStack().isEmpty()) {
+            this.inputSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
+        }
+    }
+    
     @Override
     public void renderEnergyHandler(GuiGraphicsExtractor context, int leftPos, int topPos) {
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
