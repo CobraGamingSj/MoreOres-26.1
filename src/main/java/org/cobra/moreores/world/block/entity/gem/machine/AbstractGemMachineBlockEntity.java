@@ -53,7 +53,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         this.main = NonNullList.withSize(mainStackSize(), ItemStack.EMPTY);
     }
 
-    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(getEnergyCapacity(), getMaxEnergyInsert(), getMaxEnergyExtract()) {
+    private final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(getEnergyCapacity(), getMaxEnergyInsert(), getMaxEnergyExtract()) {
         @Override
         public void onFinalCommit() {
             super.onFinalCommit();
@@ -134,6 +134,10 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         this.gemstone = gemstone;
     }
 
+    public SimpleEnergyStorage energyStorage() {
+        return this.energyStorage;
+    }
+    
     public void setEnergyAmount(long energy) {
         this.energyStorage.amount = Math.min(energy, getEnergyCapacity());
     }

@@ -335,7 +335,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     @Override
     protected void validateEnergyAmount(int energySlot) {
         if(energyAmount() > 1000000) {
-            energyStorage.amount = 1000000;
+            energyStorage().amount = 1000000;
         }
             
         long energy = this.energyAmount();

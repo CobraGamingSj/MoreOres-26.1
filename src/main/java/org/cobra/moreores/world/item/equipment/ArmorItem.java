@@ -125,7 +125,7 @@ public class ArmorItem extends Item {
                 List<MobEffectInstance> effects = ARMOR_EFFECTS.get(ModArmorMaterials.RADIANT);
                 if(effects != null) {
                     for (MobEffectInstance effect : effects) {
-                        builder.accept(Component.translatable(effect.getDescriptionId()).append(" " + (effect.getAmplifier() + 1)).withStyle(ChatFormatting.RED));
+                        builder.accept(Component.literal(" ").append(Component.translatable(effect.getDescriptionId())).append(" " + (effect.getAmplifier() + 1)).withStyle(ChatFormatting.RED));
                     }
                 }
                 Equippable self = stack.getComponents().get(DataComponents.EQUIPPABLE);

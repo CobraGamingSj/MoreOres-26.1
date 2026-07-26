@@ -387,7 +387,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
     @Override
     protected boolean hasRequiredEnergyAmount() {
-        return this.energyStorage.amount >= 128;
+        return this.energyAmount() >= 128;
     }
 
     private boolean hasEnoughWater() {
@@ -450,14 +450,14 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
     @Override
     protected void giveEnergy() {
-        if(!hasEnergySource() || energyStorage.amount >= 10_000_000) {
+        if(!hasEnergySource() || energyAmount() >= 10_000_000) {
             energyState = MachineStatus.EnergyState.IDLE;
             return;
         }
         long amount = energyStack().is(ModItems.ENERGY_INGOT) ? 1024 : 1536;
         if(level.hasNeighborSignal(worldPosition)) amount *= 5;
         try(Transaction transaction = Transaction.openOuter()) {
-            long inserted = energyStorage.insert(amount, transaction);
+            long inserted = energyStorage().insert(amount, transaction);
             transaction.commit();
             if(inserted > 0) energyState = MachineStatus.EnergyState.INSERTING;
             else energyState = MachineStatus.EnergyState.IDLE;
@@ -468,7 +468,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     protected void eatEnergy() {
         long amount = level.hasNeighborSignal(worldPosition) ? 640 : 128;
         try(Transaction transaction = Transaction.openOuter()) {
-            long extracted = energyStorage.extract(amount, transaction);
+            long extracted = energyStorage().extract(amount, transaction);
             energyExtracted += extracted;
             transaction.commit();
         }
