@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import org.cobra.moreores.client.gui.widget.MachineControlButtonWidget;
+import org.cobra.moreores.client.gui.widget.MachineButton;
 import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
 import org.cobra.moreores.world.block.entity.gem.machine.AbstractGemMachineBlockEntity;
 import org.lwjgl.glfw.GLFW;
@@ -41,7 +41,7 @@ public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlock
     }
 
     protected Button addButton(String translation, int buttonIndex, int x, int y, Identifier texture, Component tooltip) {
-        Button button = new MachineControlButtonWidget(x, y, Component.translatable(translation), texture, buttonIndex, menu.getBlockPos());
+        Button button = new MachineButton(x, y, Component.translatable(translation), texture, buttonIndex, menu.getBlockPos());
         button.setTooltip(Tooltip.create(tooltip));
         return this.addRenderableWidget(button);
     }

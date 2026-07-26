@@ -17,6 +17,7 @@ import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.level.block.Block;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -24,6 +25,7 @@ import org.cobra.moreores.world.block.RubyLampBlock;
 import org.cobra.moreores.world.item.RadiantBowItem;
 import org.cobra.moreores.world.item.equipment.ModEquipmentAssets;
 
+import java.util.List;
 import java.util.Map;
 
 public class AutomaticModelGenerator extends FabricModelProvider {
@@ -62,6 +64,18 @@ public class AutomaticModelGenerator extends FabricModelProvider {
                 "_leggings", ItemModelGenerators.TRIM_PREFIX_LEGGINGS,
                 "_boots", ItemModelGenerators.TRIM_PREFIX_BOOTS
         );
+
+        List<String> armorSuffixes = List.of("_chestplate", "_helmet", "_leggings", "_boots");
+
+        Map<String, ResourceKey<EquipmentAsset>> pathAssetMap = Map.of(
+                "iron_", EquipmentAssets.IRON,
+                "gold_", EquipmentAssets.GOLD,
+                "diamond_", EquipmentAssets.DIAMOND,
+                "netherite_", EquipmentAssets.NETHERITE,
+                "copper_", EquipmentAssets.COPPER,
+                "leather_", EquipmentAssets.LEATHER,
+                "chainmail_", EquipmentAssets.CHAINMAIL
+        );
         
         for (Item item : BuiltInRegistries.ITEM) {
 
@@ -75,6 +89,33 @@ public class AutomaticModelGenerator extends FabricModelProvider {
 
             boolean handheld = false;
 
+            if(id.getNamespace().equals("minecraft")) {
+                for(Map.Entry<String, ResourceKey<EquipmentAsset>> entry : pathAssetMap.entrySet()) {
+                    for (String armorSuffix : armorSuffixes) {
+                        if (path.startsWith(entry.getKey()) && path.endsWith(armorSuffix)) {
+                            assetKey = entry.getValue();
+                            break;
+                        }
+                    }
+                }
+
+                if (assetKey != null) {
+                    boolean generated = false;
+                    for (Map.Entry<String, Identifier> entry : trimPrefixes.entrySet()) {
+                        String suffix = entry.getKey();
+                        Identifier prefix = entry.getValue();
+                        if(path.endsWith(suffix)) {
+                            itemModelGenerator.generateTrimmableItem(item, assetKey, prefix, false);
+                            generated = true;
+                        }
+                    }
+                    if(generated) {
+                        continue;
+                    }
+                }
+                continue;
+            }
+            
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
 
                 if(path.endsWith("_sword") || path.endsWith("_shovel") ||
