@@ -18,7 +18,7 @@ public class ModItems {
 
     private static final ResourceHelper.ItemResource RESOURCE = ResourceHelper.ItemResource.INSTANCE;
 
-    public static final Item GEM_DETECTOR = RESOURCE.register("gem_detector", GemDetector::new);
+//    public static final Item GEM_DETECTOR = RESOURCE.register("gem_detector", GemDetector::new);
 
     
 //    Gemstones & Ingots
@@ -229,9 +229,9 @@ public class ModItems {
             }
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
                 String name = MoreOresModInitializer.formatIdName(id.getPath());
-                if(item == GEM_DETECTOR) {
-                    continue;
-                }
+//                if(item == GEM_DETECTOR) {
+//                    continue;
+//                }
                 itemCount++;
                 LOGGER.info("Registering Item: {}, for {} mod", name, MoreOresModInitializer.MOD_ID);
             }
