@@ -3,7 +3,7 @@ package org.cobra.moreores;
 import org.cobra.moreores.data.*;
 import org.cobra.moreores.data.village.TradeSets;
 import org.cobra.moreores.enchantment.ModEnchantments;
-import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimMaterials;
+import org.cobra.moreores.world.item.equipment.trim.ModTrimMaterials;
 import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimPatterns;
 import org.cobra.moreores.level.gen.feature.ModConfiguredFeatures;
 import org.cobra.moreores.level.gen.feature.ModPlacedFeatures;
@@ -23,7 +23,7 @@ public class MoreOresDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(BlockTagsCreator::new);
 		pack.addProvider(PointOfInterestTypeTagsCreator::new);
 		pack.addProvider(VillagerTradeTagsCreator::new);
-		pack.addProvider(AutomaticModelGenerator::new);
+		pack.addProvider(AutomaticModelCreator::new);
 		pack.addProvider(AdvancementsCreator::new);
 		pack.addProvider(AutomaticLootTableCreator::new);
 		pack.addProvider(AutomaticRecipeCreator::new);
@@ -35,7 +35,7 @@ public class MoreOresDataGenerator implements DataGeneratorEntrypoint {
 	public void buildRegistry(RegistrySetBuilder registryBuilder) {
 		registryBuilder.add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
 		registryBuilder.add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
-		registryBuilder.add(Registries.TRIM_MATERIAL, ModArmorTrimMaterials::bootstrap);
+		registryBuilder.add(Registries.TRIM_MATERIAL, ModTrimMaterials::bootstrap);
 		registryBuilder.add(Registries.TRIM_PATTERN, ModArmorTrimPatterns::bootstrap);
 		registryBuilder.add(Registries.ENCHANTMENT, ModEnchantments::bootstrap);
 		registryBuilder.add(Registries.TRADE_SET, TradeSets::bootstrap);

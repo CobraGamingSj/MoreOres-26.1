@@ -26,18 +26,18 @@ public record GemPurifierButtonClickPayload(int buttonIndex, BlockPos pos) imple
 
         if(world.getBlockEntity(pos) instanceof AbstractGemMachineBlockEntity<?> blockEntity) {
             switch (buttonIndex) {
-                case 0 -> blockEntity.start();
-                case 1 -> blockEntity.pause();
-                case 2 -> blockEntity.resume();
-                case 3 -> blockEntity.stop();
+                case 0 -> blockEntity.startProcess();
+                case 1 -> blockEntity.pauseProcess();
+                case 2 -> blockEntity.resumeProcess();
+                case 3 -> blockEntity.stopProcess();
                 }
 
                 if((context.player().containerMenu instanceof AbstractGemMachineMenu<?> menu && menu.getBlockPos().equals(pos))) {
                     switch (buttonIndex) {
-                        case 0 -> blockEntity.start();
-                        case 1 -> blockEntity.pause();
-                        case 2 -> blockEntity.resume();
-                        case 3 -> blockEntity.stop();
+                        case 0 -> blockEntity.startProcess();
+                        case 1 -> blockEntity.pauseProcess();
+                        case 2 -> blockEntity.resumeProcess();
+                        case 3 -> blockEntity.stopProcess();
                     }
                 }
             }

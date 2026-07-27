@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.core.registry.ModItemTags;
+import org.cobra.moreores.tags.ModItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;

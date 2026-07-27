@@ -1,6 +1,8 @@
 package org.cobra.moreores.world.item.equipment;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -52,7 +54,6 @@ public class ArmorItem extends Item {
                     player.removeEffect(MobEffects.SLOW_FALLING);
                 }
                 evaluateArmorEffects(player);
-                appendHoverText(stack, TooltipContext.of(serverLevel), TooltipDisplay.DEFAULT, component -> {}, TooltipFlag.NORMAL);
             } else {
                 player.removeEffect(MobEffects.REGENERATION);
                 player.removeEffect(MobEffects.HEALTH_BOOST);
@@ -61,7 +62,7 @@ public class ArmorItem extends Item {
         }
         super.inventoryTick(stack, serverLevel, entity, slot);
     }
-    
+
     private void evaluateArmorEffects(Player player) {
         for (Map.Entry<ArmorMaterial, List<MobEffectInstance>> entry : ARMOR_EFFECTS.entrySet()) {
             ArmorMaterial mapArmorMaterial = entry.getKey();
@@ -112,8 +113,28 @@ public class ArmorItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
-        builder.accept(Component.literal("Negate fall damage"));
-        super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, display, builder, tooltipFlag);
+        Minecraft client = Minecraft.getInstance();
+        Player player = client.player;
+        if (player != null && hasFullSuitOfArmorOn(player)) {
+            EquipmentSlot slot = player.getEquipmentSlotForItem(stack);
+            if(player.getItemBySlot(slot).equals(stack)) {
+                builder.accept(Component.literal("Applied Effects: ")
+                        .withStyle(ChatFormatting.YELLOW));
+                List<MobEffectInstance> effects = ARMOR_EFFECTS.get(ModArmorMaterials.RADIANT);
+                if(effects != null) {
+                    for (MobEffectInstance effect : effects) {
+                        builder.accept(Component.literal(" ").append(Component.translatable(effect.getDescriptionId())).append(" " + (effect.getAmplifier() + 1)).withStyle(ChatFormatting.RED));
+                    }
+                }
+                Equippable self = stack.getComponents().get(DataComponents.EQUIPPABLE);
+                if (self != null && self.assetId().isPresent()
+                        && self.assetId().get().equals(ModArmorMaterials.RADIANT.assetId())
+                        && self.slot() == EquipmentSlot.FEET) {
+                    builder.accept(Component.literal("Fall Protection Activated").withStyle(ChatFormatting.BLUE));
+                }
+            }
+        }
     }
 }

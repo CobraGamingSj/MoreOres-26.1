@@ -22,10 +22,10 @@ public record MachineStatusDataPayload(BlockPos blockPos, String action) impleme
         context.server().execute(() -> {
             if(context.player().level().getBlockEntity(blockPos) instanceof AbstractGemMachineBlockEntity<?> be) {
                 switch(action) {
-                    case "start" -> be.start();
-                    case "pause" -> be.pause();
-                    case "resume" -> be.resume();
-                    case "stop" -> be.stop();
+                    case "start" -> be.startProcess();
+                    case "pause" -> be.pauseProcess();
+                    case "resume" -> be.resumeProcess();
+                    case "stop" -> be.stopProcess();
                 }
                 be.setChanged();
             }

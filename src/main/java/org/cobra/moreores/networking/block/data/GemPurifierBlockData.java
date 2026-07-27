@@ -14,7 +14,7 @@ import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.core.registry.ModItemTags;
+import org.cobra.moreores.tags.ModItemTags;
 import org.lwjgl.glfw.GLFW;
 
 public record GemPurifierBlockData(int keyCode, BlockPos pos) implements CustomPacketPayload {
@@ -53,7 +53,7 @@ public record GemPurifierBlockData(int keyCode, BlockPos pos) implements CustomP
 
                     if(heldStack.is(Items.WATER_BUCKET)) {
                         if(fluidStack.isEmpty()) {
-                            be.setItem(GemPurifierBlockEntity.FLUID_SOURCE_SLOT, heldStack.copy());
+                            be.setItem(GemPurifierBlockEntity.WATER_SOURCE_SLOT, heldStack.copy());
                             heldStack.shrink(1);
                         } else if (ItemStack.isSameItem(fluidStack, heldStack)) {
                             fluidStack.grow(heldStack.getCount());

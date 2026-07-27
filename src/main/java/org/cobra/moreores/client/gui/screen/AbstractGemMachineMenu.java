@@ -54,15 +54,15 @@ public abstract class AbstractGemMachineMenu<T extends AbstractGemMachineBlockEn
     }
 
     public long getEnergy() {
-        return this.blockEntity.energyStorage.getAmount();
+        return this.blockEntity.energyStorage().getAmount();
     }
 
     public long getEnergyCap() {
-        return this.blockEntity.energyStorage.getCapacity();
+        return this.blockEntity.energyStorage().getCapacity();
     }
 
     public float getEnergyPercent() {
-        SimpleEnergyStorage energyStorage = this.blockEntity.energyStorage;
+        SimpleEnergyStorage energyStorage = this.blockEntity.energyStorage();
         long energy = energyStorage.getAmount();
         long maxEnergy = energyStorage.getCapacity();
         if (maxEnergy == 0 || energy == 0)

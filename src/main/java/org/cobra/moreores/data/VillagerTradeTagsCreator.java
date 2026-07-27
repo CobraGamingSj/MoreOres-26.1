@@ -6,7 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.world.item.trading.VillagerTrade;
-import org.cobra.moreores.core.registry.ModVillagerTradeTags;
+import org.cobra.moreores.tags.ModVillagerTradeTags;
 import org.cobra.moreores.world.item.trading.ModVillagerTrades;
 
 import java.util.concurrent.CompletableFuture;

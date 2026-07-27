@@ -14,7 +14,7 @@ import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
-import org.cobra.moreores.core.registry.ModItemTags;
+import org.cobra.moreores.tags.ModItemTags;
 
 public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerBlockEntity> {
     private final Container inventory;

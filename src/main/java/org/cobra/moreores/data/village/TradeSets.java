@@ -10,7 +10,7 @@ import net.minecraft.world.item.trading.VillagerTrade;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.core.registry.ModVillagerTradeTags;
+import org.cobra.moreores.tags.ModVillagerTradeTags;
 
 import java.util.Optional;
 

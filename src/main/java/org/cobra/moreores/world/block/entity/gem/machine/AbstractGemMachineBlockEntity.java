@@ -14,6 +14,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,7 +26,7 @@ import org.cobra.moreores.world.block.entity.TickableBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.world.item.util.GemCategory;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
-import org.cobra.moreores.world.item.util.impl.Gemstone;
+import org.cobra.moreores.world.item.util.impl.IGemstone;
 import org.cobra.moreores.world.item.util.impl.PurificationGemstones;
 import org.cobra.moreores.networking.block.data.GemMachineEnergyDataPayload;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -34,11 +35,11 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     protected final NonNullList<ItemStack> main;
     protected MachineStatus machineStatus = MachineStatus.IDLE;
     protected MachineStatus.EnergyState energyState = MachineStatus.EnergyState.IDLE;
-    protected Gemstone gemstone = Gemstone.NONE;
+    protected IGemstone gemstone = IGemstone.NONE;
 
-    long extractedEnergyAmount = 0;
-    
     public int initialProgress = 0;
+
+    long energyExtracted = 0;
 
     protected int redstone = 0;
     protected int maxRedstone = 10000;
@@ -46,13 +47,13 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
 
     protected long previousRemovedEnergyMilestone = 0;
     protected long previousRemovedRedstoneMilestone = 0;
-    
+
     public AbstractGemMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.main = NonNullList.withSize(mainStackSize(), ItemStack.EMPTY);
     }
 
-    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(getEnergyCapacity(), getMaxEnergyInsert(), getMaxEnergyExtract()) {
+    private final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(getEnergyCapacity(), getMaxEnergyInsert(), getMaxEnergyExtract()) {
         @Override
         public void onFinalCommit() {
             super.onFinalCommit();
@@ -65,50 +66,42 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         }
     };
 
-    public SimpleEnergyStorage energyStorage() {
-        return this.energyStorage;
-    }
-    
     public abstract int mainStackSize();
     public abstract long getEnergyCapacity();
     public abstract long getMaxEnergyInsert();
     public abstract long getMaxEnergyExtract();
+    public abstract RecipeManager.CachedCheck<?, ?> getMatchGetter();
+    public abstract int getInitialProgress();
 
     @Override
-    public void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        ContainerHelper.saveAllItems(output, main);
-        output.putInt("Progress", initialProgress);
-        output.putLong("Energy", energyStorage.amount);
-        output.putInt("Redstone", this.redstone);
-        output.putInt("RedstoneTick", this.redstoneTick);
-        output.putLong("EnergyExtracted", extractedEnergyAmount);
-        output.storeNullable("PolishingState", MachineStatus.CODEC, machineStatus);
-        output.storeNullable("EnergyState", MachineStatus.EnergyState.CODEC, energyState);
+    public void saveAdditional(ValueOutput view) {
+        super.saveAdditional(view);
+        ContainerHelper.saveAllItems(view, main);
+        view.putInt("Progress", initialProgress);
+        view.putLong("Energy", energyStorage.amount);
+        view.storeNullable("PolishingState", MachineStatus.CODEC, machineStatus);
+        view.storeNullable("EnergyState", MachineStatus.EnergyState.CODEC, energyState);
+        view.putInt("Redstone", redstone);
+        view.putInt("RedstoneTick", redstoneTick);
     }
 
     @Override
-    public void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        ContainerHelper.loadAllItems(input, main);
-        initialProgress = input.getIntOr("Progress", 0);
-        energyStorage.amount = input.getLongOr("Energy", 0);
-        this.redstone = input.getIntOr("Redstone", 0);
-        this.redstoneTick = input.getIntOr("RedstoneTick", 0);
-        extractedEnergyAmount = input.getLongOr("EnergyExtracted", 0);
-        machineStatus = input.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.IDLE);
-        energyState = input.read("EnergyState", MachineStatus.EnergyState.CODEC).orElse(MachineStatus.EnergyState.IDLE);
+    public void loadAdditional(ValueInput view) {
+        super.loadAdditional(view);
+        ContainerHelper.loadAllItems(view, main);
+        initialProgress = view.getIntOr("Progress", 0);
+        redstone = view.getIntOr("Redstone", 0);
+        redstoneTick = view.getIntOr("RedstoneTick", 0);
+        energyStorage.amount = view.getLongOr("Energy", 0);
+        machineStatus = view.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.IDLE);
+        energyState = view.read("EnergyState", MachineStatus.EnergyState.CODEC).orElse(MachineStatus.EnergyState.IDLE);
     }
 
-    public int getRedstone() {
-        return this.redstone;
+    public long energyAmount() {
+        return this.energyStorage.amount;
     }
 
-    public void setRedstone(int redstone) {
-        this.redstone = redstone;
-    }
-    
-    public Gemstone detectGem(ItemStack stack) {
+    public IGemstone detectGem(ItemStack stack) {
         Item item = stack.getItem();
         for (PurificationGemstones gems : PurificationGemstones.values()) {
             for (Item item1 : gems.items()) {
@@ -124,17 +117,25 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
                 }
             }
         }
-        return Gemstone.NONE;
+        return IGemstone.NONE;
+    }
+
+    public int getRedstone() {
+        return this.redstone;
     }
 
     public abstract GemCategory category();
-    
-    public Gemstone gemstone() {
+
+    public IGemstone gemstone() {
         return detectGem(resultStack());
     }
 
-    public void setGemstone(Gemstone gemstone) {
+    public void setGemstone(IGemstone gemstone) {
         this.gemstone = gemstone;
+    }
+
+    public SimpleEnergyStorage energyStorage() {
+        return this.energyStorage;
     }
 
     public void setEnergyAmount(long energy) {
@@ -145,40 +146,33 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         return this.energyStack().is(ModItems.ENERGY_INGOT) || this.energyStack().is(ModBlocks.ENERGY_BLOCK.asItem());
     }
 
-    protected void increaseProgress() {
-        if(level == null) {
-            return;
-        }
-        if(this.level.hasNeighborSignal(this.worldPosition)) {
+    protected void continueTickingProgress() {
+        if(this.level.hasNeighborSignal(this.worldPosition) || redstone > 0) {
             initialProgress += 3;
         } else {
             initialProgress++;
         }
     }
 
-    public long energyAmount() {
-        return this.energyStorage().amount;
-    }
-    
     protected void validateEnergyAmount(int energySlot) {
         if(energyAmount() > 10000000) {
             energyStorage.amount = 10000000;
         }
 
-        long energy = this.energyStorage.amount;
+        long energy = this.energyAmount();
 
-        long[] milestones = {1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000, 10000000};
+        long [] milestones = {1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000, 10000000};
 
         for(long milestone : milestones) {
-            if(energy >= milestone && previousRemovedEnergyMilestone < milestone) {
-                this.removeItem(energySlot);
+            if(energy == milestone && previousRemovedEnergyMilestone < milestone) {
+                this.removeItem(energySlot, 1);
                 previousRemovedEnergyMilestone = milestone;
                 break;
             }
         }
     }
 
-    protected void validateRedstoneDust(int slot) {
+    protected void validateRedstoneAmount(int slot) {
         if(redstone > 10000) {
             redstone = 10000;
         }
@@ -188,22 +182,23 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         int [] milestones = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
 
         for(long milestone : milestones) {
-            if(amount >= milestone && previousRemovedRedstoneMilestone < milestone) {
-                this.removeItem(slot);
+            if(amount == milestone && previousRemovedRedstoneMilestone < milestone) {
+                this.removeItem(slot, 1);
                 previousRemovedRedstoneMilestone = milestone;
                 break;
             }
         }
     }
-    
-    protected boolean hasEnoughEnergy() {
+
+    public void setRedstone(int redstone) {
+        this.redstone = redstone;
+    }
+
+    protected boolean hasRequiredEnergyAmount() {
         return this.energyStorage.amount >= 13;
     }
 
     protected void giveEnergy() {
-        if(level == null) {
-            return;
-        }
         if(!hasEnergySource() || energyStorage.amount >= 1_000_000) {
             energyState = MachineStatus.EnergyState.IDLE;
             return;
@@ -219,50 +214,48 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     }
 
     protected void eatEnergy() {
-        if(level == null) {
-            return;
-        }
         long amount = level.hasNeighborSignal(worldPosition) ? 64 : 13;
         try(Transaction transaction = Transaction.openOuter()) {
-            long extracted = energyStorage().extract(amount, transaction);
-            extractedEnergyAmount += extracted;
+            long extracted = energyStorage.extract(amount, transaction);
+            energyExtracted +=  extracted;
             transaction.commit();
         }
         energyState = MachineStatus.EnergyState.EXTRACTING;
     }
 
-    protected abstract boolean hasRecipe();
+    protected abstract boolean checkRecipe();
 
-    private void resetProgress() {
+    protected void clearProgress() {
         this.initialProgress = 0;
     }
 
-    public void start() {
-        if(machineStatus.isIdle() && hasRecipe() && hasEnoughEnergy()) {
+    public void startProcess() {
+        if(machineStatus.isIdle() && checkRecipe() && hasRequiredEnergyAmount()) {
             machineStatus = MachineStatus.RUNNING;
         }
     }
 
-    public void pause() {
+    public void pauseProcess() {
         if(machineStatus.isRunning()) {
             machineStatus = MachineStatus.PAUSED;
         }
     }
 
-    public void resume() {
-        if(machineStatus.isPaused()&& hasRecipe() && hasEnoughEnergy()) {
+    public void resumeProcess() {
+        if(machineStatus.isPaused()&& checkRecipe() && hasRequiredEnergyAmount()) {
             machineStatus = MachineStatus.RUNNING;
         }
     }
 
-    public void stop() {
+    public void stopProcess() {
         if(!machineStatus.isIdle()) {
             machineStatus = MachineStatus.IDLE;
-            resetProgress();
+            clearProgress();
             try(Transaction transaction = Transaction.openOuter()) {
-                this.energyStorage().insert(extractedEnergyAmount, transaction);
+                this.energyStorage.insert(energyExtracted, transaction);
                 transaction.commit();
             }
+            this.energyExtracted = 0;
         }
     }
 
@@ -270,45 +263,45 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         IDLE("idle"),
         RUNNING("running"),
         PAUSED("paused");
-    
+
         private final String name;
-    
+
         MachineStatus(String name) {
             this.name = name;
         }
-    
+
         public static final Codec<MachineStatus> CODEC = StringRepresentable.fromEnum(MachineStatus::values);
-    
+
         public boolean isIdle() {
             return this == IDLE;
         }
-    
+
         public boolean isRunning() {
             return this == RUNNING;
         }
-    
+
         public boolean isPaused() {
             return this == PAUSED;
         }
-    
+
         @Override
         public String getSerializedName() {
             return this.name;
         }
-    
+
         public enum EnergyState implements StringRepresentable {
             IDLE("idle"),
             INSERTING("inserting"),
             EXTRACTING("extracting");
-        
+
             private final String name;
-        
+
             EnergyState(String name) {
                 this.name = name;
             }
-        
+
             public static final Codec<EnergyState> CODEC = StringRepresentable.fromEnum(EnergyState::values);
-        
+
             @Override
             public String getSerializedName() {
                 return this.name;

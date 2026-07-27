@@ -52,13 +52,13 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
     protected GemCrystallizerBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(REDSTONE_POWERED, false)
-                .setValue(IS_POLISHING, CrystallizationGemstones.EMPTY));
+                .setValue(IS_POLISHING, CrystallizationGemstones.NONE));
     }
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getClockWise()).setValue(REDSTONE_POWERED, ctx.getLevel().hasNeighborSignal(ctx.getClickedPos()))
-                .setValue(IS_POLISHING, CrystallizationGemstones.EMPTY);
+                .setValue(IS_POLISHING, CrystallizationGemstones.NONE);
     }
 
     @Override

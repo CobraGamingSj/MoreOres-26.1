@@ -22,12 +22,12 @@ public record GemCrystallizerDataSynchronizer(long energyAmount, int redstone, i
         if (world.getBlockEntity(this.blockPos) instanceof GemCrystallizerBlockEntity blockEntity) {
             blockEntity.setEnergyAmount(this.energyAmount);
             blockEntity.setRedstone(this.redstone);
-            blockEntity.setDustCount(this.dustCount);
+            blockEntity.setRadiantDust(this.dustCount);
 
             if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
                 blockEntity.setEnergyAmount(this.energyAmount);
                 blockEntity.setRedstone(this.redstone);
-                blockEntity.setDustCount(this.dustCount);
+                blockEntity.setRadiantDust(this.dustCount);
             }
         }
     }
