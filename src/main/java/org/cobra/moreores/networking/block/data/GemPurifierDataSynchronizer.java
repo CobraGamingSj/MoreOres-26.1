@@ -22,12 +22,12 @@ public record GemPurifierDataSynchronizer(long energyAmount, int redstone, Fluid
 
         if (world.getBlockEntity(this.blockPos) instanceof GemPurifierBlockEntity blockEntity) {
             blockEntity.setEnergyAmount(this.energyAmount);
-            blockEntity.setRedstone(this.redstone);
+            blockEntity.setRedstoneAmount(this.redstone);
             blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
 
             if (context.player().containerMenu instanceof GemPurifierMenu screenHandler && screenHandler.getBlockPos().equals(this.blockPos)) {
                 blockEntity.setEnergyAmount(this.energyAmount);
-                blockEntity.setRedstone(this.redstone);
+                blockEntity.setRedstoneAmount(this.redstone);
                 blockEntity.setFluid(this.fluidVariant, this.fluidAmount);
             }
         }

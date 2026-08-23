@@ -38,7 +38,7 @@ public record GemPurifierDisplay(EntryIngredient ingredient, EntryIngredient res
     }
 
     public GemPurifierDisplay(Identifier id, GemPurifierRecipe recipe) {
-        this(EntryIngredients.ofIngredient(recipe.ingredient()), EntryIngredients.of(recipe.output().create()), Optional.of(id));
+        this(EntryIngredients.ofIngredient(recipe.ingredient()), EntryIngredients.of(recipe.result().create()), Optional.of(id));
     }
 
     @Override

@@ -158,15 +158,6 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         int gradientEnd = CommonColors.GREEN;
         context.fillGradient(leftPos + 40, topPos + 42 + 44 - energyBarSize, leftPos + 40 + 16, topPos + 42 + 44, gradientStart, gradientEnd);
     }
-    
-    @Override
-    public void extractLabels(GuiGraphicsExtractor context, int mouseX, int mouseY) {
-        super.extractLabels(context, mouseX, mouseY);
-        String name = this.menu.blockEntity.getDisplayName().getString();
-        int leftPos = 8;
-        int topPos = 8;
-        context.text(this.font, name, leftPos, topPos, CommonColors.BLACK, false);
-    }
 
     @Override
     public void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {

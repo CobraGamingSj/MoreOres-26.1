@@ -7,8 +7,8 @@ public record GemCrystallizationRecipeInput(ItemStack inputBefore, ItemStack inp
     @Override
     public ItemStack getItem(int slot) {
         return switch (slot) {
-            case 0 -> inputBefore;
-            case 1 -> inputAfter;
+            case 0 -> inputBefore();
+            case 1 -> inputAfter();
             default -> ItemStack.EMPTY;
         };
     }

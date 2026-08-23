@@ -12,30 +12,30 @@ import net.minecraft.util.CommonColors;
 import net.minecraft.network.chat.Component;
 
 public class MachineButton extends Button {
-    private final Identifier texture;
+    private final Identifier backgroundTexture;
     private final int buttonIndex;
-    private final BlockPos pos;
+    private final BlockPos blockPos;
 
-    public MachineButton(int x, int y, Component message, Identifier texture, int buttonIndex, BlockPos pos) {
-        super(x, y, 32, 32, message, btn -> {
+    public MachineButton(int x, int y, Component message, Identifier backgroundTexture, int buttonIndex, BlockPos blockPos) {
+        super(x, y, 32, 32, message, _ -> {
 
         }, DEFAULT_NARRATION);
-        this.texture = texture;
+        this.backgroundTexture = backgroundTexture;
         this.buttonIndex = buttonIndex;
-        this.pos = pos;
+        this.blockPos = blockPos;
     }
 
     @Override
     public void onPress(InputWithModifiers input) {
-        ClientPlayNetworking.send(new GemMachineButtonPayload(buttonIndex, pos));
+        ClientPlayNetworking.send(new GemMachineButtonPayload(buttonIndex, blockPos));
     }
 
     @Override
-    protected void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
-        context.blit(RenderPipelines.GUI_TEXTURED, texture, getX(), getY(), 0, 0, this.getWidth(), this.getHeight(), 32, 32);
-        context.outline(getX(), getY(), 32, 32, CommonColors.DARK_GRAY);
+    protected void extractContents(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        extractor.blit(RenderPipelines.GUI_TEXTURED, backgroundTexture, getX(), getY(), 0, 0, this.getWidth(), this.getHeight(), 32, 32);
+        extractor.outline(getX(), getY(), 32, 32, CommonColors.DARK_GRAY);
         if(isHovered()) {
-            context.outline(getX(), getY(), 32, 32, CommonColors.BLACK);
+            extractor.outline(getX(), getY(), 32, 32, CommonColors.BLACK);
         }
     }
 }

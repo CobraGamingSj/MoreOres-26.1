@@ -9,6 +9,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.client.gui.widget.MachineButton;
 import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
@@ -103,6 +104,15 @@ public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlock
         renderEnergyHandler(graphics, i, j);
         renderProgressArrow(graphics,i, j);
         renderRedstoneDust(graphics, i, j);
+    }
+
+    @Override
+    protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        super.extractLabels(extractor, mouseX, mouseY);
+        String name = this.menu.blockEntity.getDisplayName().getString();
+        int leftPos = 8;
+        int topPos = 8;
+        extractor.text(this.font, name, leftPos, topPos, CommonColors.DARK_GRAY, false);
     }
 
     @Override

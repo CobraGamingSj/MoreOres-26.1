@@ -38,8 +38,8 @@ public class AutomaticTranslationCreator extends FabricLanguageProvider {
         translationBuilder.add("advancement.moreores.ruby_armor.desc",  "Equip a Ruby Armor");
         translationBuilder.add("advancement.moreores.radiant_sword",  "Overpowered!");
         translationBuilder.add("advancement.moreores.radiant_sword.desc",  "Get a Radiant Sword");
-        translationBuilder.add("advancement.moreores.gems_all",  "The gems?");
-        translationBuilder.add("advancement.moreores.gems_all.desc",  "Collect every gemstone");
+        translationBuilder.add("advancement.moreores.gems_all",  "Pocket full of GEMSTONES!");
+        translationBuilder.add("advancement.moreores.gems_all.desc",  "Collect every single gemstone");
         translationBuilder.add("enchantment.moreores.thunder_striker",  "Thunder Striker");
         translationBuilder.add("entity.minecraft.villager.jeweller",  "Jeweller");
         translationBuilder.add("trim_pattern.moreores.guardian",  "Guardian Armor Trim");

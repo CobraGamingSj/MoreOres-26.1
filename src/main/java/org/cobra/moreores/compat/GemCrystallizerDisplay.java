@@ -11,7 +11,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.cobra.moreores.recipe.GemCrystallizerRecipe;
-import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public record GemCrystallizerDisplay(EntryIngredient ingredientBefore, EntryIngr
     }
 
     public GemCrystallizerDisplay(Identifier id, GemCrystallizerRecipe recipe) {
-        this(EntryIngredients.ofIngredient(recipe.ingredientBefore()), EntryIngredients.ofIngredient(recipe.ingredientAfter()), EntryIngredients.of(recipe.output().create()), Optional.of(id));
+        this(EntryIngredients.ofIngredient(recipe.ingredientBefore()), EntryIngredients.ofIngredient(recipe.ingredientAfter()), EntryIngredients.of(recipe.result().create()), Optional.of(id));
     }
 
     @Override

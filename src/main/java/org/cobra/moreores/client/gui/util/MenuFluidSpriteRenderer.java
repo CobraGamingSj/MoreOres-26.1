@@ -7,8 +7,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
-public class ScreenHelperUtils {
-    public static void extractTiledFluidSprite(GuiGraphicsExtractor context, TextureAtlasSprite sprite, int x, int y, int width, int height, float a, float r, float g, float b) {
+public class MenuFluidSpriteRenderer {
+    public static void extractTiledFluidSprite(GuiGraphicsExtractor extractor, TextureAtlasSprite sprite, int x, int y, int width, int height, float alpha, float red, float green, float bblue) {
         int spriteWidth = sprite.contents().width();
         int spriteHeight = sprite.contents().height();
 
@@ -30,7 +30,7 @@ public class ScreenHelperUtils {
                 float maxU = sprite.getU1();
                 float maxV = sprite.getV1();
 
-                context.innerBlit(RenderPipelines.GUI_TEXTURED, atlasId, x1, x2, y1, y2, minU, maxU, minV, maxV, ARGB.colorFromFloat(a, r, g, b));
+                extractor.innerBlit(RenderPipelines.GUI_TEXTURED, atlasId, x1, x2, y1, y2, minU, maxU, minV, maxV, ARGB.colorFromFloat(alpha, red, green, bblue));
             }
 
             if(yRemainder > 0) {
@@ -41,7 +41,7 @@ public class ScreenHelperUtils {
                 float maxU = sprite.getU1();
                 float maxV = minV + (sprite.getV1() - minV) * ((float) yRemainder / spriteHeight);
 
-                context.innerBlit(RenderPipelines.GUI_TEXTURED, atlasId, x1, x2, y1, y2, minU, maxU, minV, maxV, ARGB.colorFromFloat(a, r, g, b));
+                extractor.innerBlit(RenderPipelines.GUI_TEXTURED, atlasId, x1, x2, y1, y2, minU, maxU, minV, maxV, ARGB.colorFromFloat(alpha, red, green, bblue));
             }
         }
 
@@ -55,7 +55,7 @@ public class ScreenHelperUtils {
                 float maxU = minU + (sprite.getU1() - minU) * ((float) xRemainder / spriteWidth);
                 float maxV = sprite.getV1();
 
-                context.innerBlit(RenderPipelines.GUI_TEXTURED, atlasId, x1, x2, y1, y2, minU, maxU, minV, maxV, ARGB.colorFromFloat(a, r, g, b));
+                extractor.innerBlit(RenderPipelines.GUI_TEXTURED, atlasId, x1, x2, y1, y2, minU, maxU, minV, maxV, ARGB.colorFromFloat(alpha, red, green, bblue));
             }
 
             if(yRemainder > 0) {
@@ -66,9 +66,8 @@ public class ScreenHelperUtils {
                 float maxU = minU + (sprite.getU1() - minU) * ((float) xRemainder / spriteWidth);
                 float maxV = minV + (sprite.getV1() - minV) * ((float) yRemainder / spriteHeight);
 
-                context.innerBlit(RenderPipelines.GUI_TEXTURED, atlasId, x1, x2, y1, y2, minU, maxU, minV, maxV, ARGB.colorFromFloat(a, r, g, b));
+                extractor.innerBlit(RenderPipelines.GUI_TEXTURED, atlasId, x1, x2, y1, y2, minU, maxU, minV, maxV, ARGB.colorFromFloat(alpha, red, green, bblue));
             }
         }
-
     }
 }

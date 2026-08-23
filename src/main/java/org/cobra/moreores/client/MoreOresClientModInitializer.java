@@ -28,9 +28,6 @@ public class MoreOresClientModInitializer implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        ResourceLoader.registerBuiltinPack(MoreOresModInitializer.id("moreores_3d"),
-                FabricLoader.getInstance().getModContainer("moreores").orElseThrow(), Component.literal("MoreOres+ 3d Armors"), PackActivationType.NORMAL);
-        
         ModS2CNetworkRegistries.registerClientS2C();
 
         MenuScreens.register(ModMenuType.GEM_PURIFIER, GemPurifierScreen::new);
@@ -39,7 +36,6 @@ public class MoreOresClientModInitializer implements ClientModInitializer {
         BlockEntityRenderers.register(ModBlockEntityTypes.GEM_PURIFIER, GemPurifierBlockEntityRenderer::new);
         BlockEntityRenderers.register(ModBlockEntityTypes.GEM_CRYSTALLIZER, GemCrystallizerBlockEntityRenderer::new);
         ModelLayerRegistry.registerModelLayer(GemArrowEntityModel.ARROW, GemArrowEntityModel::getTexturedModelData);
-//        ArmorRenderer.register(new RadiantArmorRenderer(), ModItems.RADIANT_HELMET);
         EntityRenderers.register(ModEntityTypes.GEM_ARROW, GemArrowEntityRenderer::new);
     }
 }

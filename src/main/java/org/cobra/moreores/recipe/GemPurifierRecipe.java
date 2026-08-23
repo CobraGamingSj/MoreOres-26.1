@@ -12,14 +12,14 @@ import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
-import org.cobra.moreores.recipe.display.GemPolishingRecipeDisplay;
+import org.cobra.moreores.recipe.display.GemPurifyingRecipeDisplay;
 import org.cobra.moreores.recipe.input.GemPurifyingRecipeInput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
-public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output) implements Recipe<GemPurifyingRecipeInput> {
+public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate result) implements Recipe<GemPurifyingRecipeInput> {
     
     @Nullable
     private static PlacementInfo placementInfo;
@@ -27,12 +27,12 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
 
     public static final MapCodec<GemPurifierRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Ingredient.CODEC.fieldOf("ingredientGem").forGetter(GemPurifierRecipe::ingredient),
-            ItemStackTemplate.CODEC.fieldOf("resultGem").forGetter(GemPurifierRecipe::output)
+            ItemStackTemplate.CODEC.fieldOf("resultGem").forGetter(GemPurifierRecipe::result)
     ).apply(instance, GemPurifierRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierRecipe> STREAM_CODEC = StreamCodec.composite(
-            Ingredient.CONTENTS_STREAM_CODEC, GemPurifierRecipe::getIngredient,
-            ItemStackTemplate.STREAM_CODEC, GemPurifierRecipe::output,
+            Ingredient.CONTENTS_STREAM_CODEC, GemPurifierRecipe::ingredient,
+            ItemStackTemplate.STREAM_CODEC, GemPurifierRecipe::result,
             GemPurifierRecipe::new
     );
     public static final RecipeSerializer<GemPurifierRecipe> SERIALIZER = new RecipeSerializer<>(CODEC, STREAM_CODEC);
@@ -53,17 +53,13 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
     }
 
     public ItemStack getResult() {
-        return this.output.create();
-    }
-
-    public Ingredient getIngredient() {
-        return ingredient;
+        return this.result().create();
     }
 
     @Override
     public boolean matches(GemPurifyingRecipeInput input, Level world) {
         if (world.isClientSide()) return false;
-        return this.ingredient.test(input.inputStack());
+        return this.ingredient().test(input.inputStack());
     }
 
     @Override
@@ -79,9 +75,9 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
     @Override
     public List<RecipeDisplay> display() {
         return List.of(
-                new GemPolishingRecipeDisplay(
-                        Ingredient.optionalIngredientToDisplay(Optional.of(this.ingredient)),
-                        new SlotDisplay.ItemStackSlotDisplay(this.output),
+                new GemPurifyingRecipeDisplay(
+                        Ingredient.optionalIngredientToDisplay(Optional.of(this.ingredient())),
+                        new SlotDisplay.ItemStackSlotDisplay(this.result()),
                         new SlotDisplay.ItemSlotDisplay(ModBlocks.GEM_PURIFIER_BLOCK.asItem())
                 )
         );
@@ -90,7 +86,7 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
     @Override
     public PlacementInfo placementInfo() {
         if (placementInfo == null) {
-            placementInfo = PlacementInfo.create(this.ingredient);
+            placementInfo = PlacementInfo.create(this.ingredient());
         }
         return placementInfo;
     }
@@ -98,9 +94,5 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
     @Override
     public RecipeBookCategory recipeBookCategory() {
         return ModRecipeBookCategories.GEM_POLISHING;
-    }
-
-    public Ingredient getIngredients() {
-        return this.ingredient;
     }
 }

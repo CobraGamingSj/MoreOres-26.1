@@ -180,15 +180,6 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
     }
 
     @Override
-    public void extractLabels(GuiGraphicsExtractor context, int mouseX, int mouseY) {
-        super.extractLabels(context, mouseX, mouseY);
-        String name = this.menu.blockEntity.getDisplayName().getString();
-        int x = 8;
-        int y = 8;
-        context.text(this.font, name, x, y, CommonColors.BLACK, false);
-    }
-
-    @Override
     public void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         extractBackground(context, mouseX, mouseY, delta);
         super.extractContents(context, mouseX, mouseY, delta);
