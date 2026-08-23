@@ -28,8 +28,8 @@ import org.cobra.moreores.world.item.equipment.ModEquipmentAssets;
 import java.util.List;
 import java.util.Map;
 
-public class AutomaticModelGenerator extends FabricModelProvider {
-    public AutomaticModelGenerator(FabricPackOutput output) {
+public class AutomaticModelCreator extends FabricModelProvider {
+    public AutomaticModelCreator(FabricPackOutput output) {
         super(output);
     }
 
@@ -39,7 +39,6 @@ public class AutomaticModelGenerator extends FabricModelProvider {
             Identifier id = BuiltInRegistries.BLOCK.getKey(block);
 
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
-
                 if(block == ModBlocks.RUBY_LAMP) {
                     Identifier lampOffIdentifier = TexturedModel.CUBE.create(ModBlocks.RUBY_LAMP, blockStateModelGenerator.modelOutput);
                     Identifier lampOnIdentifier = blockStateModelGenerator.createSuffixedVariant(ModBlocks.RUBY_LAMP, "_on", ModelTemplates.CUBE_ALL, TextureMapping::cube);
@@ -67,7 +66,7 @@ public class AutomaticModelGenerator extends FabricModelProvider {
 
         List<String> armorSuffixes = List.of("_chestplate", "_helmet", "_leggings", "_boots");
 
-        Map<String, ResourceKey<EquipmentAsset>> pathAssetMap = Map.of(
+        Map<String, ResourceKey<EquipmentAsset>> vanillaAssets = Map.of(
                 "iron_", EquipmentAssets.IRON,
                 "gold_", EquipmentAssets.GOLD,
                 "diamond_", EquipmentAssets.DIAMOND,
@@ -76,9 +75,14 @@ public class AutomaticModelGenerator extends FabricModelProvider {
                 "leather_", EquipmentAssets.LEATHER,
                 "chainmail_", EquipmentAssets.CHAINMAIL
         );
+
+        Map<String, ResourceKey<EquipmentAsset>> modAssets = Map.of(
+                "ruby_", ModEquipmentAssets.RUBY,
+                "sapphire_", ModEquipmentAssets.SAPPHIRE,
+                "radiant_", ModEquipmentAssets.RADIANT
+        );
         
         for (Item item : BuiltInRegistries.ITEM) {
-
             if(item instanceof BlockItem) {
                 continue;
             }
@@ -90,7 +94,7 @@ public class AutomaticModelGenerator extends FabricModelProvider {
             boolean handheld = false;
 
             if(id.getNamespace().equals("minecraft")) {
-                for(Map.Entry<String, ResourceKey<EquipmentAsset>> entry : pathAssetMap.entrySet()) {
+                for(Map.Entry<String, ResourceKey<EquipmentAsset>> entry : vanillaAssets.entrySet()) {
                     for (String armorSuffix : armorSuffixes) {
                         if (path.startsWith(entry.getKey()) && path.endsWith(armorSuffix)) {
                             assetKey = entry.getValue();
@@ -117,20 +121,23 @@ public class AutomaticModelGenerator extends FabricModelProvider {
             }
             
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
-
                 if(path.endsWith("_sword") || path.endsWith("_shovel") ||
-                        path.endsWith("_axe") || path.endsWith("_hoe") ||  path.endsWith("_pickaxe")) {
+                        path.endsWith("_axe") || path.endsWith("_hoe") || 
+                        path.endsWith("_pickaxe")) {
                     itemModelGenerator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM);
                     handheld = true;
                 } else if (path.endsWith("_spear")) {
                     itemModelGenerator.generateSpear(item);
                     handheld = true;
-                } else if (path.startsWith("ruby_")) {
-                    assetKey = ModEquipmentAssets.RUBY;
-                } else if (path.startsWith("sapphire_")) {
-                    assetKey = ModEquipmentAssets.SAPPHIRE;
-                } else if (path.startsWith("radiant_")) {
-                    assetKey = ModEquipmentAssets.RADIANT;
+                }
+
+                for (Map.Entry<String, ResourceKey<EquipmentAsset>> entry : modAssets.entrySet()) {
+                    for (String armorSuffix : armorSuffixes) {
+                        if (path.startsWith(entry.getKey()) && path.endsWith(armorSuffix)) {
+                            assetKey = entry.getValue();
+                            break;
+                        }
+                    }
                 }
                 
                 if(assetKey != null) {

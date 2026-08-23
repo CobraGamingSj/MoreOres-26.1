@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -25,7 +26,6 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.Equippable;
 
 public class ArmorItem extends Item {
-
     private static final Map<ArmorMaterial, List<MobEffectInstance>> ARMOR_EFFECTS = new ImmutableMap.Builder<ArmorMaterial, List<MobEffectInstance>>()
             .put(ModArmorMaterials.RADIANT, List.of(
                     new MobEffectInstance(MobEffects.REGENERATION, -1, 3, false, false, false),
