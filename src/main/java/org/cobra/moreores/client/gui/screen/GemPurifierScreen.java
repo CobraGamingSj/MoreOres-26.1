@@ -1,8 +1,10 @@
 package org.cobra.moreores.client.gui.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -11,11 +13,17 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.client.gui.widget.FluidWidget;
+import org.cobra.moreores.core.registry.ResourceHelper;
+import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlockEntity, GemPurifierMenu> {
@@ -141,14 +149,38 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        super.extractBackground(context, mouseX, mouseY, delta);
+    protected void extractSlot(GuiGraphicsExtractor graphics, Slot slot, int mouseX, int mouseY) {
+        if(slot.index == 1) {
+            graphics.pose().pushMatrix();
+
+            graphics.pose().translate(slot.x + 8, slot.y + 8);
+            graphics.pose().scale(1.5f, 1.5f);
+            graphics.pose().translate(-8, -8);
+
+            graphics.item(slot.getItem(), 0, 0);
+
+            graphics.pose().popMatrix();
+        }
+        else {
+           super.extractSlot(graphics, slot, mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public void extractBackground(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        super.extractBackground(extractor, mouseX, mouseY, delta);
         if(this.menu.getBlockEntity().energyStack().isEmpty()) {
-            this.energyIngotSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
+            this.energyIngotSlotIcon.extractRenderState(this.menu, extractor, delta, this.leftPos, this.topPos);
         }
         if(this.menu.getBlockEntity().ingredientStack().isEmpty()) {
-            this.inputSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
+            this.inputSlotIcon.extractRenderState(this.menu, extractor, delta, this.leftPos, this.topPos);
         }
+        Optional<RecipeHolder<GemPurifierRecipe>> recipe = this.menu.getBlockEntity().getCurrentRecipe();
+        if(recipe.isEmpty()) {
+            return;
+        }
+        ItemStack resultStack = recipe.get().value().getResult();
+        extractor.item(resultStack, this.leftPos + this.menu.getSlot(1).x, this.topPos + this.menu.getSlot(1).y);
     }
     
     @Override

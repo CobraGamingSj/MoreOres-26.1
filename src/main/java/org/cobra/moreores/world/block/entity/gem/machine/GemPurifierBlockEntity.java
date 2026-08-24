@@ -413,7 +413,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         return this.fluidStack().is(Items.WATER_BUCKET);
     }
 
-    private Optional<RecipeHolder<GemPurifierRecipe>> getCurrentRecipe() {
+    public Optional<RecipeHolder<GemPurifierRecipe>> getCurrentRecipe() {
         ServerLevel serverWorld = (ServerLevel) level;
         if(serverWorld == null) {
             return Optional.empty();
