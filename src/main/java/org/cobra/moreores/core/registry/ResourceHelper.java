@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.cobra.moreores.MoreOresModInitializer;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import static org.cobra.moreores.MoreOresModInitializer.id;
@@ -173,11 +174,19 @@ public class ResourceHelper {
     }
     
     public static ResourceKey<Block> obtainKey(Block value) {
-        return BuiltInRegistries.BLOCK.getResourceKey(value).get();
+        Optional<ResourceKey<Block>> key = BuiltInRegistries.BLOCK.getResourceKey(value);
+        if(key.isPresent()) {
+            return key.get();
+        }
+        throw new IllegalArgumentException("Block " + value + " not found");
     }
 
     public static ResourceKey<Item> obtainKey(Item value) {
-        return BuiltInRegistries.ITEM.getResourceKey(value).get();
+        Optional<ResourceKey<Item>> key = BuiltInRegistries.ITEM.getResourceKey(value);
+        if(key.isPresent()) {
+            return key.get();
+        }
+        throw new IllegalArgumentException("Item " + value + " not found");
     }
 
     public static ResourceKey<Item> itemKey(String id) {

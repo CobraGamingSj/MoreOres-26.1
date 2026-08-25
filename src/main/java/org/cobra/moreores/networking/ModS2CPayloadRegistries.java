@@ -17,6 +17,7 @@ public class ModS2CPayloadRegistries {
        registerS2C(GemPurifierDataSynchronizer.ID, GemPurifierDataSynchronizer.PACKET_CODEC);
        registerS2C(GemCrystallizerDataSynchronizer.ID, GemCrystallizerDataSynchronizer.PACKET_CODEC);
        registerS2C(MachineStatusDataPayload.ID, MachineStatusDataPayload.PACKET_CODEC);
+       registerS2C(GemPurifierScreenSync.TYPE, GemPurifierScreenSync.STREAM_CODEC);
     }
 
     public static<T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> id, StreamCodec<RegistryFriendlyByteBuf, T> packetCodec) {

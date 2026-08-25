@@ -1,10 +1,8 @@
 package org.cobra.moreores.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -15,15 +13,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.client.gui.widget.FluidWidget;
-import org.cobra.moreores.core.registry.ResourceHelper;
-import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlockEntity, GemPurifierMenu> {
@@ -34,6 +28,8 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         PAUSE_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/pause.png"),
         RESUME_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/resume.png"),
         STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
+
+    private ItemStack previewResultStack = ItemStack.EMPTY;
 
     private final CyclingSlotBackground energyIngotSlotIcon = new CyclingSlotBackground(2);
     private final CyclingSlotBackground inputSlotIcon = new CyclingSlotBackground(0);
@@ -132,7 +128,7 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
     @Override
     public void renderProgressArrow(GuiGraphicsExtractor context, int leftPos, int topPos) {
         if(this.menu.isPolishing()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos + 83, topPos + 31, 207, 0, 10, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos + 83, topPos + 31, 226, 0, 10, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
     }
 
@@ -175,12 +171,14 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         if(this.menu.getBlockEntity().ingredientStack().isEmpty()) {
             this.inputSlotIcon.extractRenderState(this.menu, extractor, delta, this.leftPos, this.topPos);
         }
-        Optional<RecipeHolder<GemPurifierRecipe>> recipe = this.menu.getBlockEntity().getCurrentRecipe();
-        if(recipe.isEmpty()) {
-            return;
+        ItemStack resultStack = this.previewResultStack;
+        Slot outputSlot = this.menu.getSlot(1);
+        int x = this.leftPos + outputSlot.x;
+        int y = this.topPos + outputSlot.y;
+        extractor.fakeItem(resultStack, x, y);
+        if(isHovering(outputSlot.x, outputSlot.y, 16, 16, mouseX, mouseY) && !resultStack.isEmpty()) {
+            extractor.setTooltipForNextFrame(this.font, Component.literal(resultStack.getItemName().getString()), x + 5, y + 5);
         }
-        ItemStack resultStack = recipe.get().value().getResult();
-        extractor.item(resultStack, this.leftPos + this.menu.getSlot(1).x, this.topPos + this.menu.getSlot(1).y);
     }
     
     @Override
@@ -204,5 +202,9 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         if (isHovering(109, 53, l, 4, mouseX, mouseY)) {
             context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getRedstoneDust() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
         }
+    }
+
+    public void setPreviewResultStack(ItemStack previewResultStack) {
+        this.previewResultStack = previewResultStack;
     }
 }

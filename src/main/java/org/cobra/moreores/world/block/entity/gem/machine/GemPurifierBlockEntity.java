@@ -2,6 +2,7 @@ package org.cobra.moreores.world.block.entity.gem.machine;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
+import org.cobra.moreores.networking.block.data.GemPurifierScreenSync;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemPurifierBlock;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -83,6 +84,8 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     public static final int REDSTONE_SLOT = 4;
 
     private long previousRemovedFluidMilestone = 0;
+
+    private ItemStack lastPreviewResult = ItemStack.EMPTY;
 
     protected final ContainerData containerData;
     private int maxProgressTick = 384;
@@ -252,6 +255,8 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
             return;
         }
 
+        syncPreviewResult();
+
         redstoneTick++;
         
         IGemstone newGem = gemstone();
@@ -390,6 +395,25 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
     private boolean hasPurificationEnded() {
         return getInitialProgress() >= maxProgressTick;
+    }
+
+    private void syncPreviewResult() {
+        Optional<RecipeHolder<GemPurifierRecipe>> recipe = getCurrentRecipe();
+        ItemStack result = recipe.map(holder -> holder.value().getResult().copy())
+                .orElse(ItemStack.EMPTY);
+
+        if (ItemStack.matches(lastPreviewResult, result)) {
+            return;
+        }
+        lastPreviewResult = result.copy();
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        for (ServerPlayer player : PlayerLookup.tracking(serverLevel, worldPosition)) {
+            if (player.containerMenu instanceof GemPurifierMenu menu && menu.getBlockPos().equals(worldPosition)) {
+                ServerPlayNetworking.send(player, new GemPurifierScreenSync(result, worldPosition));
+            }
+        }
     }
 
     @Override
