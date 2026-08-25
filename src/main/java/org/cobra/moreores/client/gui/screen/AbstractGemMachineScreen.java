@@ -65,7 +65,6 @@ public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlock
     protected abstract int getStopButtonPosX();
     protected abstract int getStopButtonPosY();
 
-
     @Override
     public boolean keyPressed(KeyEvent input) {
         if(input.input() == GLFW.GLFW_KEY_S) {

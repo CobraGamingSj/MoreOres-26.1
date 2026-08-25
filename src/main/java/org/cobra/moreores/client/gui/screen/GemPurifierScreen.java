@@ -16,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.client.gui.widget.FluidWidget;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.awt.*;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -28,6 +30,9 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         PAUSE_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/pause.png"),
         RESUME_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/resume.png"),
         STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
+
+    protected final Identifier SLOT_HIGHLIGHT_BACK_SPRITE_ = MoreOresModInitializer.id("container/slot_highlight_back");
+    protected final Identifier SLOT_HIGHLIGHT_FRONT_SPRITE_ = MoreOresModInitializer.id("container/slot_highlight_front");
 
     private ItemStack previewResultStack = ItemStack.EMPTY;
 
@@ -124,7 +129,31 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
     private List<Identifier> getInputSlotTexture() {
         return List.of(MoreOresModInitializer.id("container/slot/empty_raw_gem"));
     }
-    
+
+    @Override
+    public void extractSlotHighlightBack(GuiGraphicsExtractor graphics) {
+        if (this.hoveredSlot != null && this.hoveredSlot.isHighlightable() && hoveredSlot.index == 1) {
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_BACK_SPRITE_, this.hoveredSlot.x - 4, this.hoveredSlot.y - 4, 32, 32);
+        }
+        super.extractSlotHighlightBack(graphics);
+    }
+
+    @Override
+    public void extractSlotHighlightFront(GuiGraphicsExtractor graphics) {
+        if (this.hoveredSlot != null && this.hoveredSlot.isHighlightable() && hoveredSlot.index == 1) {
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_FRONT_SPRITE_, this.hoveredSlot.x - 4, this.hoveredSlot.y - 4, 32, 32);
+        }
+        super.extractSlotHighlightFront(graphics);
+    }
+
+    @Override
+    protected boolean isHovering(Slot slot, double xm, double ym) {
+        if(hoveredSlot != null && hoveredSlot.index == 1) {
+            return this.isHovering(slot.x, slot.y, 32, 32, xm, ym);
+        }
+        return super.isHovering(slot, xm, ym);
+    }
+
     @Override
     public void renderProgressArrow(GuiGraphicsExtractor context, int leftPos, int topPos) {
         if(this.menu.isPolishing()) {
@@ -149,17 +178,18 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         if(slot.index == 1) {
             graphics.pose().pushMatrix();
 
-            graphics.pose().translate(slot.x + 8, slot.y + 8);
+            graphics.pose().translate(slot.x, slot.y);
             graphics.pose().scale(1.5f, 1.5f);
-            graphics.pose().translate(-8, -8);
 
-            graphics.item(slot.getItem(), 0, 0);
+            if(!slot.getItem().isEmpty()) {
+                graphics.item(slot.getItem(), 0, 0);
+                graphics.itemCount(this.font, slot.getItem(), slot.x - 75, slot.y - 61, null);
+            }
 
             graphics.pose().popMatrix();
+            return;
         }
-        else {
-           super.extractSlot(graphics, slot, mouseX, mouseY);
-        }
+        super.extractSlot(graphics, slot, mouseX, mouseY);
     }
 
     @Override
@@ -176,7 +206,7 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         int x = this.leftPos + outputSlot.x;
         int y = this.topPos + outputSlot.y;
         extractor.fakeItem(resultStack, x, y);
-        if(isHovering(outputSlot.x, outputSlot.y, 16, 16, mouseX, mouseY) && !resultStack.isEmpty()) {
+        if(isHovering(outputSlot.x, outputSlot.y, 24, 24, mouseX, mouseY) && !resultStack.isEmpty()) {
             extractor.setTooltipForNextFrame(this.font, Component.literal(resultStack.getItemName().getString()), x + 5, y + 5);
         }
     }

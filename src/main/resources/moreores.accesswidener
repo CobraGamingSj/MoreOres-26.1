@@ -1,3 +1,7 @@
 accessWidener v2 official
 
 accessible method net/minecraft/client/gui/GuiGraphicsExtractor innerBlit (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen extractSlotHighlightBack (Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen extractSlotHighlightFront (Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen isHovering (Lnet/minecraft/world/inventory/Slot;DD)Z
+accessible method net/minecraft/client/gui/GuiGraphicsExtractor itemCount (Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V

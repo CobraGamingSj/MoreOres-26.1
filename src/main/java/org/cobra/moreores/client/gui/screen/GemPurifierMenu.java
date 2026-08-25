@@ -48,7 +48,7 @@ public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEnti
                 return stack.is(ModItemTags.RAW_GEMSTONE) || stack.is(ModItemTags.RAW_GEMSTONE_BLOCKS);
             }
         }); // Input
-        this.addSlot(new Slot(inventory, 1, 79, 61) {
+        this.addSlot(new Slot(inventory, 1, 75, 61) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(ModItemTags.GEMSTONE) || stack.is(ModItemTags.GEMSTONE_BLOCKS);
