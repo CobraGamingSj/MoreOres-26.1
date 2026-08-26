@@ -16,9 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.client.gui.widget.FluidWidget;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.joml.Matrix3x2fStack;
 
-import java.awt.*;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -134,6 +133,7 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
     public void extractSlotHighlightBack(GuiGraphicsExtractor graphics) {
         if (this.hoveredSlot != null && this.hoveredSlot.isHighlightable() && hoveredSlot.index == 1) {
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_BACK_SPRITE_, this.hoveredSlot.x - 4, this.hoveredSlot.y - 4, 32, 32);
+            return;
         }
         super.extractSlotHighlightBack(graphics);
     }
@@ -142,16 +142,17 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
     public void extractSlotHighlightFront(GuiGraphicsExtractor graphics) {
         if (this.hoveredSlot != null && this.hoveredSlot.isHighlightable() && hoveredSlot.index == 1) {
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_FRONT_SPRITE_, this.hoveredSlot.x - 4, this.hoveredSlot.y - 4, 32, 32);
+            return;
         }
         super.extractSlotHighlightFront(graphics);
     }
 
     @Override
-    protected boolean isHovering(Slot slot, double xm, double ym) {
-        if(hoveredSlot != null && hoveredSlot.index == 1) {
-            return this.isHovering(slot.x, slot.y, 32, 32, xm, ym);
+    protected boolean isHovering(Slot slot, double mouseX, double mouseY) {
+        if(slot.index == 1) {
+            return this.isHovering(slot.x, slot.y, 24, 24, mouseX, mouseY);
         }
-        return super.isHovering(slot, xm, ym);
+        return super.isHovering(slot, mouseX, mouseY);
     }
 
     @Override
@@ -203,11 +204,21 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         }
         ItemStack resultStack = this.previewResultStack;
         Slot outputSlot = this.menu.getSlot(1);
+
         int x = this.leftPos + outputSlot.x;
         int y = this.topPos + outputSlot.y;
-        extractor.fakeItem(resultStack, x, y);
-        if(isHovering(outputSlot.x, outputSlot.y, 24, 24, mouseX, mouseY) && !resultStack.isEmpty()) {
-            extractor.setTooltipForNextFrame(this.font, Component.literal(resultStack.getItemName().getString()), x + 5, y + 5);
+
+        if(outputSlot.getItem().isEmpty()) {
+            Matrix3x2fStack matrixStack = extractor.pose();
+            matrixStack.pushMatrix();
+            matrixStack.translate(x, y);
+            matrixStack.scale(1.5f, 1.5f);
+            extractor.fakeItem(resultStack, 0, 0);
+            matrixStack.popMatrix();
+
+            if (isHovering(outputSlot, mouseX, mouseY)) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal(resultStack.getItemName().getString()), mouseX, mouseY);
+            }
         }
     }
     
@@ -225,11 +236,11 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         super.extractContents(context, mouseX, mouseY, delta);
         extractTooltip(context, mouseX, mouseY);
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
-        int l = Mth.clamp((menu.getRedstoneDust() * 16 + 10000 - 1) / 10000, 0, 16);
+        int redstoneBarWidth = Mth.clamp((menu.getRedstoneDust() * 16 + 10000 - 1) / 10000, 0, 16);
         if (isHovering(40, 42 + 44 - energyBarSize, 16, energyBarSize, mouseX, mouseY)) {
             context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getEnergy() + " / " + this.menu.getEnergyCap() + " J").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD), mouseX, mouseY);
         }
-        if (isHovering(109, 53, l, 4, mouseX, mouseY)) {
+        if (isHovering(109, 53, redstoneBarWidth, 4, mouseX, mouseY)) {
             context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getRedstoneDust() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
         }
     }
