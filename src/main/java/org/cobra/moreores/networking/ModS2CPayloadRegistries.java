@@ -12,12 +12,12 @@ import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 @SuppressWarnings("Same PaR VAL")
 public class ModS2CPayloadRegistries {
     static {
-       registerS2C(GemMachineEnergyDataPayload.ID, GemMachineEnergyDataPayload.PACKET_CODEC);
-       registerS2C(GemPurifierFluidDataPayload.ID, GemPurifierFluidDataPayload.PACKET_CODEC);
-       registerS2C(GemPurifierDataSynchronizer.ID, GemPurifierDataSynchronizer.PACKET_CODEC);
-       registerS2C(GemCrystallizerDataSynchronizer.ID, GemCrystallizerDataSynchronizer.PACKET_CODEC);
-       registerS2C(MachineStatusDataPayload.ID, MachineStatusDataPayload.PACKET_CODEC);
-       registerS2C(GemPurifierScreenSync.TYPE, GemPurifierScreenSync.STREAM_CODEC);
+       registerS2C(GemMachineEnergyDataPayload.TYPE, GemMachineEnergyDataPayload.STREAM_CODEC);
+       registerS2C(GemPurifierFluidDataPayload.TYPE, GemPurifierFluidDataPayload.STREAM_CODEC);
+       registerS2C(GemPurifierDataSynchronizer.TYPE, GemPurifierDataSynchronizer.STREAM_CODEC);
+       registerS2C(GemCrystallizerDataSynchronizer.TYPE, GemCrystallizerDataSynchronizer.STREAM_CODEC);
+       registerS2C(MachineStatusDataPayload.TYPE, MachineStatusDataPayload.STREAM_CODEC);
+       registerS2C(ScreenGhostRenderingS2CPacket.TYPE, ScreenGhostRenderingS2CPacket.STREAM_CODEC);
     }
 
     public static<T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> id, StreamCodec<RegistryFriendlyByteBuf, T> packetCodec) {

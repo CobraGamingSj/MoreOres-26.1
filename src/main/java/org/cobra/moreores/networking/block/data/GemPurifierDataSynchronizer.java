@@ -14,7 +14,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record GemPurifierDataSynchronizer(long energyAmount, int redstone, FluidVariant fluidVariant, long fluidAmount, BlockPos blockPos) implements CustomPacketPayload {
 
-    public static final Type<GemPurifierDataSynchronizer> ID = new Type<>(MoreOresModInitializer.id("pos_sync"));
+    public static final Type<GemPurifierDataSynchronizer> TYPE = new Type<>(MoreOresModInitializer.id("pos_sync"));
 
     public void handlePacket(ClientPlayNetworking.Context context) {
         ClientLevel world = context.client().level;
@@ -33,7 +33,7 @@ public record GemPurifierDataSynchronizer(long energyAmount, int redstone, Fluid
         }
     }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierDataSynchronizer> PACKET_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierDataSynchronizer> STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.LONG, GemPurifierDataSynchronizer::energyAmount,
                     ByteBufCodecs.INT, GemPurifierDataSynchronizer::redstone,
@@ -45,6 +45,6 @@ public record GemPurifierDataSynchronizer(long energyAmount, int redstone, Fluid
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

@@ -16,11 +16,11 @@ import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 public class ModC2SPayloadRegistries {
 
     static {
-        registerC2S(GemMachineButtonPayload.ID, GemMachineButtonPayload.PACKET_CODEC);
-        registerC2S(MachineStatusDataPayload.ID, MachineStatusDataPayload.PACKET_CODEC);
-        registerC2S(GemPurifierBlockData.ID, GemPurifierBlockData.PACKET_CODEC);
-        registerC2S(GemCrystallizerBlockData.ID, GemCrystallizerBlockData.PACKET_CODEC);
-        registerC2S(EnergyIngotC2SPayload.ID, EnergyIngotC2SPayload.PACKET_CODEC);
+        registerC2S(GemMachineButtonPayload.TYPE, GemMachineButtonPayload.STREAM_CODEC);
+        registerC2S(MachineStatusDataPayload.TYPE, MachineStatusDataPayload.STREAM_CODEC);
+        registerC2S(GemPurifierBlockData.TYPE, GemPurifierBlockData.STREAM_CODEC);
+        registerC2S(GemCrystallizerBlockData.TYPE, GemCrystallizerBlockData.STREAM_CODEC);
+        registerC2S(EnergyIngotC2SPayload.TYPE, EnergyIngotC2SPayload.STREAM_CODEC);
     }
     
     public static<T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> id, StreamCodec<RegistryFriendlyByteBuf, T> packetCodec) {

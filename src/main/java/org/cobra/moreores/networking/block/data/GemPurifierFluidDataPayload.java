@@ -13,7 +13,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record GemPurifierFluidDataPayload(FluidVariant fluidVariant, long fluidAmount, BlockPos blockPos) implements CustomPacketPayload {
-    public static final Type<GemPurifierFluidDataPayload> ID = new Type<>(MoreOresModInitializer.id("pos_fluid"));
+    public static final Type<GemPurifierFluidDataPayload> TYPE = new Type<>(MoreOresModInitializer.id("pos_fluid"));
 
     public void handlePacket(ClientPlayNetworking.Context context) {
         ClientLevel world = context.client().level;
@@ -27,7 +27,7 @@ public record GemPurifierFluidDataPayload(FluidVariant fluidVariant, long fluidA
         }
     }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierFluidDataPayload> PACKET_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierFluidDataPayload> STREAM_CODEC =
             StreamCodec.composite(
                     FluidVariant.PACKET_CODEC, GemPurifierFluidDataPayload::fluidVariant,
                     ByteBufCodecs.LONG, GemPurifierFluidDataPayload::fluidAmount,
@@ -37,6 +37,6 @@ public record GemPurifierFluidDataPayload(FluidVariant fluidVariant, long fluidA
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

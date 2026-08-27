@@ -54,7 +54,7 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerB
             }
         }); // Input After
 
-        this.addSlot(new Slot(inventory, 2, 67, 72) {
+        this.addSlot(new Slot(inventory, 2, 64, 72) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(ModItemTags.CRYSTALLIZED);

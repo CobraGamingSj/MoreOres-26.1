@@ -1,7 +1,5 @@
 package org.cobra.moreores.client.gui.screen;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -11,16 +9,12 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
 import org.cobra.moreores.tags.ModItemTags;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEntity> {
     private final Container inventory;
@@ -73,7 +67,7 @@ public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEnti
         addDataSlots(containerData);
     }
 
-    public boolean isPolishing() {
+    public boolean isPurifying() {
         return containerData.get(0) > 0;
     }
 

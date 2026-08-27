@@ -11,12 +11,9 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.client.gui.widget.FluidWidget;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
-import org.joml.Matrix3x2fStack;
 
 import java.util.List;
 
@@ -29,11 +26,6 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         PAUSE_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/pause.png"),
         RESUME_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/resume.png"),
         STOP_BUTTON = MoreOresModInitializer.id("textures/gui/container/button/stop.png");
-
-    protected final Identifier SLOT_HIGHLIGHT_BACK_SPRITE_ = MoreOresModInitializer.id("container/slot_highlight_back");
-    protected final Identifier SLOT_HIGHLIGHT_FRONT_SPRITE_ = MoreOresModInitializer.id("container/slot_highlight_front");
-
-    private ItemStack previewResultStack = ItemStack.EMPTY;
 
     private final CyclingSlotBackground energyIngotSlotIcon = new CyclingSlotBackground(2);
     private final CyclingSlotBackground inputSlotIcon = new CyclingSlotBackground(0);
@@ -130,40 +122,14 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
     }
 
     @Override
-    public void extractSlotHighlightBack(GuiGraphicsExtractor graphics) {
-        if (this.hoveredSlot != null && this.hoveredSlot.isHighlightable() && hoveredSlot.index == 1) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_BACK_SPRITE_, this.hoveredSlot.x - 4, this.hoveredSlot.y - 4, 32, 32);
-            return;
-        }
-        super.extractSlotHighlightBack(graphics);
-    }
-
-    @Override
-    public void extractSlotHighlightFront(GuiGraphicsExtractor graphics) {
-        if (this.hoveredSlot != null && this.hoveredSlot.isHighlightable() && hoveredSlot.index == 1) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_FRONT_SPRITE_, this.hoveredSlot.x - 4, this.hoveredSlot.y - 4, 32, 32);
-            return;
-        }
-        super.extractSlotHighlightFront(graphics);
-    }
-
-    @Override
-    protected boolean isHovering(Slot slot, double mouseX, double mouseY) {
-        if(slot.index == 1) {
-            return this.isHovering(slot.x, slot.y, 24, 24, mouseX, mouseY);
-        }
-        return super.isHovering(slot, mouseX, mouseY);
-    }
-
-    @Override
-    public void renderProgressArrow(GuiGraphicsExtractor context, int leftPos, int topPos) {
-        if(this.menu.isPolishing()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos + 83, topPos + 31, 226, 0, 10, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
+    public void extractProgressArrow(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
+        if(this.menu.isPurifying()) {
+            extractor.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos + 83, topPos + 31, 226, 0, 10, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
     }
 
     @Override
-    protected void renderRedstoneDust(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
+    protected void extractRedstoneStorage(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
         int k = menu.getRedstoneDust();
         int l = Mth.clamp((k * 16 + 10000 - 1) / 10000, 0, 16);
         
@@ -175,25 +141,6 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
     }
 
     @Override
-    protected void extractSlot(GuiGraphicsExtractor graphics, Slot slot, int mouseX, int mouseY) {
-        if(slot.index == 1) {
-            graphics.pose().pushMatrix();
-
-            graphics.pose().translate(slot.x, slot.y);
-            graphics.pose().scale(1.5f, 1.5f);
-
-            if(!slot.getItem().isEmpty()) {
-                graphics.item(slot.getItem(), 0, 0);
-                graphics.itemCount(this.font, slot.getItem(), slot.x - 75, slot.y - 61, null);
-            }
-
-            graphics.pose().popMatrix();
-            return;
-        }
-        super.extractSlot(graphics, slot, mouseX, mouseY);
-    }
-
-    @Override
     public void extractBackground(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         super.extractBackground(extractor, mouseX, mouseY, delta);
         if(this.menu.getBlockEntity().energyStack().isEmpty()) {
@@ -202,50 +149,28 @@ public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlock
         if(this.menu.getBlockEntity().ingredientStack().isEmpty()) {
             this.inputSlotIcon.extractRenderState(this.menu, extractor, delta, this.leftPos, this.topPos);
         }
-        ItemStack resultStack = this.previewResultStack;
-        Slot outputSlot = this.menu.getSlot(1);
-
-        int x = this.leftPos + outputSlot.x;
-        int y = this.topPos + outputSlot.y;
-
-        if(outputSlot.getItem().isEmpty()) {
-            Matrix3x2fStack matrixStack = extractor.pose();
-            matrixStack.pushMatrix();
-            matrixStack.translate(x, y);
-            matrixStack.scale(1.5f, 1.5f);
-            extractor.fakeItem(resultStack, 0, 0);
-            matrixStack.popMatrix();
-
-            if (isHovering(outputSlot, mouseX, mouseY)) {
-                extractor.setTooltipForNextFrame(this.font, Component.literal("Result: " + resultStack.getItemName().getString()), mouseX, mouseY);
-            }
-        }
     }
     
     @Override
-    public void renderEnergyHandler(GuiGraphicsExtractor context, int leftPos, int topPos) {
+    public void extractEnergyStorage(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
         int gradientStart = CommonColors.BLUE;
-        int gradientEnd = CommonColors.GREEN;
-        context.fillGradient(leftPos + 40, topPos + 42 + 44 - energyBarSize, leftPos + 40 + 16, topPos + 42 + 44, gradientStart, gradientEnd);
+        int gradientEnd = CommonColors.HIGH_CONTRAST_DIAMOND;
+        extractor.fillGradient(leftPos + 40, topPos + 42 + 44 - energyBarSize, leftPos + 40 + 16, topPos + 42 + 44, gradientStart, gradientEnd);
     }
 
     @Override
-    public void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        extractBackground(context, mouseX, mouseY, delta);
-        super.extractContents(context, mouseX, mouseY, delta);
-        extractTooltip(context, mouseX, mouseY);
+    public void extractContents(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        extractBackground(extractor, mouseX, mouseY, delta);
+        super.extractContents(extractor, mouseX, mouseY, delta);
+        extractTooltip(extractor, mouseX, mouseY);
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
         int redstoneBarWidth = Mth.clamp((menu.getRedstoneDust() * 16 + 10000 - 1) / 10000, 0, 16);
         if (isHovering(40, 42 + 44 - energyBarSize, 16, energyBarSize, mouseX, mouseY)) {
-            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getEnergy() + " / " + this.menu.getEnergyCap() + " J").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD), mouseX, mouseY);
+            extractor.setTooltipForNextFrame(this.font, Component.literal(this.menu.getEnergy() + " / " + this.menu.getEnergyCap() + " J").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD), mouseX, mouseY);
         }
         if (isHovering(109, 53, redstoneBarWidth, 4, mouseX, mouseY)) {
-            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getRedstoneDust() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
+            extractor.setTooltipForNextFrame(this.font, Component.literal(this.menu.getRedstoneDust() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
         }
-    }
-
-    public void setPreviewResultStack(ItemStack previewResultStack) {
-        this.previewResultStack = previewResultStack;
     }
 }

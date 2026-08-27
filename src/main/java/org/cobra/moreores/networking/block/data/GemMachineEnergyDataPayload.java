@@ -12,7 +12,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record GemMachineEnergyDataPayload(long energyAmount, BlockPos blockPos) implements CustomPacketPayload {
-    public static final Type<GemMachineEnergyDataPayload> ID = new Type<>(MoreOresModInitializer.id("pos_energy"));
+    public static final Type<GemMachineEnergyDataPayload> TYPE = new Type<>(MoreOresModInitializer.id("pos_energy"));
 
     public void handlePacket(ClientPlayNetworking.Context context) {
         ClientLevel world = context.client().level;
@@ -27,7 +27,7 @@ public record GemMachineEnergyDataPayload(long energyAmount, BlockPos blockPos) 
         }
     }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemMachineEnergyDataPayload> PACKET_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemMachineEnergyDataPayload> STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.LONG, GemMachineEnergyDataPayload::energyAmount,
                     BlockPos.STREAM_CODEC, GemMachineEnergyDataPayload::blockPos,
@@ -36,6 +36,6 @@ public record GemMachineEnergyDataPayload(long energyAmount, BlockPos blockPos) 
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

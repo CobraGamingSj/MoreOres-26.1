@@ -2,7 +2,9 @@ package org.cobra.moreores.world.block.entity.gem.machine;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
-import org.cobra.moreores.networking.block.data.GemPurifierScreenSync;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
+import org.cobra.moreores.networking.block.data.ScreenGhostRenderingS2CPacket;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemPurifierBlock;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -386,7 +388,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
 
     private void getPurifiedGemstone() {
-        RecipeHolder<GemPurifierRecipe> recipe = getCurrentRecipe().orElseThrow();
+        RecipeHolder<GemPurifierRecipe> recipe = currentRecipe().orElseThrow();
 
         this.removeItem(INGREDIENT_SLOT, 1);
 
@@ -398,7 +400,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
 
     private void syncPreviewResult() {
-        Optional<RecipeHolder<GemPurifierRecipe>> recipe = getCurrentRecipe();
+        Optional<RecipeHolder<GemPurifierRecipe>> recipe = currentRecipe();
         ItemStack result = recipe.map(holder -> holder.value().getResult().copy())
                 .orElse(ItemStack.EMPTY);
 
@@ -410,9 +412,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
             return;
         }
         for (ServerPlayer player : PlayerLookup.tracking(serverLevel, worldPosition)) {
-            if (player.containerMenu instanceof GemPurifierMenu menu && menu.getBlockPos().equals(worldPosition)) {
-                ServerPlayNetworking.send(player, new GemPurifierScreenSync(result, worldPosition));
-            }
+            ServerPlayNetworking.send(player, new ScreenGhostRenderingS2CPacket(result));
         }
     }
 
@@ -427,7 +427,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
     @Override
     protected boolean checkRecipe() {
-        Optional<RecipeHolder<GemPurifierRecipe>> recipe = getCurrentRecipe();
+        Optional<RecipeHolder<GemPurifierRecipe>> recipe = currentRecipe();
 
         return recipe.isPresent() && hasRequiredEnergyAmount() && canInsertCountIntoResultSlot(recipe.get().value().getResult())
                 && canInsertItemIntoResultSlot(recipe.get().value().getResult().getItem());
@@ -437,12 +437,11 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         return this.fluidStack().is(Items.WATER_BUCKET);
     }
 
-    public Optional<RecipeHolder<GemPurifierRecipe>> getCurrentRecipe() {
-        ServerLevel serverWorld = (ServerLevel) level;
-        if(serverWorld == null) {
+    public Optional<RecipeHolder<GemPurifierRecipe>> currentRecipe() {
+        if(!(level instanceof ServerLevel serverLevel)) {
             return Optional.empty();
         }
-        return this.matchGetter.getRecipeFor(new GemPurifyingRecipeInput(this.ingredientStack()), serverWorld);
+        return this.matchGetter.getRecipeFor(new GemPurifyingRecipeInput(this.ingredientStack()), serverLevel);
     }
 
     private boolean canInsertItemIntoResultSlot(Item item) {

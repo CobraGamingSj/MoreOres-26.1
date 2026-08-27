@@ -11,11 +11,10 @@ public class ModMenuType {
     public static final ResourceHelper.MenuResource RESOURCE = ResourceHelper.MenuResource.INSTANCE;
     
     public static final MenuType<GemPurifierMenu> GEM_PURIFIER =
-            RESOURCE.register("gem_purifier", GemPurifierMenu::new, GemPurifierDataSynchronizer.PACKET_CODEC
-            );
+            RESOURCE.register("gem_purifier", GemPurifierMenu::new, GemPurifierDataSynchronizer.STREAM_CODEC);
 
     public static final MenuType<GemCrystallizerMenu> GEM_CRYSTALLIZER =
-            RESOURCE.register("gem_crystallizer", GemCrystallizerMenu::new, GemCrystallizerDataSynchronizer.PACKET_CODEC);
+            RESOURCE.register("gem_crystallizer", GemCrystallizerMenu::new, GemCrystallizerDataSynchronizer.STREAM_CODEC);
     
     public static void register() {
         MoreOresModInitializer.LOGGER.info("Loading ModMenuType for " + MoreOresModInitializer.MOD_ID + " mod.");

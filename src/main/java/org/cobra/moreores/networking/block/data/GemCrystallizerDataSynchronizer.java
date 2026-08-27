@@ -13,7 +13,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record GemCrystallizerDataSynchronizer(long energyAmount, int redstoneDust, int radiantDust, BlockPos blockPos) implements CustomPacketPayload {
 
-    public static final Type<GemCrystallizerDataSynchronizer> ID = new Type<>(MoreOresModInitializer.id("data_pos_sync"));
+    public static final Type<GemCrystallizerDataSynchronizer> TYPE = new Type<>(MoreOresModInitializer.id("data_pos_sync"));
 
     public void handlePacket(ClientPlayNetworking.Context context) {
         ClientLevel world = context.client().level;
@@ -32,7 +32,7 @@ public record GemCrystallizerDataSynchronizer(long energyAmount, int redstoneDus
         }
     }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizerDataSynchronizer> PACKET_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizerDataSynchronizer> STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.LONG, GemCrystallizerDataSynchronizer::energyAmount,
                     ByteBufCodecs.INT, GemCrystallizerDataSynchronizer::redstoneDust,
@@ -43,6 +43,6 @@ public record GemCrystallizerDataSynchronizer(long energyAmount, int redstoneDus
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

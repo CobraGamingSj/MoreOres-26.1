@@ -13,11 +13,11 @@ import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 public class ModC2SNetworkRegistries {
 
     public static void registerServerC2S() {
-        ServerPlayNetworking.registerGlobalReceiver(GemMachineButtonPayload.ID, GemMachineButtonPayload::handle);
-        ServerPlayNetworking.registerGlobalReceiver(MachineStatusDataPayload.ID, MachineStatusDataPayload::handle);
-        ServerPlayNetworking.registerGlobalReceiver(GemPurifierBlockData.ID, GemPurifierBlockData::handle);
-        ServerPlayNetworking.registerGlobalReceiver(GemCrystallizerBlockData.ID, GemCrystallizerBlockData::handle);
-        ServerPlayNetworking.registerGlobalReceiver(EnergyIngotC2SPayload.ID, EnergyIngotC2SPayload::handle);
+        ServerPlayNetworking.registerGlobalReceiver(GemMachineButtonPayload.TYPE, GemMachineButtonPayload::handle);
+        ServerPlayNetworking.registerGlobalReceiver(MachineStatusDataPayload.TYPE, MachineStatusDataPayload::handle);
+        ServerPlayNetworking.registerGlobalReceiver(GemPurifierBlockData.TYPE, GemPurifierBlockData::handle);
+        ServerPlayNetworking.registerGlobalReceiver(GemCrystallizerBlockData.TYPE, GemCrystallizerBlockData::handle);
+        ServerPlayNetworking.registerGlobalReceiver(EnergyIngotC2SPayload.TYPE, EnergyIngotC2SPayload::handle);
     }
 
     public static void register() {

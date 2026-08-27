@@ -12,9 +12,9 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 
 public record GemMachineButtonPayload(int buttonIndex, BlockPos pos) implements CustomPacketPayload {
-    public static final Type<GemMachineButtonPayload> ID = new Type<>(MoreOresModInitializer.id("button_click"));
+    public static final Type<GemMachineButtonPayload> TYPE = new Type<>(MoreOresModInitializer.id("button_click"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemMachineButtonPayload> PACKET_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemMachineButtonPayload> STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.VAR_INT, GemMachineButtonPayload::buttonIndex,
                     BlockPos.STREAM_CODEC, GemMachineButtonPayload::pos,
@@ -47,6 +47,6 @@ public record GemMachineButtonPayload(int buttonIndex, BlockPos pos) implements 
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

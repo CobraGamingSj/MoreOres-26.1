@@ -14,12 +14,18 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.cobra.moreores.client.gui.screen.GemPurifierMenu;
+import org.cobra.moreores.networking.block.data.ScreenGhostRenderingS2CPacket;
+import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.tags.ModItemTags;
 import org.cobra.moreores.world.block.entity.ImplementedInventory;
 import org.cobra.moreores.world.block.entity.TickableBlockEntity;
@@ -29,6 +35,8 @@ import org.cobra.moreores.world.item.util.impl.IGemstone;
 import org.cobra.moreores.world.item.util.impl.PurificationGemstones;
 import org.cobra.moreores.networking.block.data.GemMachineEnergyDataPayload;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
+
+import java.util.Optional;
 
 public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ImplementedInventory, TickableBlockEntity {
     protected final NonNullList<ItemStack> main;

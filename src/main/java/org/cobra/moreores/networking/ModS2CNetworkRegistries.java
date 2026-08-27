@@ -9,11 +9,11 @@ import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 public class ModS2CNetworkRegistries {
 
     public static void registerClientS2C(){
-        ClientPlayNetworking.registerGlobalReceiver(GemMachineEnergyDataPayload.ID, GemMachineEnergyDataPayload::handlePacket);
-        ClientPlayNetworking.registerGlobalReceiver(GemPurifierFluidDataPayload.ID, GemPurifierFluidDataPayload::handlePacket);
-        ClientPlayNetworking.registerGlobalReceiver(GemPurifierDataSynchronizer.ID, GemPurifierDataSynchronizer::handlePacket);
-        ClientPlayNetworking.registerGlobalReceiver(GemCrystallizerDataSynchronizer.ID, GemCrystallizerDataSynchronizer::handlePacket);
-        ClientPlayNetworking.registerGlobalReceiver(GemPurifierScreenSync.TYPE, GemPurifierScreenSync::handlePacket);
+        ClientPlayNetworking.registerGlobalReceiver(GemMachineEnergyDataPayload.TYPE, GemMachineEnergyDataPayload::handlePacket);
+        ClientPlayNetworking.registerGlobalReceiver(GemPurifierFluidDataPayload.TYPE, GemPurifierFluidDataPayload::handlePacket);
+        ClientPlayNetworking.registerGlobalReceiver(GemPurifierDataSynchronizer.TYPE, GemPurifierDataSynchronizer::handlePacket);
+        ClientPlayNetworking.registerGlobalReceiver(GemCrystallizerDataSynchronizer.TYPE, GemCrystallizerDataSynchronizer::handlePacket);
+        ClientPlayNetworking.registerGlobalReceiver(ScreenGhostRenderingS2CPacket.TYPE, ScreenGhostRenderingS2CPacket::handlePacket);
     }
 
     public static void register() {

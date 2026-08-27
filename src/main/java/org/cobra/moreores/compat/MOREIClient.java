@@ -22,9 +22,9 @@ public class MOREIClient implements REIClientPlugin {
 
     @Override
     public void registerScreens(ScreenRegistry registry) {
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 226) / 2) + 78, ((screen.height - 201) / 2) + 30, 20, 25),
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 226) / 2) - 20, ((screen.height - 201) / 2), 20, 25),
                 GemPurifierScreen.class, MOREICommon.GEM_PURIFIER);
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 201) / 2) + 78, ((screen.height - 196) / 2) + 30, 20, 25),
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 201) / 2) - 20, ((screen.height - 196) / 2), 20, 25),
                 GemCrystallizerScreen.class, MOREICommon.GEM_CRYSTALLIZER);
     }
 }

@@ -11,8 +11,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
+import org.joml.Matrix3x2fStack;
 
 import java.util.List;
 
@@ -113,41 +116,78 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
     protected void containerTick() {
         super.containerTick();
         this.energyIngotSlotIcon.tick(getEnergyIngotSlotTexture());
-        this.inputBeforeIngotSlotIcon.tick(getBothInputSlotTexture());
-        this.inputAfterIngotSlotIcon.tick(getBothInputSlotTexture());
+        this.inputBeforeIngotSlotIcon.tick(getInputSlotTexture());
+        this.inputAfterIngotSlotIcon.tick(getInputSlotTexture());
     }
 
     private List<Identifier> getEnergyIngotSlotTexture() {
         return List.of(MoreOresModInitializer.id("container/slot/empty_ingot"), MoreOresModInitializer.id("container/slot/energy_ingot_faded"));
     }
 
-    private List<Identifier> getBothInputSlotTexture() {
+    private List<Identifier> getInputSlotTexture() {
         return List.of(EMPTY_RUBY_TEXTURE, EMPTY_SAPPHIRE_TEXTURE, EMPTY_GARNET_TEXTURE, EMPTY_KYAWTHUITE_TEXTURE,
                 EMPTY_PERIDOT_TEXTURE, EMPTY_JADE_TEXTURE, EMPTY_PYROPE_TEXTURE, EMPTY_RADIANT_TEXTURE, EMPTY_QUARTZ_TEXTURE);
     }
 
     @Override
-    protected void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
+    protected void extractProgressArrow(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
         if(this.menu.isPolishing()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 41, 207, 0, 11, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            extractor.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos + 70, topPos + 41, 207, 0, 11, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        super.extractBackground(context, mouseX, mouseY, delta);
-        renderRadiantDust(context, this.leftPos, this.topPos);
+    protected void extractSlot(GuiGraphicsExtractor graphics, Slot slot, int mouseX, int mouseY) {
+        if(slot.index == 2) {
+            graphics.pose().pushMatrix();
+
+            graphics.pose().translate(slot.x, slot.y);
+            graphics.pose().scale(1.5f, 1.5f);
+
+            if(!slot.getItem().isEmpty()) {
+                graphics.item(slot.getItem(), 0, 0);
+                graphics.itemCount(this.font, slot.getItem(), slot.x - 75, slot.y - 61, null);
+            }
+
+            graphics.pose().popMatrix();
+            return;
+        }
+        super.extractSlot(graphics, slot, mouseX, mouseY);
+    }
+
+    @Override
+    public void extractBackground(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        super.extractBackground(extractor, mouseX, mouseY, delta);
+        renderRadiantDust(extractor, this.leftPos, this.topPos);
         if(this.menu.getBlockEntity().energyStack().isEmpty()) {
-            this.energyIngotSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
+            this.energyIngotSlotIcon.extractRenderState(this.menu, extractor, delta, this.leftPos, this.topPos);
         }
         if(this.menu.getBlockEntity().ingredientStack().isEmpty() && this.menu.getBlockEntity().ingredientAfterStack().isEmpty()) {
-            this.inputBeforeIngotSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
-            this.inputAfterIngotSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
+            this.inputBeforeIngotSlotIcon.extractRenderState(this.menu, extractor, delta, this.leftPos, this.topPos);
+            this.inputAfterIngotSlotIcon.extractRenderState(this.menu, extractor, delta, this.leftPos, this.topPos);
+        }
+        ItemStack resultStack = this.previewResultStack;
+        Slot outputSlot = this.menu.getSlot(2);
+
+        int x = this.leftPos + outputSlot.x;
+        int y = this.topPos + outputSlot.y;
+
+        if(outputSlot.getItem().isEmpty()) {
+            Matrix3x2fStack matrixStack = extractor.pose();
+            matrixStack.pushMatrix();
+            matrixStack.translate(x, y);
+            matrixStack.scale(1.5f, 1.5f);
+            extractor.fakeItem(resultStack, 0, 0);
+            matrixStack.popMatrix();
+
+            if (isHovering(outputSlot, mouseX, mouseY)) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("Result: " + resultStack.getItemName().getString()), mouseX, mouseY);
+            }
         }
     }
 
     @Override
-    protected void renderRedstoneDust(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
+    protected void extractRedstoneStorage(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
         int k = menu.getRedstoneDust();
         int l = Mth.clamp((k * 16 + 10000 - 1) / 10000, 0, 16);
 
@@ -167,33 +207,33 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
     }
 
     @Override
-    protected void renderEnergyHandler(GuiGraphicsExtractor context, int x, int y) {
+    protected void extractEnergyStorage(GuiGraphicsExtractor extractor, int leftPos, int topPos) {
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
 
-        int startY = y + 43 + 44 - energyBarSize;
-        int endY = y + 43 + 44;
+        int startY = topPos + 43 + 44 - energyBarSize;
+        int endY = topPos + 43 + 44;
 
-        int barX1 = x + 13;
+        int barX1 = leftPos + 13;
         int barX2 = barX1 + 16;
 
-        context.fillGradient(barX1, startY, barX2, endY, CommonColors.DARK_PURPLE, CommonColors.RED);
+        extractor.fillGradient(barX1, startY, barX2, endY, CommonColors.DARK_PURPLE, CommonColors.RED);
     }
 
     @Override
-    public void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        extractBackground(context, mouseX, mouseY, delta);
-        super.extractContents(context, mouseX, mouseY, delta);
+    public void extractContents(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        extractBackground(extractor, mouseX, mouseY, delta);
+        super.extractContents(extractor, mouseX, mouseY, delta);
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
         int k = Mth.clamp((18 * menu.getDustCount() + 10000 - 1) / 10000, 0, 18);
         int l = Mth.clamp((menu.getRedstoneDust() * 16 + 10000 - 1) / 10000, 0, 16);
         if (isHovering(13, 43 + 44 - energyBarSize, 16, energyBarSize, mouseX, mouseY)) {
-            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getEnergy() + " / " + this.menu.getEnergyCap() + " J").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD), mouseX, mouseY);
+            extractor.setTooltipForNextFrame(this.font, Component.literal(this.menu.getEnergy() + " / " + this.menu.getEnergyCap() + " J").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD), mouseX, mouseY);
         }
         if (isHovering(38, 97, k, 4, mouseX, mouseY)) {
-            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getDustCount() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
+            extractor.setTooltipForNextFrame(this.font, Component.literal(this.menu.getDustCount() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
         }
         if (isHovering(92, 79, l, 4, mouseX, mouseY)) {
-            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getRedstoneDust() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
+            extractor.setTooltipForNextFrame(this.font, Component.literal(this.menu.getRedstoneDust() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
         }
     }
 }

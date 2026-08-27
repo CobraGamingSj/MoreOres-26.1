@@ -1,6 +1,11 @@
 package org.cobra.moreores.world.block.entity.gem.machine;
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.world.item.Items;
+import org.cobra.moreores.client.gui.screen.GemPurifierMenu;
+import org.cobra.moreores.networking.block.data.ScreenGhostRenderingS2CPacket;
+import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemCrystallizerBlock;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -51,6 +56,8 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     public static final int REDSTONE_SLOT = 5;
 
     private long previousRemovedRadiantDustMilestone = 0;
+
+    private ItemStack lastPreviewResult = ItemStack.EMPTY;
 
     public int dustParticleCount = 0;
     public int maxDust = 10000;
@@ -236,6 +243,8 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
             return;
         }
 
+        syncPreviewResult();
+
         dustTick++;
         redstoneTick++;
 
@@ -276,8 +285,8 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
                     setChanged(level, pos, state);
                 }
                 setChanged(level, pos, state);
-                if (hasInfusionFinished()) {
-                    this.getInfusedGem();
+                if (hasCrystallizationFinished()) {
+                    this.getCrystallizedGem();
                     this.clearProgress();
                     setChanged(level, pos, state);
                 }
@@ -365,7 +374,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         }
     }
 
-    private void getInfusedGem() {
+    private void getCrystallizedGem() {
         RecipeHolder<GemCrystallizerRecipe> recipe = currentRecipe().orElseThrow();
 
         this.removeItem(INGREDIENT_BEFORE_SLOT, 1);
@@ -374,8 +383,25 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         this.setItem(RESULT_SLOT, new ItemStack(recipe.value().getResult().getItem(),
                 this.resultStack().getCount() + recipe.value().getResult().getCount()));
     }
-    private boolean hasInfusionFinished() {
+    private boolean hasCrystallizationFinished() {
         return getInitialProgress() >= maxProgressTicks;
+    }
+
+    private void syncPreviewResult() {
+        Optional<RecipeHolder<GemCrystallizerRecipe>> recipe = currentRecipe();
+        ItemStack result = recipe.map(holder -> holder.value().getResult().copy())
+                .orElse(ItemStack.EMPTY);
+
+        if (ItemStack.matches(lastPreviewResult, result)) {
+            return;
+        }
+        lastPreviewResult = result.copy();
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        for (ServerPlayer player : PlayerLookup.tracking(serverLevel, worldPosition)) {
+            ServerPlayNetworking.send(player, new ScreenGhostRenderingS2CPacket(result));
+        }
     }
 
     protected boolean checkRecipe() {
