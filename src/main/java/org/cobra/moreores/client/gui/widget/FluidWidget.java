@@ -16,7 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import org.cobra.moreores.client.gui.util.FluidUtils;
+import org.cobra.moreores.client.gui.util.MenuFluidSpriteRenderer;
 import org.cobra.moreores.util.FluidStack;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class FluidWidget implements Renderable, LayoutElement {
         float red = (tintColor >> 16 & 0xFF) /255F;
         float green = (tintColor >> 8 & 0xFF) /255F;
         float blue = (tintColor & 0xFF) /255F;
-        FluidUtils.extractTiledFluidSprite(extractor, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, 1F, red, green, blue);
+        MenuFluidSpriteRenderer.extractTiledFluidSprite(extractor, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, 1F, red, green, blue);
 
         if(isPointWithinBounds(this.x, this.y, this.width, this.height, mouseX, mouseY)) {
             drawTooltip(extractor, mouseX, mouseY);

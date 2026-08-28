@@ -1,8 +1,5 @@
 package org.cobra.moreores.networking.block.data;
 
-import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.client.gui.screen.AbstractGemMachineMenu;
-import org.cobra.moreores.world.block.entity.gem.machine.AbstractGemMachineBlockEntity;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -10,15 +7,18 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
+import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.client.gui.screen.AbstractGemMachineMenu;
+import org.cobra.moreores.world.block.entity.gem.machine.AbstractGemMachineBlockEntity;
 
-public record GemPurifierButtonClickPayload(int buttonIndex, BlockPos pos) implements CustomPacketPayload {
-    public static final Type<GemPurifierButtonClickPayload> ID = new Type<>(MoreOresModInitializer.id("button_click"));
+public record GemMachineButtonPayload(int buttonIndex, BlockPos pos) implements CustomPacketPayload {
+    public static final Type<GemMachineButtonPayload> TYPE = new Type<>(MoreOresModInitializer.id("button_click"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierButtonClickPayload> PACKET_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemMachineButtonPayload> STREAM_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.VAR_INT, GemPurifierButtonClickPayload::buttonIndex,
-                    BlockPos.STREAM_CODEC, GemPurifierButtonClickPayload::pos,
-                    GemPurifierButtonClickPayload::new
+                    ByteBufCodecs.VAR_INT, GemMachineButtonPayload::buttonIndex,
+                    BlockPos.STREAM_CODEC, GemMachineButtonPayload::pos,
+                    GemMachineButtonPayload::new
             );
 
     public void handle(ServerPlayNetworking.Context context) {
@@ -32,7 +32,7 @@ public record GemPurifierButtonClickPayload(int buttonIndex, BlockPos pos) imple
                 case 3 -> blockEntity.stopProcess();
                 }
 
-                if((context.player().containerMenu instanceof AbstractGemMachineMenu<?> menu && menu.getBlockPos().equals(pos))) {
+                if(context.player().containerMenu instanceof AbstractGemMachineMenu menu && menu.getBlockPos().equals(pos)) {
                     switch (buttonIndex) {
                         case 0 -> blockEntity.startProcess();
                         case 1 -> blockEntity.pauseProcess();
@@ -42,12 +42,11 @@ public record GemPurifierButtonClickPayload(int buttonIndex, BlockPos pos) imple
                 }
             }
 
-        MoreOresModInitializer.LOGGER.info("Received button click with ID: {} at {}", buttonIndex, "[" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + "]");
-
+        MoreOresModInitializer.LOGGER.info("Received button click with ID: {} at {}", buttonIndex, "[" + pos.getX() + " " + pos.getY() + " " + pos.getZ() + "]");
         }
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

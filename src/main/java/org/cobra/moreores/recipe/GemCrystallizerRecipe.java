@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public record GemCrystallizerRecipe(Ingredient ingredientBefore, Ingredient ingredientAfter, ItemStackTemplate output) implements Recipe<GemCrystallizationRecipeInput> {
+public record GemCrystallizerRecipe(Ingredient ingredientBefore, Ingredient ingredientAfter, ItemStackTemplate result) implements Recipe<GemCrystallizationRecipeInput> {
     
     @Nullable
     private static PlacementInfo placementInfo;
@@ -27,13 +27,13 @@ public record GemCrystallizerRecipe(Ingredient ingredientBefore, Ingredient ingr
     public static final MapCodec<GemCrystallizerRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Ingredient.CODEC.fieldOf("gemBefore").forGetter(GemCrystallizerRecipe::ingredientBefore),
             Ingredient.CODEC.fieldOf("gemAfter").forGetter(GemCrystallizerRecipe::ingredientAfter),
-            ItemStackTemplate.CODEC.fieldOf("infusedGem").forGetter(GemCrystallizerRecipe::output)
+            ItemStackTemplate.CODEC.fieldOf("infusedGem").forGetter(GemCrystallizerRecipe::result)
     ).apply(instance, GemCrystallizerRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizerRecipe> STREAM_CODEC = StreamCodec.composite(
             Ingredient.CONTENTS_STREAM_CODEC, GemCrystallizerRecipe::ingredientBefore,
             Ingredient.CONTENTS_STREAM_CODEC, GemCrystallizerRecipe::ingredientAfter,
-            ItemStackTemplate.STREAM_CODEC, GemCrystallizerRecipe::output,
+            ItemStackTemplate.STREAM_CODEC, GemCrystallizerRecipe::result,
             GemCrystallizerRecipe::new
     );
     
@@ -55,15 +55,7 @@ public record GemCrystallizerRecipe(Ingredient ingredientBefore, Ingredient ingr
     }
 
     public ItemStack getResult() {
-        return this.output.create();
-    }
-
-    public Ingredient getIngredientBefore() {
-        return ingredientBefore;
-    }
-
-    public Ingredient getIngredientAfter() {
-        return ingredientAfter;
+        return this.result.create();
     }
 
     @Override
@@ -89,7 +81,7 @@ public record GemCrystallizerRecipe(Ingredient ingredientBefore, Ingredient ingr
                 new GemCrystallizingRecipeDisplay(
                         Ingredient.optionalIngredientToDisplay(Optional.of(this.ingredientBefore)),
                         Ingredient.optionalIngredientToDisplay(Optional.of(this.ingredientAfter)),
-                        new SlotDisplay.ItemStackSlotDisplay(this.output),
+                        new SlotDisplay.ItemStackSlotDisplay(this.result),
                         new SlotDisplay.ItemSlotDisplay(ModBlocks.GEM_CRYSTALLIZER_BLOCK.asItem())
                 )
         );

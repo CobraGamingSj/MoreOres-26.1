@@ -68,7 +68,7 @@ public class ModTrimMaterials {
     }
 
     private static ResourceKey<TrimMaterial> of(String id) {
-        Identifier ID = MoreOresModInitializer.id(id);
-        return ResourceKey.create(Registries.TRIM_MATERIAL, ID);
+        Identifier TYPE = MoreOresModInitializer.id(id);
+        return ResourceKey.create(Registries.TRIM_MATERIAL, TYPE);
     }
 }

@@ -1,5 +1,7 @@
 package org.cobra.moreores.world.block.entity.gem.machine;
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.cobra.moreores.client.gui.screen.GemCrystallizerMenu;
 import org.cobra.moreores.networking.block.data.GemCrystallizerDataSynchronizer;
+import org.cobra.moreores.networking.block.data.ScreenGhostRenderingS2CPacket;
 import org.cobra.moreores.recipe.GemCrystallizerRecipe;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.input.GemCrystallizationRecipeInput;
@@ -35,7 +38,6 @@ import org.cobra.moreores.world.block.GemCrystallizerBlock;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.ModBlockEntityType;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.world.item.util.GemCategory;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.world.item.util.impl.IGemstone;
 import org.jetbrains.annotations.Nullable;
@@ -53,6 +55,8 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
 
     private long previousRemovedRadiantDustMilestone = 0;
 
+    private ItemStack lastPreviewResult = ItemStack.EMPTY;
+
     public int dustParticleCount = 0;
     public int maxDust = 10000;
     private int dustTick;
@@ -67,7 +71,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
             @Override
             public int get(int index) {
                 return switch (index) {
-                    case 0 -> GemCrystallizerBlockEntity.this.initialProgress;
+                    case 0 -> GemCrystallizerBlockEntity.this.getInitialProgress();
                     case 1 -> GemCrystallizerBlockEntity.this.maxProgressTicks;
                     case 2 ->  GemCrystallizerBlockEntity.this.dustParticleCount;
                     case 3 ->  GemCrystallizerBlockEntity.this.redstone;
@@ -78,7 +82,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0 -> GemCrystallizerBlockEntity.this.initialProgress = value;
+                    case 0 -> GemCrystallizerBlockEntity.this.setInitialProgress(value);
                     case 1 -> GemCrystallizerBlockEntity.this.maxProgressTicks = value;
                     case 2 -> GemCrystallizerBlockEntity.this.dustParticleCount = value;
                     case 3 -> GemCrystallizerBlockEntity.this.redstone = value;
@@ -112,13 +116,9 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     }
 
     @Override
-    public RecipeManager.CachedCheck<GemCrystallizationRecipeInput, GemCrystallizerRecipe> getMatchGetter() {
-        return matchGetter;
-    }
-
-    @Override
     public void saveAdditional(ValueOutput view) {
         super.saveAdditional(view);
+        view.putInt("MaxProgress", maxProgressTicks);
         view.putInt("DustCount", dustParticleCount);
         view.putInt("DustTick", dustTick);
         view.storeNullable("GemType", CrystallizationGemstones.CODEC, gemstone());
@@ -127,14 +127,10 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     @Override
     public void loadAdditional(ValueInput view) {
         super.loadAdditional(view);
+        maxProgressTicks = view.getIntOr("MaxProgress", 300);
         dustParticleCount = view.getIntOr("DustCount", 0);
         dustTick = view.getIntOr("DustTick", 0);
         gemstone = view.read("GemType", CrystallizationGemstones.CODEC).orElse(CrystallizationGemstones.NONE);
-    }
-
-    @Override
-    public int getInitialProgress() {
-        return 0;
     }
 
     @Override
@@ -237,12 +233,6 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     }
 
 
-    @Override
-    public GemCategory category() {
-        return GemCategory.CRYSTALLIZATION;
-    }
-
-
     // Tick Method
     // Logic per tick
     @Override
@@ -250,6 +240,8 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         if (level.isClientSide()) {
             return;
         }
+
+        syncPreviewResult();
 
         dustTick++;
         redstoneTick++;
@@ -279,20 +271,20 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
             energyState = MachineStatus.EnergyState.EXTRACTING;
             setChanged(level, pos, state);
             if (isResultSlotEmptyOrReceivable() && checkRecipe() && hasRequiredEnergyAmount() && dustParticleCount >= 15) {
-                this.continueTickingProgress();
+                this.continueTicks();
                 if((!level.hasNeighborSignal(pos) || redstone > 0) && redstoneTick >= 20) {
                     redstone--;
                     redstoneTick = 0;
                 }
-                this.eatEnergy();
+                this.consumeEnergy();
                 if(dustParticleCount > 0 && dustTick >= 20) {
                     dustParticleCount--;
                     dustTick = 0;
                     setChanged(level, pos, state);
                 }
                 setChanged(level, pos, state);
-                if (hasInfusionFinished()) {
-                    this.getInfusedGem();
+                if (hasCrystallizationFinished()) {
+                    this.getCrystallizedGem();
                     this.clearProgress();
                     setChanged(level, pos, state);
                 }
@@ -304,12 +296,12 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
             }
         } else if (machineStatus.isPaused()) {
             energyState = MachineStatus.EnergyState.INSERTING;
-            giveEnergy();
+            addEnergy();
             setChanged(level, pos, state);
         } else {
             if((energyAmount() < 1_000_000 && hasEnergySource())) {
                 energyState = MachineStatus.EnergyState.INSERTING;
-                giveEnergy();
+                addEnergy();
                 setChanged(level, pos, state);
             } else {
                 energyState = MachineStatus.EnergyState.IDLE;
@@ -380,7 +372,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         }
     }
 
-    private void getInfusedGem() {
+    private void getCrystallizedGem() {
         RecipeHolder<GemCrystallizerRecipe> recipe = currentRecipe().orElseThrow();
 
         this.removeItem(INGREDIENT_BEFORE_SLOT, 1);
@@ -389,8 +381,25 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         this.setItem(RESULT_SLOT, new ItemStack(recipe.value().getResult().getItem(),
                 this.resultStack().getCount() + recipe.value().getResult().getCount()));
     }
-    private boolean hasInfusionFinished() {
-        return initialProgress >= maxProgressTicks;
+    private boolean hasCrystallizationFinished() {
+        return getInitialProgress() >= maxProgressTicks;
+    }
+
+    private void syncPreviewResult() {
+        Optional<RecipeHolder<GemCrystallizerRecipe>> recipe = currentRecipe();
+        ItemStack result = recipe.map(holder -> holder.value().getResult().copy())
+                .orElse(ItemStack.EMPTY);
+
+        if (ItemStack.matches(lastPreviewResult, result)) {
+            return;
+        }
+        lastPreviewResult = result.copy();
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
+        for (ServerPlayer player : PlayerLookup.tracking(serverLevel, worldPosition)) {
+            ServerPlayNetworking.send(player, new ScreenGhostRenderingS2CPacket(result));
+        }
     }
 
     protected boolean checkRecipe() {

@@ -19,20 +19,20 @@ import org.cobra.moreores.tags.ModItemTags;
 public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerBlockEntity> {
     private final Container inventory;
     private final ContainerLevelAccess context;
-    private final ContainerData propertyDelegate;
+    private final ContainerData containerData;
 
     public GemCrystallizerMenu(int syncId, Inventory playerInventory, GemCrystallizerDataSynchronizer data) {
         this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(data.blockPos()),
                 new SimpleContainerData(4));
     }
 
-    public GemCrystallizerMenu(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData delegate) {
+    public GemCrystallizerMenu(int syncId, Inventory playerInventory, BlockEntity entity, ContainerData containerData) {
         super(ModMenuType.GEM_CRYSTALLIZER, syncId, entity.getBlockPos(), (GemCrystallizerBlockEntity)  entity);
         checkContainerSize((Container) entity, 11);
 
         this.inventory = (Container) entity;
         this.context = ContainerLevelAccess.create(entity.getLevel(), entity.getBlockPos());
-        this.propertyDelegate = delegate;
+        this.containerData = containerData;
 
         this.addSlot(new Slot(inventory, 0, 47, 22) {
             @Override
@@ -49,7 +49,7 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerB
             }
         }); // Input After
 
-        this.addSlot(new Slot(inventory, 2, 67, 72) {
+        this.addSlot(new Slot(inventory, 2, 64, 72) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(ModItemTags.CRYSTALLIZED);
@@ -59,7 +59,7 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerB
         this.addSlot(new Slot(inventory, 3, 13, 21) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+                return stack.is(ModItemTags.HAS_ENERGY);
             }
         }); // Energy Input
 
@@ -71,37 +71,37 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerB
         }); // Radiant Slot
 
         this.addSlot(new Slot(inventory, 5, 92, 59)); // Redstone Slot
-        
+
         addSecondAdditionalInventory(inventory);
 
         addPlayerGenericInventory(playerInventory);
         addPlayerHotbarInventory(playerInventory);
 
-        addDataSlots(delegate);
+        addDataSlots(containerData);
     }
 
     @Override
     public void addSecondAdditionalInventory(Container playerInventory) {
         for (int i = 0; i < 5; ++i) {
-            this.addSlot(new Slot(playerInventory, 5 + i, 179, 97 + i * 18));
+            this.addSlot(new Slot(playerInventory, 6 + i, 179, 97 + i * 18));
         }
     }
 
     public boolean isCrystallizing() {
-        return propertyDelegate.get(0) > 0;
+        return containerData.get(0) > 0;
     }
 
     public int getRedstoneDust() {
-        return this.propertyDelegate.get(3);
+        return containerData.get(3);
     }
-    
+
     public int getDustCount() {
-        return propertyDelegate.get(2);
+        return containerData.get(2);
     }
 
     public int progressGetter() {
-        int progress = this.propertyDelegate.get(0); //Progress
-        int maxProgress = this.propertyDelegate.get(1); //Max Progress
+        int progress = this.containerData.get(0); //Progress
+        int maxProgress = this.containerData.get(1); //Max Progress
         int progressArrowSize = 28; //Height of progress arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize/ maxProgress : 0;
@@ -161,7 +161,7 @@ public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerB
     }
 
     private boolean isValidEnergyItem(ItemStack stack) {
-        return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+        return stack.is(ModItemTags.HAS_ENERGY);
     }
 
     private boolean isRadiantDust(ItemStack stack) {

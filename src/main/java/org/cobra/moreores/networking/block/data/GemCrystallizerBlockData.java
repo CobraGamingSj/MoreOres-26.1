@@ -11,15 +11,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.tags.ModItemTags;
 import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.tags.ModItemTags;
 import org.lwjgl.glfw.GLFW;
 
 public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements CustomPacketPayload {
-    public static final Type<GemCrystallizerBlockData> ID = new Type<>(MoreOresModInitializer.id("c_block_data"));
+    public static final Type<GemCrystallizerBlockData> TYPE = new Type<>(MoreOresModInitializer.id("c_block_data"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizerBlockData> PACKET_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizerBlockData> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, GemCrystallizerBlockData::keyCode,
             BlockPos.STREAM_CODEC, GemCrystallizerBlockData::pos,
             GemCrystallizerBlockData::new
@@ -79,6 +79,6 @@ public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements Cus
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

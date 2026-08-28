@@ -23,7 +23,7 @@ public abstract class AbstractGemMachineMenu<T extends AbstractGemMachineBlockEn
 
     public BlockPos getBlockPos() {
         return blockPos;
-    };
+    }
 
     @Override
     public void addPlayerGenericInventory(Inventory playerInventory) {

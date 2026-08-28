@@ -64,7 +64,7 @@ public class AutomaticTranslationCreator extends FabricLanguageProvider {
 
                 String path = id.getPath();
 
-                String translatedName = MoreOresModInitializer.formatName(path);
+                String translatedName = MoreOresModInitializer.formatIdName(path);
 
                 translationBuilder.add(item, translatedName);
             }

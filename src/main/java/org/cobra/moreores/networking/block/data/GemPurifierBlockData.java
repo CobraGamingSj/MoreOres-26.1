@@ -11,16 +11,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.tags.ModItemTags;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.tags.ModItemTags;
 import org.lwjgl.glfw.GLFW;
 
 public record GemPurifierBlockData(int keyCode, BlockPos pos) implements CustomPacketPayload {
-    public static final Type<GemPurifierBlockData> ID = new Type<>(MoreOresModInitializer.id("block_key"));
+    public static final Type<GemPurifierBlockData> TYPE = new Type<>(MoreOresModInitializer.id("block_key"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierBlockData> PACKET_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierBlockData> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, GemPurifierBlockData::keyCode,
             BlockPos.STREAM_CODEC, GemPurifierBlockData::pos,
             GemPurifierBlockData::new
@@ -81,6 +81,6 @@ public record GemPurifierBlockData(int keyCode, BlockPos pos) implements CustomP
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

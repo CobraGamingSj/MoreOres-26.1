@@ -1,6 +1,5 @@
 package org.cobra.moreores.client.gui.widget;
 
-import org.cobra.moreores.networking.block.data.GemPurifierButtonClickPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -9,13 +8,14 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
+import org.cobra.moreores.networking.block.data.GemMachineButtonPayload;
 
-public class MachineButtonWidget extends Button {
+public class MachineButton extends Button {
     private final Identifier texture;
     private final int buttonIndex;
     private final BlockPos pos;
 
-    public MachineButtonWidget(int x, int y, net.minecraft.network.chat.Component message, Identifier background, int buttonIndex, BlockPos pos) {
+    public MachineButton(int x, int y, net.minecraft.network.chat.Component message, Identifier background, int buttonIndex, BlockPos pos) {
         super(x, y, 32, 32, message, btn -> {
 
         }, DEFAULT_NARRATION);
@@ -26,7 +26,7 @@ public class MachineButtonWidget extends Button {
 
     @Override
     public void onPress(InputWithModifiers input) {
-        ClientPlayNetworking.send(new GemPurifierButtonClickPayload(buttonIndex, pos));
+        ClientPlayNetworking.send(new GemMachineButtonPayload(buttonIndex, pos));
     }
 
     @Override

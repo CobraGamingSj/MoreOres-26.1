@@ -22,6 +22,7 @@ public class ModItemTags {
     public static final TagKey<Item> RUBY_TOOL_MATERIALS = of("ruby_tool_materials");
     public static final TagKey<Item> SAPPHIRE_TOOL_MATERIALS = of("sapphire_tool_materials");
     public static final TagKey<Item> RADIANT_TOOL_MATERIALS = of("radiant_tool_materials");
+    public static final TagKey<Item> HAS_ENERGY = of("machine/has_energy");
 
     private static TagKey<Item> of(String id) {
         return TagKey.create(Registries.ITEM, MoreOresModInitializer.id(id));

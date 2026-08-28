@@ -1,4 +1,4 @@
-package org.cobra.moreores.networking.item;
+package org.cobra.moreores.networking.item.data;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -15,9 +15,9 @@ import net.minecraft.world.level.Level;
 import org.cobra.moreores.MoreOresModInitializer;
 
 public record EnergyIngotC2SPayload() implements CustomPacketPayload {
-    public static final Type<EnergyIngotC2SPayload> ID = new Type<>(MoreOresModInitializer.id("energy_ingot_sync"));
+    public static final Type<EnergyIngotC2SPayload> TYPE = new Type<>(MoreOresModInitializer.id("energy_ingot_sync"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, EnergyIngotC2SPayload> PACKET_CODEC = StreamCodec.ofMember(
+    public static final StreamCodec<RegistryFriendlyByteBuf, EnergyIngotC2SPayload> STREAM_CODEC = StreamCodec.ofMember(
             (value, buf) -> {}, buf -> new EnergyIngotC2SPayload()
     );
     
@@ -40,6 +40,6 @@ public record EnergyIngotC2SPayload() implements CustomPacketPayload {
     
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return ID;
+        return TYPE;
     }
 }

@@ -27,10 +27,10 @@ import org.cobra.moreores.client.gui.screen.ModMenuType;
 import org.cobra.moreores.core.registry.RewardState;
 import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
 import org.cobra.moreores.level.gen.BiomeModifiers;
-import org.cobra.moreores.networking.ModC2SNetworks;
-import org.cobra.moreores.networking.ModC2SPayloadRegistry;
-import org.cobra.moreores.networking.ModS2CNetworks;
-import org.cobra.moreores.networking.ModS2CPayloadRegistry;
+import org.cobra.moreores.networking.ModC2SNetworkRegistries;
+import org.cobra.moreores.networking.ModC2SPayloadRegistries;
+import org.cobra.moreores.networking.ModS2CNetworkRegistries;
+import org.cobra.moreores.networking.ModS2CPayloadRegistries;
 import org.cobra.moreores.recipe.ModRecipeSerializer;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
@@ -58,7 +58,7 @@ public class MoreOresModInitializer implements ModInitializer {
 		return ResourceKey.create(Registries.ITEM, id(id));
 	}
 
-	public static String formatName(String path) {
+	public static String formatIdName(String path) {
 		String[] words = path.split("_");
 		StringBuilder builder = new StringBuilder();
 
@@ -380,11 +380,11 @@ public class MoreOresModInitializer implements ModInitializer {
 
 
 		//Networking Registry
-		ModS2CNetworks.register();
-		ModC2SNetworks.register();
-		ModS2CPayloadRegistry.registerS2CPackets();
-		ModC2SPayloadRegistry.registerC2SPackets();
-		ModC2SNetworks.registerServerC2S();
+		ModS2CNetworkRegistries.register();
+		ModC2SNetworkRegistries.register();
+		ModS2CPayloadRegistries.registerS2CPackets();
+		ModC2SPayloadRegistries.registerC2SPackets();
+		ModC2SNetworkRegistries.registerServerC2S();
 
 
 		//ModRecipeBookCategories Registry

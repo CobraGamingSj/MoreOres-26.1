@@ -14,22 +14,29 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.client.gui.screen.GemPurifierMenu;
+import org.cobra.moreores.networking.block.data.ScreenGhostRenderingS2CPacket;
+import org.cobra.moreores.recipe.GemPurifierRecipe;
+import org.cobra.moreores.tags.ModItemTags;
 import org.cobra.moreores.world.block.entity.ImplementedInventory;
 import org.cobra.moreores.world.block.entity.TickableBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
-import org.cobra.moreores.world.item.util.GemCategory;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.world.item.util.impl.IGemstone;
 import org.cobra.moreores.world.item.util.impl.PurificationGemstones;
 import org.cobra.moreores.networking.block.data.GemMachineEnergyDataPayload;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
+
+import java.util.Optional;
 
 public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ImplementedInventory, TickableBlockEntity {
     protected final NonNullList<ItemStack> main;
@@ -37,7 +44,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     protected MachineStatus.EnergyState energyState = MachineStatus.EnergyState.IDLE;
     protected IGemstone gemstone = IGemstone.NONE;
 
-    public int initialProgress = 0;
+    private int initialProgress = 0;
 
     long energyExtracted = 0;
 
@@ -70,8 +77,6 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     public abstract long getEnergyCapacity();
     public abstract long getMaxEnergyInsert();
     public abstract long getMaxEnergyExtract();
-    public abstract RecipeManager.CachedCheck<?, ?> getMatchGetter();
-    public abstract int getInitialProgress();
 
     @Override
     public void saveAdditional(ValueOutput view) {
@@ -97,11 +102,19 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         energyState = view.read("EnergyState", MachineStatus.EnergyState.CODEC).orElse(MachineStatus.EnergyState.IDLE);
     }
 
+    public int getInitialProgress() {
+        return this.initialProgress;
+    }
+
+    public void setInitialProgress(int newProgress) {
+        this.initialProgress = newProgress;
+    }
+
     public long energyAmount() {
         return this.energyStorage.amount;
     }
 
-    public IGemstone detectGem(ItemStack stack) {
+    public IGemstone identify(ItemStack stack) {
         Item item = stack.getItem();
         for (PurificationGemstones gems : PurificationGemstones.values()) {
             for (Item item1 : gems.items()) {
@@ -120,18 +133,16 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         return IGemstone.NONE;
     }
 
-    public int getRedstone() {
-        return this.redstone;
-    }
-
-    public abstract GemCategory category();
-
     public IGemstone gemstone() {
-        return detectGem(resultStack());
+        return identify(resultStack());
     }
 
     public void setGemstone(IGemstone gemstone) {
         this.gemstone = gemstone;
+    }
+
+    public int getRedstone() {
+        return this.redstone;
     }
 
     public SimpleEnergyStorage energyStorage() {
@@ -143,10 +154,10 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
     }
 
     protected boolean hasEnergySource() {
-        return this.energyStack().is(ModItems.ENERGY_INGOT) || this.energyStack().is(ModBlocks.ENERGY_BLOCK.asItem());
+        return this.energyStack().is(ModItemTags.HAS_ENERGY);
     }
 
-    protected void continueTickingProgress() {
+    protected void continueTicks() {
         if(this.level.hasNeighborSignal(this.worldPosition) || redstone > 0) {
             initialProgress += 3;
         } else {
@@ -190,15 +201,15 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         }
     }
 
-    public void setRedstone(int redstone) {
-        this.redstone = redstone;
+    public void setRedstoneAmount(int newRedstoneAmount) {
+        this.redstone = newRedstoneAmount;
     }
 
     protected boolean hasRequiredEnergyAmount() {
         return this.energyStorage.amount >= 13;
     }
 
-    protected void giveEnergy() {
+    protected void addEnergy() {
         if(!hasEnergySource() || energyStorage.amount >= 1_000_000) {
             energyState = MachineStatus.EnergyState.IDLE;
             return;
@@ -213,7 +224,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         }
     }
 
-    protected void eatEnergy() {
+    protected void consumeEnergy() {
         long amount = level.hasNeighborSignal(worldPosition) ? 64 : 13;
         try(Transaction transaction = Transaction.openOuter()) {
             long extracted = energyStorage.extract(amount, transaction);

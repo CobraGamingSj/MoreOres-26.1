@@ -25,6 +25,12 @@
     ],
     "fabric-datagen": [
       "org.cobra.moreores.MoreOresDataGenerator"
+    ],
+    "rei_common": [
+      "org.cobra.moreores.compat.MOREICommon"
+    ],
+    "rei_client": [
+      "org.cobra.moreores.compat.MOREIClient"
     ]
   },
   "mixins": [

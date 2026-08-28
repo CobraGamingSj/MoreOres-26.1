@@ -11,14 +11,16 @@ base {
 }
 
 repositories {
-//    maven { url "<https://maven.shedaniel.me/>" }
-//	maven {
-//		url = uri("https://maven.pkg.github.com/CobraGamingSj/TalentsAPI")
-//		credentials {
-//			username = project.findProperty("gpr.user")
-//			password = project.findProperty("gpr.key")
-//		}
-//	}
+	maven { url = 'https://maven.minecraftforge.net/' }
+	maven {
+		url "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+	repositories {
+		maven { url "https://maven.shedaniel.me" }
+	}
 }
 
 loom {
@@ -36,8 +38,11 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-//    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+	implementation "me.shedaniel:RoughlyEnoughItems-api-fabric:26.1.819"
+	implementation "me.shedaniel:RoughlyEnoughItems-fabric:26.1.819"
 
+	include api("dev.architectury:architectury-fabric:20.0.12")
+	compileOnly("me.shedaniel.cloth:basic-math:0.6.1")
     include api("teamreborn:energy:${project.energy_version}")
 //	modImplementation "org.cobra.api:talents-api:${project.talents_api_version}"
 

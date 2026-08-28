@@ -42,7 +42,7 @@ public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEnti
                 return stack.is(ModItemTags.RAW_GEMSTONE) || stack.is(ModItemTags.RAW_GEMSTONE_BLOCKS);
             }
         }); // Input
-        this.addSlot(new Slot(inventory, 1, 79, 61) {
+        this.addSlot(new Slot(inventory, 1, 75, 61) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(ModItemTags.GEMSTONE) || stack.is(ModItemTags.GEMSTONE_BLOCKS);
@@ -51,13 +51,14 @@ public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEnti
         this.addSlot(new Slot(inventory, 2, 40, 20) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+                return stack.is(ModItemTags.HAS_ENERGY);
             }
         }); // Energy Input
+
         this.addSlot(new Slot(inventory, 3, 12, 20)); // Water Source
 
         this.addSlot(new Slot(inventory, 4, 109, 33)); // Redstone Source
-        
+
         addFirstAdditionalInventory(inventory);
 
         addPlayerGenericInventory(playerInventory);
@@ -66,14 +67,14 @@ public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEnti
         addDataSlots(containerData);
     }
 
-    public boolean isPolishing() {
+    public boolean isPurifying() {
         return containerData.get(0) > 0;
     }
 
     public int getRedstoneDust() {
         return containerData.get(2);
     }
-    
+
     public int progressGetter() {
         int progress = this.containerData.get(0); //Progress
         int maxProgress = this.containerData.get(1); //Max Progress
@@ -158,7 +159,6 @@ public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEnti
         }
     }
 
-    @Override
     public void addFirstAdditionalInventory(Container playerInventory) {
         for (int i = 0; i < 12; ++i) {
             this.addSlot(new Slot(playerInventory, 5 + i, 6 + i * 18, 178));

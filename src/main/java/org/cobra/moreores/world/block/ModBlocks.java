@@ -129,7 +129,7 @@ public class ModBlocks {
         for(Block block : BuiltInRegistries.BLOCK) {
             Identifier id = BuiltInRegistries.BLOCK.getKey(block);
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
-                String name = MoreOresModInitializer.formatName((id.getPath()));
+                String name = MoreOresModInitializer.formatIdName((id.getPath()));
                 blockCount++;
                 MoreOresModInitializer.LOGGER.info("Registering Block: {}, for {} mod", name, MoreOresModInitializer.MOD_ID);
             }

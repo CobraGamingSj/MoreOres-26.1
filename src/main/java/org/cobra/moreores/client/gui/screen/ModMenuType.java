@@ -15,11 +15,11 @@ import org.cobra.moreores.networking.block.data.GemPurifierDataSynchronizer;
 public class ModMenuType {
 
     public static final MenuType<GemPurifierMenu> GEM_PURIFIER =
-            register("gem_purifier_block", GemPurifierMenu::new, GemPurifierDataSynchronizer.PACKET_CODEC
+            register("gem_purifier_block", GemPurifierMenu::new, GemPurifierDataSynchronizer.STREAM_CODEC
             );
 
     public static final MenuType<GemCrystallizerMenu> GEM_CRYSTALLIZER =
-            register("gem_crystallizer_block", GemCrystallizerMenu::new, GemCrystallizerDataSynchronizer.PACKET_CODEC);
+            register("gem_crystallizer_block", GemCrystallizerMenu::new, GemCrystallizerDataSynchronizer.STREAM_CODEC);
 
     private static <S extends AbstractContainerMenu, D extends CustomPacketPayload> ExtendedMenuType<S, D> register(String id, ExtendedMenuType.ExtendedFactory<S, D> factory, StreamCodec<? super RegistryFriendlyByteBuf, D> packetCodec) {
         return Registry.register(BuiltInRegistries.MENU, MoreOresModInitializer.id(id), new ExtendedMenuType<>(factory, packetCodec));

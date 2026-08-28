@@ -26,7 +26,7 @@ public class ModArmorTrimPatterns {
     }
 
     private static ResourceKey<TrimPattern> of(String id) {
-        Identifier ID = Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, id);
-        return ResourceKey.create(Registries.TRIM_PATTERN, ID);
+        Identifier TYPE = Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, id);
+        return ResourceKey.create(Registries.TRIM_PATTERN, TYPE);
     }
 }

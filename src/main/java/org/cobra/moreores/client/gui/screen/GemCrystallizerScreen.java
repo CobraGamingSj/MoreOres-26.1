@@ -111,14 +111,14 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
     }
 
     @Override
-    protected void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
+    protected void extractProgressArrow(GuiGraphicsExtractor context, int x, int y) {
         if(this.menu.isCrystallizing()) {
             context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 70, y + 41, 207, 0, 11, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
     }
 
     @Override
-    protected void renderRedstoneDust(GuiGraphicsExtractor graphics, int leftPos, int topPos) {
+    protected void extractRedstoneStorage(GuiGraphicsExtractor graphics, int leftPos, int topPos) {
         int k = menu.getRedstoneDust();
         int l = Mth.clamp((k * 16 + 10000 - 1) / 10000, 0, 16);
 
@@ -168,7 +168,7 @@ public class GemCrystallizerScreen extends AbstractGemMachineScreen<GemCrystalli
     }
 
     @Override
-    protected void renderEnergyHandler(GuiGraphicsExtractor context, int x, int y) {
+    protected void extractEnergyStorage(GuiGraphicsExtractor context, int x, int y) {
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
 
         int startY = y + 43 + 44 - energyBarSize;

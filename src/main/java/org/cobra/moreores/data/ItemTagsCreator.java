@@ -18,6 +18,10 @@ public class ItemTagsCreator extends FabricTagsProvider.ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
 
+        valueLookupBuilder(ModItemTags.HAS_ENERGY)
+                .add(ModItems.ENERGY_INGOT)
+                .add(ModBlocks.ENERGY_BLOCK.asItem());
+
         valueLookupBuilder(ModItemTags.CRYSTALLIZED)
                 .add(ModItems.CRIMSON_GARNET)
                 .add(ModItems.CRYSTALLITE)
@@ -71,7 +75,7 @@ public class ItemTagsCreator extends FabricTagsProvider.ItemTagsProvider {
                 .add(ModBlocks.KASHMIR_SAPPHIRE_BLOCK.asItem())
                 .add(ModBlocks.RADIANT_AMETHYST_BLOCK.asItem())
                 .add(ModBlocks.GRANDIDIERITE_BLOCK.asItem());
-        
+
         valueLookupBuilder(ItemTags.SPEARS)
                 .add(ModItems.RUBY_SPEAR)
                 .add(ModItems.SAPPHIRE_SPEAR);
@@ -217,10 +221,10 @@ public class ItemTagsCreator extends FabricTagsProvider.ItemTagsProvider {
 
         valueLookupBuilder(ItemTags.ARROWS)
                 .add(ModItems.GEM_ARROW);
-        
+
         valueLookupBuilder(ItemTags.BOW_ENCHANTABLE)
                 .add(ModItems.RADIANT_BOW);
-        
+
         valueLookupBuilder(ModItemTags.METAL)
                 .add(Items.IRON_INGOT)
                 .add(Items.COPPER_INGOT)
