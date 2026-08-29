@@ -41,7 +41,7 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 14, 16);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty REDSTONE_POWERED = BooleanProperty.create("redstone_powered");
-    public static final EnumProperty<PurificationGemstones> IS_POLISHING = EnumProperty.create("is_polishing", PurificationGemstones.class);
+    public static final EnumProperty<PurificationGemstones> IS_PURIFYING = EnumProperty.create("is_polishing", PurificationGemstones.class);
     public static final MapCodec<GemPurifierBlock> CODEC = GemPurifierBlock.simpleCodec(GemPurifierBlock::new);
 
     @Override
@@ -52,13 +52,13 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
     protected GemPurifierBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(REDSTONE_POWERED, false)
-                .setValue(IS_POLISHING, PurificationGemstones.NONE));
+                .setValue(IS_PURIFYING, PurificationGemstones.NONE));
     }
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getClockWise()).setValue(REDSTONE_POWERED, ctx.getLevel().hasNeighborSignal(ctx.getClickedPos()))
-                .setValue(IS_POLISHING, PurificationGemstones.NONE);
+                .setValue(IS_PURIFYING, PurificationGemstones.NONE);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
         }
 
         if(world.getBlockEntity(pos) instanceof GemPurifierBlockEntity be) {
-            newState = newState.setValue(IS_POLISHING, be.gemstone());
+            newState = newState.setValue(IS_PURIFYING, be.gemstone());
         }
 
         world.setBlock(pos, newState, Block.UPDATE_ALL);
@@ -152,6 +152,6 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
         builder.add(REDSTONE_POWERED);
-        builder.add(IS_POLISHING);
+        builder.add(IS_PURIFYING);
     }
 }

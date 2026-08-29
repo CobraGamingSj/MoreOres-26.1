@@ -54,7 +54,6 @@ public class EnergyBlock extends Block {
                 world.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.PLAYER_HURT, SoundSource.PLAYERS, 5.0f, 1.0f);
             }
         }
-
         super.stepOn(world, pos, state, entity);
     }
 }

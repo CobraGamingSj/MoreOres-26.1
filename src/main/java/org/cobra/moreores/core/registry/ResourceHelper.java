@@ -97,6 +97,10 @@ public class ResourceHelper {
             return Registry.register(BuiltInRegistries.BLOCK, id(id), block);
         }
 
+        public Block register(String id, Function<BlockBehaviour.Properties, Block> blockFunction, BlockBehaviour.Properties properties) {
+            return register(id, blockFunction.apply(properties.setId(blockKey(id))));
+        }
+
         public Block register(String id, Function<BlockBehaviour.Properties, Block> blockFactory) {
             return registerSolidBlock(id, blockFactory, 7f, 7f);
         }

@@ -18,18 +18,18 @@ public class ModBlocks {
 
     private static final ResourceHelper.BlockResource RESOURCE = ResourceHelper.BlockResource.INSTANCE;
     
-    public static final Block ENERGY_BLOCK = RESOURCE.register("energy_block", new EnergyBlock(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "energy_block"))).mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(256.0f, 512.0f).strength(512.0f).sound(ModSoundType.ENERGY_BLOCK).lightLevel((state) -> {
+    public static final Block ENERGY_BLOCK = RESOURCE.register("energy_block", p -> new EnergyBlock(p.mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(256.0f, 512.0f).sound(ModSoundType.ENERGY_BLOCK).lightLevel((state) -> {
         return 30;
     })));
-    public static final Block RUBY_LAMP = RESOURCE.register("ruby_lamp", new RubyLampBlock(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "ruby_lamp"))).destroyTime(0.1f).sound(SoundType.GLASS).lightLevel(state -> state.getValue(RubyLampBlock.LIT) ? 15:0)));
+    public static final Block RUBY_LAMP = RESOURCE.register("ruby_lamp", p -> new RubyLampBlock(p.destroyTime(0.1f).sound(SoundType.GLASS).lightLevel(state -> state.getValue(RubyLampBlock.LIT) ? 15:0)));
 
-    public static final Block RUBY_BLOCK = RESOURCE.register("ruby_block", new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "ruby_block"))).mapColor(MapColor.NETHER).requiresCorrectToolForDrops().strength(5.0f, 5.0f).strength(5.0f)));
+    public static final Block RUBY_BLOCK = RESOURCE.register("ruby_block", p -> new Block(p.mapColor(MapColor.NETHER).requiresCorrectToolForDrops().strength(5.0f, 5.0f)));
 
     public static final Block RADIANT_BLOCK = RESOURCE.registerSolidBlock(
             "radiant_block", s -> new Block(
             s.requiresCorrectToolForDrops()), 5f, 5f);
 
-    public static final Block SAPPHIRE_BLOCK = RESOURCE.register("sapphire_block", new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "sapphire_block"))).mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(4.0f, 4.0f).strength(4.0f)));
+    public static final Block SAPPHIRE_BLOCK = RESOURCE.register("sapphire_block", p -> new Block(p.mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(4.0f, 4.0f).strength(4.0f)));
     public static final Block GREEN_SAPPHIRE_BLOCK = RESOURCE.register("green_sapphire_block", new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "green_sapphire_block"))).mapColor(MapColor.COLOR_GREEN).requiresCorrectToolForDrops().strength(4.0f, 4.0f).strength(4.0f)));
     public static final Block BLUE_GARNET_BLOCK = RESOURCE.register("blue_garnet_block", new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "blue_garnet_block"))).mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(6.0f, 6.5f).strength(7.0f).sound(SoundType.AMETHYST_CLUSTER)));
     public static final Block PINK_GARNET_BLOCK = RESOURCE.register("pink_garnet_block", new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, "pink_garnet_block"))).mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(6.0f, 6.5f).strength(7.0f).sound(SoundType.AMETHYST_CLUSTER)));

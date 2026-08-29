@@ -3,9 +3,7 @@ package org.cobra.moreores.world.block.entity.gem.machine;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.world.item.Items;
-import org.cobra.moreores.client.gui.screen.GemPurifierMenu;
 import org.cobra.moreores.networking.block.data.ScreenGhostRenderingS2CPacket;
-import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemCrystallizerBlock;
 import org.cobra.moreores.world.block.ModBlocks;
@@ -56,8 +54,6 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     public static final int REDSTONE_SLOT = 5;
 
     private long previousRemovedRadiantDustMilestone = 0;
-
-    private ItemStack lastPreviewResult = ItemStack.EMPTY;
 
     public int dustParticleCount = 0;
     public int maxDust = 10000;
@@ -203,7 +199,6 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         return false;
     }
 
-
     @Override
     public GemCrystallizerDataSynchronizer getScreenOpeningData(ServerPlayer serverPlayerEntity) {
         return new GemCrystallizerDataSynchronizer(this.energyAmount(), this.getRedstone(), this.dustParticleCount, this.worldPosition);
@@ -230,7 +225,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     }
 
     @Override
-    public NonNullList<ItemStack> getItems() {
+    public NonNullList<ItemStack> items() {
         return main;
     }
 
@@ -238,7 +233,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     // Tick Method
     // Logic per tick
     @Override
-    public void tick(Level level, BlockPos pos, BlockState state) {
+    public void tick(Level level, BlockPos blockPos, BlockState state) {
         if (level.isClientSide()) {
             return;
         }
@@ -253,28 +248,28 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
         if (newGem != this.gemstone) {
             setGemstone(newGem);
 
-            level.sendBlockUpdated(pos, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-            setChanged(level, pos, state);
+            level.sendBlockUpdated(blockPos, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+            setChanged(level, blockPos, state);
         }
 
         ItemStack stack = radiantDustStack();
         if(stack.is(ModItems.RADIANT_DUST) && dustParticleCount <= maxDust) {
             dustParticleCount += 2000;
-            setChanged(level, pos, state);
+            setChanged(level, blockPos, state);
         }
         ItemStack stack1 = redstoneStack();
-        if((stack1.is(Items.REDSTONE) || level.hasNeighborSignal(pos)) && redstone <= maxRedstone) {
+        if((stack1.is(Items.REDSTONE) || level.hasNeighborSignal(blockPos)) && redstone <= maxRedstone) {
             redstone += 10;
-            setChanged(level, pos, state);
+            setChanged(level, blockPos, state);
         }
 
         changeState();
         if(machineStatus == MachineStatus.RUNNING) {
             energyState = MachineStatus.EnergyState.EXTRACTING;
-            setChanged(level, pos, state);
+            setChanged(level, blockPos, state);
             if (isResultSlotEmptyOrReceivable() && checkRecipe() && hasRequiredEnergyAmount() && dustParticleCount >= 15) {
                 this.continueTicks();
-                if((!level.hasNeighborSignal(pos) || redstone > 0) && redstoneTick >= 20) {
+                if((!level.hasNeighborSignal(blockPos) || redstone > 0) && redstoneTick >= 20) {
                     redstone--;
                     redstoneTick = 0;
                 }
@@ -282,39 +277,39 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
                 if(dustParticleCount > 0 && dustTick >= 20) {
                     dustParticleCount--;
                     dustTick = 0;
-                    setChanged(level, pos, state);
+                    setChanged(level, blockPos, state);
                 }
-                setChanged(level, pos, state);
+                setChanged(level, blockPos, state);
                 if (hasCrystallizationFinished()) {
                     this.getCrystallizedGem();
                     this.clearProgress();
-                    setChanged(level, pos, state);
+                    setChanged(level, blockPos, state);
                 }
-                setChanged(level, pos, state);
+                setChanged(level, blockPos, state);
             } else {
                 this.clearProgress();
                 this.machineStatus = MachineStatus.IDLE;
-                setChanged(level, pos, state);
+                setChanged(level, blockPos, state);
             }
         } else if (machineStatus.isPaused()) {
             energyState = MachineStatus.EnergyState.INSERTING;
             addEnergy();
-            setChanged(level, pos, state);
+            setChanged(level, blockPos, state);
         } else {
             if((energyAmount() < 1_000_000 && hasEnergySource())) {
                 energyState = MachineStatus.EnergyState.INSERTING;
                 addEnergy();
-                setChanged(level, pos, state);
+                setChanged(level, blockPos, state);
             } else {
                 energyState = MachineStatus.EnergyState.IDLE;
-                setChanged(level, pos, state);
+                setChanged(level, blockPos, state);
             }
         }
 
         validateEnergyAmount(ENERGY_SOURCE_SLOT);
         validateRedstoneAmount(REDSTONE_SLOT);
         checkForEnoughRadiantDustAndConsumeSingle();
-        setChanged(level, pos, state);
+        setChanged(level, blockPos, state);
     }
 
     @Override
@@ -348,7 +343,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     private void changeState() {
         BlockState state = getBlockState();
 
-        state = state.setValue(GemCrystallizerBlock.IS_POLISHING, gemstone());
+        state = state.setValue(GemCrystallizerBlock.IS_CRYSTALLIZING, gemstone());
 
 
         if(state != getBlockState()) {

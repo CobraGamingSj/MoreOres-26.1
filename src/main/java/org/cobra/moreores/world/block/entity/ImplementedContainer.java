@@ -18,20 +18,20 @@ import net.minecraft.world.level.storage.ValueOutput;
  *
  * <h2>Reading and writing to tags</h2>
  * Use {@link ContainerHelper#saveAllItems(ValueOutput, NonNullList)} (NbtCompound, DefaultedList)} and {@link ContainerHelper#loadAllItems(ValueInput, NonNullList)} (NbtCompound, DefaultedList, RegistryWrapper.WrapperLookup)}
- * on {@linkplain #getItems() the item list}.
+ * on {@linkplain #items() the item list}.
  *
  * License: <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
  * @author Juuz
  */
 @FunctionalInterface
-public interface ImplementedInventory extends WorldlyContainer {
+public interface ImplementedContainer extends WorldlyContainer {
     /**
      * Gets the item list of this inventory.
      * Must return the same instance every time it's called.
      *
      * @return the item list
      */
-    NonNullList<ItemStack> getItems();
+    NonNullList<ItemStack> items();
 
     /**
      * Creates an inventory from the item list.
@@ -39,7 +39,7 @@ public interface ImplementedInventory extends WorldlyContainer {
      * @param items the item list
      * @return a new inventory
      */
-    static ImplementedInventory of(NonNullList<ItemStack> items) {
+    static ImplementedContainer of(NonNullList<ItemStack> items) {
         return () -> items;
     }
 
@@ -49,7 +49,7 @@ public interface ImplementedInventory extends WorldlyContainer {
      * @param size the inventory size
      * @return a new inventory
      */
-    static ImplementedInventory ofSize(int size) {
+    static ImplementedContainer ofSize(int size) {
         return of(NonNullList.withSize(size, ItemStack.EMPTY));
     }
 
@@ -65,7 +65,7 @@ public interface ImplementedInventory extends WorldlyContainer {
      */
     @Override
     default int[] getSlotsForFace(Direction side) {
-        int[] result = new int[getItems().size()];
+        int[] result = new int[items().size()];
         for (int i = 0; i < result.length; i++) {
             result[i] = i;
         }
@@ -108,13 +108,13 @@ public interface ImplementedInventory extends WorldlyContainer {
     /**
      * Returns the inventory size.
      *
-     * <p>The default implementation returns the size of {@link #getItems()}.
+     * <p>The default implementation returns the size of {@link #items()}.
      *
      * @return the inventory size
      */
     @Override
     default int getContainerSize() {
-        return getItems().size();
+        return items().size();
     }
 
     /**
@@ -156,7 +156,7 @@ public interface ImplementedInventory extends WorldlyContainer {
      */
     @Override
     default ItemStack getItem(int slot) {
-        return getItems().get(slot);
+        return items().get(slot);
     }
 
     default ItemStack ingredientStack() {
@@ -187,7 +187,7 @@ public interface ImplementedInventory extends WorldlyContainer {
      */
     @Override
     default ItemStack removeItem(int slot, int count) {
-        ItemStack result = ContainerHelper.removeItem(getItems(), slot, count);
+        ItemStack result = ContainerHelper.removeItem(items(), slot, count);
         if (!result.isEmpty()) {
             setChanged();
         }
@@ -205,7 +205,7 @@ public interface ImplementedInventory extends WorldlyContainer {
      */
     @Override
     default ItemStack removeItemNoUpdate(int slot) {
-        return ContainerHelper.takeItem(getItems(), slot);
+        return ContainerHelper.takeItem(items(), slot);
     }
 
     /**
@@ -219,7 +219,7 @@ public interface ImplementedInventory extends WorldlyContainer {
      */
     @Override
     default void setItem(int slot, ItemStack stack) {
-        getItems().set(slot, stack);
+        items().set(slot, stack);
         if (stack.getCount() > getMaxStackSize()) {
             stack.setCount(getMaxStackSize());
         }
@@ -227,11 +227,11 @@ public interface ImplementedInventory extends WorldlyContainer {
     }
 
     /**
-     * Clears {@linkplain #getItems() the item list}}.
+     * Clears {@linkplain #items() the item list}}.
      */
     @Override
     default void clearContent() {
-        getItems().clear();
+        items().clear();
     }
 
     @Override

@@ -18,7 +18,6 @@ public abstract class AnvilMenuMixin {
 
     @Inject(method = "onTake", at = @At("HEAD"))
     private void onTake(Player player, ItemStack stack, CallbackInfo ci) {
-        System.out.println("ANVIL MIXIN TRIGGERRED");
         if(player.level().isClientSide()) return;
 
         if(!(player instanceof ServerPlayer serverPlayer)) return;
@@ -29,7 +28,6 @@ public abstract class AnvilMenuMixin {
         if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
             if (stack.hasNonDefault(DataComponents.CUSTOM_NAME)) {
                 if (name.equalsIgnoreCase("CobraGamingSJ")) {
-                    System.out.println("NAME MATCHED!");
                     MoreOresModInitializer.giveBirthdayRewards(serverPlayer);
                     MoreOresModInitializer.LOGGER.info("Gave {} rewards", serverPlayer.getName());
                 }

@@ -41,7 +41,7 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 14, 16);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty REDSTONE_POWERED = BooleanProperty.create("redstone_powered");
-    public static final EnumProperty<CrystallizationGemstones> IS_POLISHING = EnumProperty.create("is_crystallizing", CrystallizationGemstones.class);
+    public static final EnumProperty<CrystallizationGemstones> IS_CRYSTALLIZING = EnumProperty.create("is_crystallizing", CrystallizationGemstones.class);
     public static final MapCodec<GemCrystallizerBlock> CODEC = GemCrystallizerBlock.simpleCodec(GemCrystallizerBlock::new);
 
     @Override
@@ -52,13 +52,13 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
     protected GemCrystallizerBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(REDSTONE_POWERED, false)
-                .setValue(IS_POLISHING, CrystallizationGemstones.NONE));
+                .setValue(IS_CRYSTALLIZING, CrystallizationGemstones.NONE));
     }
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getClockWise()).setValue(REDSTONE_POWERED, ctx.getLevel().hasNeighborSignal(ctx.getClickedPos()))
-                .setValue(IS_POLISHING, CrystallizationGemstones.NONE);
+                .setValue(IS_CRYSTALLIZING, CrystallizationGemstones.NONE);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
         }
 
         if(world.getBlockEntity(pos) instanceof GemCrystallizerBlockEntity be) {
-            newState = newState.setValue(IS_POLISHING, be.gemstone());
+            newState = newState.setValue(IS_CRYSTALLIZING, be.gemstone());
         }
 
         world.setBlock(pos, newState, Block.UPDATE_ALL);
@@ -153,6 +153,6 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
         builder.add(REDSTONE_POWERED);
-        builder.add(IS_POLISHING);
+        builder.add(IS_CRYSTALLIZING);
     }
 }

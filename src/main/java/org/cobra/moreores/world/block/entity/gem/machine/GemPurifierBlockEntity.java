@@ -2,8 +2,6 @@ package org.cobra.moreores.world.block.entity.gem.machine;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeInput;
 import org.cobra.moreores.networking.block.data.ScreenGhostRenderingS2CPacket;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.world.block.GemPurifierBlock;
@@ -86,8 +84,6 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     public static final int REDSTONE_SLOT = 4;
 
     private long previousRemovedFluidMilestone = 0;
-
-    private ItemStack lastPreviewResult = ItemStack.EMPTY;
 
     protected final ContainerData containerData;
     private int maxProgressTick = 384;
@@ -244,7 +240,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     }
 
     @Override
-    public NonNullList<ItemStack> getItems() {
+    public NonNullList<ItemStack> items() {
         return main;
     }
 
@@ -252,7 +248,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
     // Tick Method
     // Logic per tick
     @Override
-    public void tick(Level level, BlockPos pos, BlockState state) {
+    public void tick(Level level, BlockPos blockPos, BlockState state) {
         if (level.isClientSide()) {
             return;
         }
@@ -266,13 +262,13 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         if (newGem != this.gemstone) {
             setGemstone(newGem);
 
-            level.sendBlockUpdated(pos, getBlockState(), getBlockState(), 3);
+            level.sendBlockUpdated(blockPos, getBlockState(), getBlockState(), 3);
         }
 
         ItemStack stack = redstoneStack();
-        if((stack.is(Items.REDSTONE) || level.hasNeighborSignal(pos)) && redstone <= maxRedstone) {
+        if((stack.is(Items.REDSTONE) || level.hasNeighborSignal(blockPos)) && redstone <= maxRedstone) {
             redstone += 10;
-            setChanged(level, pos, state);
+            setChanged(level, blockPos, state);
         }
         
         changeState();
@@ -280,7 +276,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
             energyState = MachineStatus.EnergyState.EXTRACTING;
             if (isResultSlotEmptyOrReceivable() && checkRecipe() && hasRequiredEnergyAmount() && hasEnoughWater()) {
                 this.continueTicks();
-                if((!level.hasNeighborSignal(pos) || redstone > 0) && redstoneTick >= 20) {
+                if((!level.hasNeighborSignal(blockPos) || redstone > 0) && redstoneTick >= 20) {
                     redstone--;
                     redstoneTick = 0;
                 }
@@ -290,11 +286,11 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
                     this.getPurifiedGemstone();
                     this.clearProgress();
                 }
-                setChanged(level, pos, state);
+                setChanged(level, blockPos, state);
             } else {
                 this.clearProgress();
                 this.machineStatus = MachineStatus.IDLE;
-                setChanged(level, pos, state);
+                setChanged(level, blockPos, state);
             }
         } else if (machineStatus.isPaused()) {
             energyState = MachineStatus.EnergyState.INSERTING;
@@ -316,7 +312,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         validateEnergyAmount(ENERGY_SOURCE_SLOT);
         validateFluidAmount();
         validateRedstoneAmount(REDSTONE_SLOT);
-        setChanged(level, pos, state);
+        setChanged(level, blockPos, state);
     }
 
     @Override
@@ -330,7 +326,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
 
     private void changeState() {
         BlockState state = getBlockState();
-        state = state.setValue(GemPurifierBlock.IS_POLISHING, gemstone());
+        state = state.setValue(GemPurifierBlock.IS_PURIFYING, gemstone());
         if(state != getBlockState()) {
             level.setBlock(worldPosition, state, Block.UPDATE_ALL);
         }
