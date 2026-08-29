@@ -27,7 +27,7 @@ public class GemPurifierCategory implements DisplayCategory<GemPurifierDisplay> 
     @Override
     public List<Widget> setupDisplay(GemPurifierDisplay display, Rectangle bounds) {
         List<Widget> widgets = new LinkedList<>();
-        Point startPoint = new Point(bounds.getCenterX() - 91, bounds.getCenterY() - 91);
+        Point startPoint = new Point(bounds.getCenterX() - 91, bounds.getCenterY() - 53);
 
         widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 138, 88)));
 

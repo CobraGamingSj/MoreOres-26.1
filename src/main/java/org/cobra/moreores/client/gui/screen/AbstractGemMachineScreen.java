@@ -29,6 +29,8 @@ public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlock
     protected final Identifier SLOT_HIGHLIGHT_BACK_SPRITE_ = MoreOresModInitializer.id("container/slot_highlight_back");
     protected final Identifier SLOT_HIGHLIGHT_FRONT_SPRITE_ = MoreOresModInitializer.id("container/slot_highlight_front");
 
+    private static final Identifier REI_HELP = MoreOresModInitializer.id("container/rei");
+
     public AbstractGemMachineScreen(Menu menu, Inventory inventory, Component title, int imageWidth, int imageHeight) {
         super(menu, inventory, title, imageWidth, imageHeight);
     }
@@ -143,6 +145,8 @@ public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlock
                 extractor.setTooltipForNextFrame(this.font, Component.literal("Result: " + resultStack.getItemName().getString()), mouseX, mouseY);
             }
         }
+
+        extractor.blitSprite(RenderPipelines.GUI_TEXTURED, REI_HELP, i - 30, j, 25, 20);
     }
 
     private boolean isOutputSlot(Slot slot) {
