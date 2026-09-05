@@ -50,7 +50,7 @@ public class ModItems {
     public static final Item RAW_JADE = RESOURCE.register("raw_jade", Item::new);
 
     
-    // New Gem Variants {Gem crystallizer}
+    // New Gem Variants {Gem Crystallizer}
     public static final Item CRIMSON_GARNET = RESOURCE.register("crimson_garnet", s -> new GemItem(s, "crimson_garnet"));
     public static final Item CRYSTALLITE = RESOURCE.register("crystallite", s -> new GemItem(s, "crystallite"));
     public static final Item RADIANT_AMETHYST = RESOURCE.register("radiant_amethyst", s -> new GemItem(s, "radiant_amethyst"));
@@ -62,7 +62,7 @@ public class ModItems {
     public static final Item OPAL = RESOURCE.register("opal", s -> new GemItem(s, "opal"));
     public static final Item GRANDIDIERITE = RESOURCE.register("grandidierite", Item::new);
     public static final Item RED_BERYL = RESOURCE.register("red_beryl", s -> new GemItem(s, "red_beryl"));
-    public static final Item KASHMIR_SAPPHIRE = RESOURCE.register("kashmir_sapphire", Item::new);
+    public static final Item KASHMIR_SAPPHIRE = RESOURCE.register("kashmir_sapphire", s -> new GemItem(s, "kashmir_sapphire"));
 
     public static final Item ENERGY_INGOT = RESOURCE.register("energy_ingot", settings ->  new EnergyIngotItem(settings.fireResistant().rarity(Rarity.RARE)));
 

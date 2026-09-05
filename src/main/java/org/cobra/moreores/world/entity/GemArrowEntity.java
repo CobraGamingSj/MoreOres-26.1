@@ -2,9 +2,11 @@ package org.cobra.moreores.world.entity;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.cobra.moreores.world.item.ModItems;
 import org.jspecify.annotations.Nullable;
@@ -24,11 +26,27 @@ public class GemArrowEntity extends AbstractArrow {
     }
 
     @Override
+    protected void onHitBlock(BlockHitResult hitResult) {
+        if(!(level() instanceof ServerLevel level)) return;
+        PrimedTnt tnt = new PrimedTnt(EntityTypes.TNT, level);
+        if(!level.getBlockState(hitResult.getBlockPos()).isAir()) {
+            tnt.setPos(this.getX(), this.getY(), this.getZ() + 1);
+            tnt.setFuse(0);
+            level.addFreshEntity(tnt);
+            return;
+        } else {
+            tnt.discard();
+            this.discard();
+        }
+        super.onHitBlock(hitResult);
+    }
+
+    @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        Level world = entity.level();
+        Level level = entity.level();
         
-        if(world.isClientSide()) {
+        if(level.isClientSide()) {
             return;
         }
         
