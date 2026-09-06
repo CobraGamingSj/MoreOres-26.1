@@ -5,11 +5,11 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.ArrowRenderState;
 import net.minecraft.resources.Identifier;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.world.entity.GemArrowEntity;
+import org.cobra.moreores.world.entity.GemArrow;
 
-public class GemArrowEntityRenderer extends ArrowRenderer<GemArrowEntity, ArrowRenderState> {
+public class GemArrowRenderer extends ArrowRenderer<GemArrow, ArrowRenderState> {
     public static final Identifier TEXTURE = MoreOresModInitializer.id("textures/entity/item/gem_arrow.png");
-    public GemArrowEntityRenderer(EntityRendererProvider.Context context) {
+    public GemArrowRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
@@ -24,7 +24,7 @@ public class GemArrowEntityRenderer extends ArrowRenderer<GemArrowEntity, ArrowR
     }
 
     @Override
-    public void extractRenderState(GemArrowEntity persistentProjectileEntity, ArrowRenderState projectileEntityRenderState, float f) {
+    public void extractRenderState(GemArrow persistentProjectileEntity, ArrowRenderState projectileEntityRenderState, float f) {
         super.extractRenderState(persistentProjectileEntity, projectileEntityRenderState, f);
     }
 }

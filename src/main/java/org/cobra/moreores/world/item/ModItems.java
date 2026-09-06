@@ -1,16 +1,18 @@
 package org.cobra.moreores.world.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SmithingTemplateItem;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.equipment.ArmorType;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.item.equipment.ArmorItem;
 import org.cobra.moreores.world.item.equipment.ModArmorMaterials;
+
+import java.util.function.Consumer;
 
 import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
 
@@ -62,7 +64,13 @@ public class ModItems {
     public static final Item OPAL = RESOURCE.register("opal", s -> new GemItem(s, "opal"));
     public static final Item GRANDIDIERITE = RESOURCE.register("grandidierite", Item::new);
     public static final Item RED_BERYL = RESOURCE.register("red_beryl", s -> new GemItem(s, "red_beryl"));
-    public static final Item KASHMIR_SAPPHIRE = RESOURCE.register("kashmir_sapphire", s -> new GemItem(s, "kashmir_sapphire"));
+    public static final Item KASHMIR_SAPPHIRE = RESOURCE.register("kashmir_sapphire", s -> new Item(s.rarity(Rarity.RARE)) {
+        @Override
+        public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
+            builder.accept(Component.literal("Gemstone").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
+            super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
+        }
+    });
 
     public static final Item ENERGY_INGOT = RESOURCE.register("energy_ingot", settings ->  new EnergyIngotItem(settings.fireResistant().rarity(Rarity.RARE)));
 
@@ -174,6 +182,11 @@ public class ModItems {
 
 
     //    Radiant Tools & Weapons
+//    public static final Item RADIANT_SWORD = RESOURCE.registerSword(
+//            "radiant_sword",
+//            s -> new Item(s.rarity(Rarity.EPIC).fireResistant()),
+//            32, -1f, ModToolMaterials.RADIANT
+//    );
     public static final Item RADIANT_SWORD = RESOURCE.registerSword(
             "radiant_sword",
             s -> new Item(s.rarity(Rarity.EPIC).fireResistant()),

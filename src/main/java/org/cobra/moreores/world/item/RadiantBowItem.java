@@ -1,6 +1,6 @@
 package org.cobra.moreores.world.item;
 
-import org.cobra.moreores.world.entity.GemArrowEntity;
+import org.cobra.moreores.world.entity.GemArrow;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public class RadiantBowItem extends ProjectileWeaponItem {
     @Override
     protected Projectile createProjectile(Level world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
         GemArrowItem gemArrow = projectileStack.getItem() instanceof GemArrowItem gemArrowItem ? gemArrowItem : (GemArrowItem) ModItems.GEM_ARROW;
-        GemArrowEntity persistentProjectileEntity = gemArrow.createArrow(world, projectileStack, shooter, weaponStack);
+        GemArrow persistentProjectileEntity = gemArrow.createArrow(world, projectileStack, shooter, weaponStack);
         if (critical) {
             persistentProjectileEntity.setCritArrow(true);
         }

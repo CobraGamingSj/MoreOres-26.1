@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
-import org.cobra.moreores.world.entity.GemArrowEntity;
+import org.cobra.moreores.world.entity.GemArrow;
 import org.cobra.moreores.world.entity.ModEntityTypes;
 import org.jspecify.annotations.Nullable;
 
@@ -20,12 +20,12 @@ public class GemArrowItem extends Item implements ProjectileItem {
 
     @Override
     public Projectile asProjectile(Level world, Position pos, ItemStack stack, Direction direction) {
-        GemArrowEntity gemArrowEntity = new GemArrowEntity(ModEntityTypes.GEM_ARROW, world);
-        gemArrowEntity.pickup = AbstractArrow.Pickup.ALLOWED;
-        return gemArrowEntity;
+        GemArrow gemArrow = new GemArrow(ModEntityTypes.GEM_ARROW, world);
+        gemArrow.pickup = AbstractArrow.Pickup.ALLOWED;
+        return gemArrow;
     }
 
-    public GemArrowEntity createArrow(Level world, ItemStack stack, LivingEntity shooter, @Nullable ItemStack shotFrom) {
-        return new GemArrowEntity(world, shooter, stack, shotFrom);
+    public GemArrow createArrow(Level world, ItemStack stack, LivingEntity shooter, @Nullable ItemStack shotFrom) {
+        return new GemArrow(world, shooter, stack, shotFrom);
     }
 }
