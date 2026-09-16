@@ -1,6 +1,5 @@
 package org.cobra.moreores.world.entity;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -46,17 +45,21 @@ public class GemArrow extends AbstractArrow {
         Entity entity = entityHitResult.getEntity();
         Level level = entity.level();
         
-        if(level.isClientSide()) {
-            return;
-        }
+        if(level.isClientSide())return;
         
         entity.hurtServer((ServerLevel) entity.level(), entity.damageSources().arrow(this, null), 5);
         LightningBolt lightningEntity = new LightningBolt(EntityTypes.LIGHTNING_BOLT, entity.level());
         lightningEntity.setPosRaw(entity.getX(), entity.getY(), entity.getZ());
         level.addFreshEntity(lightningEntity);
+
         int randomSpawnTime = level.getRandom().nextInt(10, tickCount * 20);
-        if (!(entity instanceof Player)) {
-            entity.setPos(entity.getX(), (entity.getY() * randomSpawnTime) / 20, entity.getZ());
+        double newYPos;
+        if (!(entity instanceof Player player)) {
+            newYPos = (entity.getY() * randomSpawnTime) / 20;
+            entity.setPos(entity.getX(), newYPos, entity.getZ());
+        } else {
+            newYPos = (player.getY() + randomSpawnTime);
+            player.setPos(player.getX(), newYPos, player.getZ());
         }
         this.discard();
         super.onHitEntity(entityHitResult);

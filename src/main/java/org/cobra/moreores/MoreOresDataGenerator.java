@@ -1,16 +1,16 @@
 package org.cobra.moreores;
 
-import org.cobra.moreores.data.*;
-import org.cobra.moreores.data.village.TradeSets;
-import org.cobra.moreores.enchantment.ModEnchantments;
-import org.cobra.moreores.world.item.equipment.trim.ModTrimMaterials;
-import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimPatterns;
-import org.cobra.moreores.level.gen.feature.ModConfiguredFeatures;
-import org.cobra.moreores.level.gen.feature.ModPlacedFeatures;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import org.cobra.moreores.data.*;
+import org.cobra.moreores.data.village.TradeSets;
+import org.cobra.moreores.enchantment.ModEnchantments;
+import org.cobra.moreores.level.gen.feature.ModConfiguredFeatures;
+import org.cobra.moreores.level.gen.feature.ModPlacedFeatures;
+import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimPatterns;
+import org.cobra.moreores.world.item.equipment.trim.ModTrimMaterials;
 import org.cobra.moreores.world.item.trading.ModVillagerTrades;
 
 public class MoreOresDataGenerator implements DataGeneratorEntrypoint {

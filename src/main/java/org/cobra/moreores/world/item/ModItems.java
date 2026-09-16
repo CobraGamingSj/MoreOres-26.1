@@ -4,6 +4,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.CommonColors;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -11,6 +19,7 @@ import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.item.equipment.ArmorItem;
 import org.cobra.moreores.world.item.equipment.ModArmorMaterials;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -182,14 +191,22 @@ public class ModItems {
 
 
     //    Radiant Tools & Weapons
-//    public static final Item RADIANT_SWORD = RESOURCE.registerSword(
-//            "radiant_sword",
-//            s -> new Item(s.rarity(Rarity.EPIC).fireResistant()),
-//            32, -1f, ModToolMaterials.RADIANT
-//    );
     public static final Item RADIANT_SWORD = RESOURCE.registerSword(
             "radiant_sword",
-            s -> new Item(s.rarity(Rarity.EPIC).fireResistant()),
+            s -> new Item(s.rarity(Rarity.EPIC).fireResistant()) {
+                @Override
+                public int getBarColor(ItemStack stack) {
+                    return CommonColors.RED;
+                }
+
+                @Override
+                public void inventoryTick(ItemStack itemStack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
+                    if(slot == EquipmentSlot.MAINHAND && owner instanceof Player player) {
+                        player.addEffect(new MobEffectInstance(MobEffects.SATURATION, 10, 1, false, false, false));
+                    }
+                    super.inventoryTick(itemStack, level, owner, slot);
+                }
+            },
             32, -1f, ModToolMaterials.RADIANT
     );
     public static final Item RADIANT_PICKAXE = RESOURCE.registerPickaxe(
