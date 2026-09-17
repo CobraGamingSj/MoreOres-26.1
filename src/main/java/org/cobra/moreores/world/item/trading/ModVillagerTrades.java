@@ -46,151 +46,151 @@ public class ModVillagerTrades {
     public static final ResourceKey<VillagerTrade> JEWELLER_5_IRON_INGOT_PERIDOT = of("jeweller/5/iron_ingot_peridot");
 
     public static void bootstrap(BootstrapContext<VillagerTrade> context) {
-        register(context, JEWELLER_1_COAL_RUBY, new VillagerTrade(
+        register(context, JEWELLER_1_COAL_RUBY, VillagerTrade.builder(
                 new TradeCost(Items.COAL, 24),
                 new ItemStackTemplate(ModItems.RUBY, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_1_COPPER_INGOT_SAPPHIRE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_1_COPPER_INGOT_SAPPHIRE, VillagerTrade.builder(
                 new TradeCost(Items.COPPER_INGOT, 12),
                 new ItemStackTemplate(ModItems.SAPPHIRE, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_1_IRON_INGOT_GREEN_SAPPHIRE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_1_IRON_INGOT_GREEN_SAPPHIRE, VillagerTrade.builder(
                 new TradeCost(Items.IRON_INGOT, 9),
                 new ItemStackTemplate(ModItems.GREEN_SAPPHIRE, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_2_RUBY_BLUE_GARNET, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_2_RUBY_BLUE_GARNET, VillagerTrade.builder(
                 new TradeCost(ModItems.RUBY, 2),
                 new ItemStackTemplate(ModItems.BLUE_GARNET, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_2_SAPPHIRE_PINK_GARNET, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_2_SAPPHIRE_PINK_GARNET, VillagerTrade.builder(
                 new TradeCost(ModItems.SAPPHIRE, 3),
                 new ItemStackTemplate(ModItems.PINK_GARNET, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_2_GREEN_SAPPHIRE_GREEN_GARNET, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_2_GREEN_SAPPHIRE_GREEN_GARNET, VillagerTrade.builder(
                 new TradeCost(ModItems.GREEN_SAPPHIRE, 3),
                 new ItemStackTemplate(ModItems.GREEN_GARNET, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_RUBY_TOPAZ, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_3_RUBY_TOPAZ, VillagerTrade.builder(
                 new TradeCost(ModItems.RUBY, 8),
                 new ItemStackTemplate(ModItems.TOPAZ, 1),
-                6, 5, 0.05f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_PINK_GARNET_WHITE_TOPAZ, new VillagerTrade(
+                6, 5, 0.05f
+        ).build());
+        register(context, JEWELLER_3_PINK_GARNET_WHITE_TOPAZ, VillagerTrade.builder(
                 new TradeCost(ModItems.PINK_GARNET, 5),
                 new ItemStackTemplate(ModItems.WHITE_TOPAZ, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_GREEN_GARNET_TOPAZ, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_3_GREEN_GARNET_TOPAZ, VillagerTrade.builder(
                 new TradeCost(ModItems.GREEN_GARNET, 5),
                 new ItemStackTemplate(ModItems.TOPAZ, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_SAPPHIRE_TOPAZ, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_3_SAPPHIRE_TOPAZ, VillagerTrade.builder(
                 new TradeCost(ModItems.SAPPHIRE, 10),
                 new ItemStackTemplate(ModItems.TOPAZ, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_GREEN_SAPPHIRE_TOPAZ, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_3_GREEN_SAPPHIRE_TOPAZ, VillagerTrade.builder(
                 new TradeCost(ModItems.GREEN_SAPPHIRE, 3),
                 new ItemStackTemplate(ModItems.TOPAZ, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_SAPPHIRE_PERIDOT, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_3_SAPPHIRE_PERIDOT, VillagerTrade.builder(
                 new TradeCost(ModItems.SAPPHIRE, 5),
                 new ItemStackTemplate(ModItems.PERIDOT, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_SAPPHIRE_JADE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_3_SAPPHIRE_JADE, VillagerTrade.builder(
                 new TradeCost(ModItems.SAPPHIRE, 3),
                 new ItemStackTemplate(ModItems.JADE, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_GREEN_SAPPHIRE_PYROPE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_3_GREEN_SAPPHIRE_PYROPE, VillagerTrade.builder(
                 new TradeCost(ModItems.GREEN_SAPPHIRE, 3),
                 new ItemStackTemplate(ModItems.PYROPE, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_RUBY_JADE, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_3_RUBY_JADE, VillagerTrade.builder(
                 new TradeCost(ModItems.RUBY, 6),
                 new ItemStackTemplate(ModItems.JADE, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_TOPAZ_PYROPE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_3_TOPAZ_PYROPE, VillagerTrade.builder(
                 new TradeCost(ModItems.TOPAZ, 3),
                 new ItemStackTemplate(ModItems.PYROPE, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_WHITE_TOPAZ_PERIDOT, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_3_WHITE_TOPAZ_PERIDOT, VillagerTrade.builder(
                 new TradeCost(ModItems.WHITE_TOPAZ, 2),
                 new ItemStackTemplate(ModItems.PERIDOT, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_WHITE_TOPAZ_JADE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_3_WHITE_TOPAZ_JADE, VillagerTrade.builder(
                 new TradeCost(ModItems.WHITE_TOPAZ, 3),
                 new ItemStackTemplate(ModItems.JADE, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_3_WHITE_TOPAZ_PYROPE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_3_WHITE_TOPAZ_PYROPE, VillagerTrade.builder(
                 new TradeCost(ModItems.WHITE_TOPAZ, 3),
                 new ItemStackTemplate(ModItems.PYROPE, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_4_EMERALD_RADIANT, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_4_EMERALD_RADIANT, VillagerTrade.builder(
                 new TradeCost(Items.EMERALD, 26),
                 new ItemStackTemplate(ModItems.RADIANT, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_4_EMERALD_RUBY, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_4_EMERALD_RUBY, VillagerTrade.builder(
                 new TradeCost(Items.EMERALD, 13),
                 new ItemStackTemplate(ModItems.RUBY, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_4_EMERALD_SAPPHIRE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_4_EMERALD_SAPPHIRE, VillagerTrade.builder(
                 new TradeCost(Items.EMERALD, 13),
                 new ItemStackTemplate(ModItems.SAPPHIRE, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_4_NETHERITE_INGOT_BLUE_GARNET, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_4_NETHERITE_INGOT_BLUE_GARNET, VillagerTrade.builder(
                 new TradeCost(Items.NETHERITE_INGOT, 5),
                 new ItemStackTemplate(ModItems.BLUE_GARNET, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_4_IRON_INGOT_DIAMOND, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_4_IRON_INGOT_DIAMOND, VillagerTrade.builder(
                 new TradeCost(Items.IRON_INGOT, 15),
                 new ItemStackTemplate(Items.DIAMOND, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_5_NETHERITE_INGOT_GREEN_GARNET, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_5_NETHERITE_INGOT_GREEN_GARNET, VillagerTrade.builder(
                 new TradeCost(Items.NETHERITE_INGOT, 8),
                 new ItemStackTemplate(ModItems.GREEN_GARNET, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_5_EMERALD_TOPAZ, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_5_EMERALD_TOPAZ, VillagerTrade.builder(
                 new TradeCost(Items.EMERALD, 18),
                 new ItemStackTemplate(ModItems.TOPAZ, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_5_EMERALD_PYROPE, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_5_EMERALD_PYROPE, VillagerTrade.builder(
                 new TradeCost(Items.EMERALD, 21),
                 new ItemStackTemplate(ModItems.PYROPE, 1),
-                6, 5, 0.15f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_5_NETHERITE_INGOT_JADE, new VillagerTrade(
+                6, 5, 0.15f
+        ).build());
+        register(context, JEWELLER_5_NETHERITE_INGOT_JADE, VillagerTrade.builder(
                 new TradeCost(Items.NETHERITE_INGOT, 11),
                 new ItemStackTemplate(ModItems.JADE, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
-        register(context, JEWELLER_5_IRON_INGOT_PERIDOT, new VillagerTrade(
+                6, 5, 0.5f
+        ).build());
+        register(context, JEWELLER_5_IRON_INGOT_PERIDOT, VillagerTrade.builder(
                 new TradeCost(Items.IRON_INGOT, 65),
                 new ItemStackTemplate(ModItems.PERIDOT, 1),
-                6, 5, 0.5f, Optional.empty(), List.of()
-        ));
+                6, 5, 0.5f
+        ).build());
     }
     
     private static ResourceKey<VillagerTrade> of(String id) {

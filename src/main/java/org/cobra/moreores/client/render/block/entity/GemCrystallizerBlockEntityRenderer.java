@@ -2,6 +2,7 @@ package org.cobra.moreores.client.render.block.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -19,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.cobra.moreores.world.block.GemPurifierBlock;
 import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 public final class GemCrystallizerBlockEntityRenderer implements BlockEntityRenderer<GemCrystallizerBlockEntity, GemCrystalizerBlockEntityRenderState> {
     private final BlockEntityRendererProvider.Context context;
@@ -32,56 +34,56 @@ public final class GemCrystallizerBlockEntityRenderer implements BlockEntityRend
     private void renderEnergyTray(ItemStackRenderState state, PoseStack matrices,
                                   SubmitNodeCollector queue,
                                   float x, float z, float rotationAngle, int light) {
-        matrices.pushPose();
-
-        matrices.translate(0.5, 0, 0.5);
-        matrices.mulPose(Axis.YP.rotationDegrees(rotationAngle));
-        matrices.translate(-0.5, 0, -0.5);
-
-        matrices.translate(x, 0.9F, z);
-        matrices.scale(0.125f, 0.125f, 0.125f);
-        matrices.mulPose(Axis.XP.rotationDegrees(-270));
-        matrices.mulPose(Axis.ZP.rotationDegrees(270));
-
-        state.submit(matrices, queue, light, OverlayTexture.NO_OVERLAY, 0);
-        matrices.popPose();
+//        matrices.pushPose();
+//
+//        matrices.translate(0.5, 0, 0.5);
+//        matrices.mulPose(Axis.YP.rotationDegrees(rotationAngle));
+//        matrices.mulPose(Transformation.IDENTITY);
+//        matrices.translate(-0.5, 0, -0.5);
+//
+//        matrices.translate(x, 0.9F, z);
+//        matrices.scale(0.125f, 0.125f, 0.125f);
+//        matrices.mulPose(Axis.XP.rotationDegrees(-270));
+//        matrices.mulPose(Axis.ZP.rotationDegrees(270));
+//
+//        state.submit(matrices, queue, light, OverlayTexture.NO_OVERLAY, 0);
+//        matrices.popPose();
     }
 
-    // X-axis
     private void renderInputTray(ItemStackRenderState state, PoseStack matrices,
                             SubmitNodeCollector queue,
                             float x, float z, float rotationAngle, int light) {
-        matrices.pushPose();
-
-        matrices.translate(0.5, 0, 0.5);
-        matrices.mulPose(Axis.YP.rotationDegrees(rotationAngle));
-        matrices.translate(-0.5, 0, -0.5);
-
-        matrices.translate(x, 0.9F, z);
-        matrices.scale(0.15f, 0.15f, 0.15f);
-        matrices.mulPose(Axis.XP.rotationDegrees(-270));
-        matrices.mulPose(Axis.ZP.rotationDegrees(270));
-
-        state.submit(matrices, queue, light, OverlayTexture.NO_OVERLAY, 0);
-        matrices.popPose();
+//        matrices.pushPose();
+//
+//        matrices.translate(0.5, 0, 0.5);
+//        matrices.mulPose(Axis.YP.rotationDegrees(rotationAngle));
+//        matrices.translate(-0.5, 0, -0.5);
+//
+//        matrices.translate(x, 0.9F, z);
+//        matrices.scale(0.15f, 0.15f, 0.15f);
+//        matrices.mulPose(Axis.XP.rotationDegrees(-270));
+//        matrices.mulPose(Axis.ZP.rotationDegrees(270));
+//
+//        state.submit(matrices, queue, light, OverlayTexture.NO_OVERLAY, 0);
+//        matrices.popPose();
     }
 
     private void renderOutputTray(ItemStackRenderState state, PoseStack matrices,
                             SubmitNodeCollector queue,
                             float x, float z, float rotationAngle, int light) {
-        matrices.pushPose();
-
-        matrices.translate(0.5, 0, 0.5);
-        matrices.mulPose(Axis.YP.rotationDegrees(rotationAngle));
-        matrices.translate(-0.5, 0, -0.5);
-
-        matrices.translate(x, 0.9F, z);
-        matrices.scale(0.25f, 0.25f, 0.25f);
-        matrices.mulPose(Axis.XP.rotationDegrees(-270));
-        matrices.mulPose(Axis.ZP.rotationDegrees(270));
-
-        state.submit(matrices, queue, light, OverlayTexture.NO_OVERLAY, 0);
-        matrices.popPose();
+//        matrices.pushPose();
+//
+//        matrices.translate(0.5, 0, 0.5);
+//        matrices.mulPose(Axis.YP.rotationDegrees(rotationAngle));
+//        matrices.translate(-0.5, 0, -0.5);
+//
+//        matrices.translate(x, 0.9F, z);
+//        matrices.scale(0.25f, 0.25f, 0.25f);
+//        matrices.mulPose(Axis.XP.rotationDegrees(-270));
+//        matrices.mulPose(Axis.ZP.rotationDegrees(270));
+//
+//        state.submit(matrices, queue, light, OverlayTexture.NO_OVERLAY, 0);
+//        matrices.popPose();
     }
 
     private float getRotationAngle(GemCrystallizerBlockEntity entity) {

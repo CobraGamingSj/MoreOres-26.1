@@ -7,8 +7,9 @@ import net.minecraft.core.registries.Registries;
 import org.cobra.moreores.data.*;
 import org.cobra.moreores.data.village.TradeSets;
 import org.cobra.moreores.enchantment.ModEnchantments;
-import org.cobra.moreores.level.gen.feature.ModConfiguredFeatures;
+import org.cobra.moreores.level.gen.feature.ModFeatures;
 import org.cobra.moreores.level.gen.feature.ModPlacedFeatures;
+import org.cobra.moreores.level.storage.loot.providers.number.ints.ModContextIntProviders;
 import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimPatterns;
 import org.cobra.moreores.world.item.equipment.trim.ModTrimMaterials;
 import org.cobra.moreores.world.item.trading.ModVillagerTrades;
@@ -33,12 +34,13 @@ public class MoreOresDataGenerator implements DataGeneratorEntrypoint {
 
 	@Override
 	public void buildRegistry(RegistrySetBuilder registryBuilder) {
-		registryBuilder.add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
+		registryBuilder.add(Registries.FEATURE, ModFeatures::bootstrap);
 		registryBuilder.add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
 		registryBuilder.add(Registries.TRIM_MATERIAL, ModTrimMaterials::bootstrap);
 		registryBuilder.add(Registries.TRIM_PATTERN, ModArmorTrimPatterns::bootstrap);
 		registryBuilder.add(Registries.ENCHANTMENT, ModEnchantments::bootstrap);
 		registryBuilder.add(Registries.TRADE_SET, TradeSets::bootstrap);
 		registryBuilder.add(Registries.VILLAGER_TRADE, ModVillagerTrades::bootstrap);
+		registryBuilder.add(Registries.CONTEXT_INT_PROVIDER, ModContextIntProviders::bootstrap);
 	}
 }

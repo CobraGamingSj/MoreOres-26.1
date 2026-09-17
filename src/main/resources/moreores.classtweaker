@@ -1,0 +1,30 @@
+classTweaker v2 official
+
+accessible method net/minecraft/client/gui/GuiGraphicsExtractor innerBlit (Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen extractSlotHighlightBack (Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen extractSlotHighlightFront (Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen isHovering (Lnet/minecraft/world/inventory/Slot;DD)Z
+accessible method net/minecraft/client/gui/GuiGraphicsExtractor itemCount (Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V
+
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette RUBY
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette RADIANT
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette SAPPHIRE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette GREEN_SAPPHIRE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette BLUE_GARNET
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette PINK_GARNET
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette GREEN_GARNET
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette KYAWTHUITE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette TOPAZ
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette WHITE_TOPAZ
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette PERIDOT
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette JADE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette PYROPE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette CRIMSON_GARNET
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette CRYSTALLITE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette RADIANT_AMETHYST
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette LIMESTONE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOONSTONE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette ALEXANDRITE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette QUARTSIDIAN
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette OPAL
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette RED_BERYL

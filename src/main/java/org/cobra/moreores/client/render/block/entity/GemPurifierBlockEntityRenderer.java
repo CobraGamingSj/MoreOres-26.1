@@ -34,22 +34,22 @@ public final class GemPurifierBlockEntityRenderer implements BlockEntityRenderer
     private void renderItem(ItemStackRenderState state, PoseStack matrices,
                             SubmitNodeCollector queue,
                             float x, float z, float rotationAngle, int light) {
-        matrices.pushPose();
-
-        matrices.translate(0.5, 0, 0.5);
-        matrices.mulPose(Axis.YP.rotationDegrees(rotationAngle));
-        matrices.translate(-0.5, 0, -0.5);
-
-        matrices.translate(x, 0.9F, z);
-        matrices.scale(0.25f, 0.25f, 0.25f);
-        if(state == GemPurifierBlockEntityRenderState.INSTANCE.resultItemRenderState) {
-            matrices.scale(0.5f, 0.5f, 0.5f);
-        }
-        matrices.mulPose(Axis.XP.rotationDegrees(-270));
-        matrices.mulPose(Axis.ZP.rotationDegrees(270));
-
-        state.submit(matrices, queue, light, OverlayTexture.NO_OVERLAY, 0);
-        matrices.popPose();
+//        matrices.pushPose();
+//
+//        matrices.translate(0.5, 0, 0.5);
+//        matrices.mulPose(Axis.YP.rotationDegrees(rotationAngle));
+//        matrices.translate(-0.5, 0, -0.5);
+//
+//        matrices.translate(x, 0.9F, z);
+//        matrices.scale(0.25f, 0.25f, 0.25f);
+//        if(state == GemPurifierBlockEntityRenderState.INSTANCE.resultItemRenderState) {
+//            matrices.scale(0.5f, 0.5f, 0.5f);
+//        }
+//        matrices.mulPose(Axis.XP.rotationDegrees(-270));
+//        matrices.mulPose(Axis.ZP.rotationDegrees(270));
+//
+//        state.submit(matrices, queue, light, OverlayTexture.NO_OVERLAY, 0);
+//        matrices.popPose();
     }
 
     private float getRotationAngle(GemPurifierBlockEntity entity) {

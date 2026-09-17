@@ -1,5 +1,6 @@
 package org.cobra.moreores.networking.block.data;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -14,7 +15,8 @@ import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.tags.ModItemTags;
-import org.lwjgl.glfw.GLFW;
+
+import javax.swing.*;
 
 public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements CustomPacketPayload {
     public static final Type<GemCrystallizerBlockData> TYPE = new Type<>(MoreOresModInitializer.id("c_block_data"));
@@ -29,7 +31,7 @@ public record GemCrystallizerBlockData(int keyCode, BlockPos pos) implements Cus
         context.server().execute(() -> {
             ServerLevel world = context.player().level();
             ServerPlayer player = context.player();
-            boolean alt = keyCode == GLFW.GLFW_KEY_LEFT_ALT || keyCode == GLFW.GLFW_KEY_RIGHT_ALT;
+            boolean alt = keyCode == InputConstants.KEY_LALT || keyCode == InputConstants.KEY_RALT;
 
             if(alt) {
                 ItemStack heldStack = player.getItemInHand(InteractionHand.MAIN_HAND);

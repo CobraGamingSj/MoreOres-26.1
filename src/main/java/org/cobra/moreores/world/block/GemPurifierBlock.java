@@ -30,24 +30,17 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.networking.block.data.GemPurifierBlockData;
 import org.cobra.moreores.world.block.entity.TickableBlockEntity;
 import org.cobra.moreores.world.block.entity.gem.machine.GemPurifierBlockEntity;
 import org.cobra.moreores.world.item.util.impl.PurificationGemstones;
-import org.cobra.moreores.networking.block.data.GemPurifierBlockData;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 14, 16);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty REDSTONE_POWERED = BooleanProperty.create("redstone_powered");
     public static final EnumProperty<PurificationGemstones> IS_PURIFYING = EnumProperty.create("is_polishing", PurificationGemstones.class);
-    public static final MapCodec<GemPurifierBlock> CODEC = GemPurifierBlock.simpleCodec(GemPurifierBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     protected GemPurifierBlock(Properties settings) {
         super(settings);
@@ -117,10 +110,9 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
         if(world.isClientSide()) {
-            Window handle = Minecraft.getInstance().getWindow();
-            boolean alt = InputConstants.isKeyDown(handle, GLFW.GLFW_KEY_LEFT_ALT);
+            boolean alt = InputConstants.isKeyDown(InputConstants.KEY_LALT);
             if(alt) {
-                ClientPlayNetworking.send(new GemPurifierBlockData(GLFW.GLFW_KEY_LEFT_ALT, pos));
+                ClientPlayNetworking.send(new GemPurifierBlockData(InputConstants.KEY_LALT, pos));
                 return InteractionResult.CONSUME;
             }
         } else {

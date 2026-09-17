@@ -3,13 +3,14 @@ package org.cobra.moreores;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
 import org.cobra.moreores.core.registry.RewardDataSaver;
 import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
@@ -128,11 +130,9 @@ public class MoreOresModInitializer implements ModInitializer {
 				entries.accept(ModBlocks.KASHMIR_SAPPHIRE_BLOCK);
 			}).build();
 
-    
 
     @Override
 	public void onInitialize() {
-
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.getPlayer();
@@ -155,13 +155,6 @@ public class MoreOresModInitializer implements ModInitializer {
 
 		// Gemstones Item Group Registry
 		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, id("gemstones"), GEMSTONES);
-
-
-		// Fuel Registry
-		FuelValueEvents.BUILD.register(((builder, context) -> {
-			builder.add(ModItems.ENERGY_INGOT, 24500);
-			builder.add(ModBlocks.ENERGY_BLOCK, 27500);
-		}));
 
 
 		// Gemstones & Ingots Registry

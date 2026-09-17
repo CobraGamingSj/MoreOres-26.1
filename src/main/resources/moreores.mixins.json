@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AnvilMenuMixin",
-    "ExampleMixin"
+    "ExampleMixin",
+    "PaletteMixin"
   ],
   "injectors": {
     "defaultRequire": 1

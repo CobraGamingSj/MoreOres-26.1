@@ -31,7 +31,7 @@ repositories {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/moreores.accesswidener")
+    accessWidenerPath = file("src/main/resources/moreores.classtweaker")
 }
 
 fabricApi {
@@ -45,10 +45,10 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	implementation "me.shedaniel:RoughlyEnoughItems-api-fabric:26.2.820"
-	implementation "me.shedaniel:RoughlyEnoughItems-fabric:26.2.820"
+//	implementation "me.shedaniel:RoughlyEnoughItems-api-fabric:26.2.820"
+//	implementation "me.shedaniel:RoughlyEnoughItems-fabric:26.2.820"
 
-	include api("dev.architectury:architectury-fabric:21.0.3")
+	include api("dev.architectury:architectury-fabric:22.0.1")
 	compileOnly("me.shedaniel.cloth:basic-math:0.6.1")
 
     include api("teamreborn:energy:${project.energy_version}")

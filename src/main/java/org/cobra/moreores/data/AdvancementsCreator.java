@@ -24,7 +24,7 @@ public class AdvancementsCreator extends FabricAdvancementProvider {
     @Override
     public void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer) {
         AdvancementHolder rubyGem = Advancement.Builder.advancement()
-                .display(
+                .rootDisplay(
                         ModItems.RUBY, // The display icon
                         Component.translatable("advancement.moreores.gems"), // The title
                         Component.translatable("advancement.moreores.gems.desc"), // The description
@@ -48,10 +48,10 @@ public class AdvancementsCreator extends FabricAdvancementProvider {
                 .addCriterion("peridot", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.PERIDOT))
                 .addCriterion("jade", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.JADE))
                 .addCriterion("pyrope", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.PYROPE))
-                .save(consumer, "moreores:is_that_a_gem");
+                .save(consumer, MoreOresModInitializer.id("is_that_a_gem"));
 
         AdvancementHolder ruby_armor = Advancement.Builder.advancement()
-                .display(
+                .rootDisplay(
                         ModItems.RUBY_CHESTPLATE,
                         Component.translatable("advancement.moreores.ruby_armor").withStyle(ChatFormatting.DARK_AQUA),
                         Component.translatable("advancement.moreores.ruby_armor.desc"),
@@ -63,10 +63,10 @@ public class AdvancementsCreator extends FabricAdvancementProvider {
                 )
                 .parent(rubyGem)
                 .addCriterion("ruby_armor", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.RUBY_HELMET, ModItems.RUBY_CHESTPLATE, ModItems.RUBY_LEGGINGS, ModItems.RUBY_BOOTS))
-                .save(consumer, "moreores:ruby_armor");
+                .save(consumer, MoreOresModInitializer.id("ruby_armor"));
 
         AdvancementHolder radiant_sword = Advancement.Builder.advancement()
-                .display(
+                .rootDisplay(
                         ModItems.RADIANT_SWORD,
                         Component.translatable("advancement.moreores.radiant_sword").withStyle(ChatFormatting.DARK_PURPLE),
                         Component.translatable("advancement.moreores.radiant_sword.desc"),
@@ -78,6 +78,6 @@ public class AdvancementsCreator extends FabricAdvancementProvider {
                 )
                 .parent(rubyGem)
                 .addCriterion("radiant_sword", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.RADIANT_SWORD))
-                .save(consumer, "moreores:overpowered");
+                .save(consumer, MoreOresModInitializer.id("overpowered"));
     }
 }

@@ -16,16 +16,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.EquipmentAsset;
-import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import net.minecraft.world.level.block.Block;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.block.RubyLampBlock;
+import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.world.item.RadiantBowItem;
-import org.cobra.moreores.world.item.equipment.ModEquipmentAssets;
 
-import java.util.List;
 import java.util.Map;
 
 public class AutomaticModelCreator extends FabricModelProvider {
@@ -57,31 +57,7 @@ public class AutomaticModelCreator extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerator) {
-        Map<String, Identifier> trimPrefixes = Map.of(
-                "_helmet", ItemModelGenerators.TRIM_PREFIX_HELMET,
-                "_chestplate", ItemModelGenerators.TRIM_PREFIX_CHESTPLATE,
-                "_leggings", ItemModelGenerators.TRIM_PREFIX_LEGGINGS,
-                "_boots", ItemModelGenerators.TRIM_PREFIX_BOOTS
-        );
-
-        List<String> armorSuffixes = List.of("_chestplate", "_helmet", "_leggings", "_boots");
-
-        Map<String, ResourceKey<EquipmentAsset>> vanillaAssets = Map.of(
-                "iron_", EquipmentAssets.IRON,
-                "gold_", EquipmentAssets.GOLD,
-                "diamond_", EquipmentAssets.DIAMOND,
-                "netherite_", EquipmentAssets.NETHERITE,
-                "copper_", EquipmentAssets.COPPER,
-                "leather_", EquipmentAssets.LEATHER,
-                "chainmail_", EquipmentAssets.CHAINMAIL
-        );
-
-        Map<String, ResourceKey<EquipmentAsset>> modAssets = Map.of(
-                "ruby_", ModEquipmentAssets.RUBY,
-                "sapphire_", ModEquipmentAssets.SAPPHIRE,
-                "radiant_", ModEquipmentAssets.RADIANT
-        );
-        
+       
         for (Item item : BuiltInRegistries.ITEM) {
             if(item instanceof BlockItem) {
                 continue;
@@ -94,30 +70,49 @@ public class AutomaticModelCreator extends FabricModelProvider {
             boolean handheld = false;
 
             if(id.getNamespace().equals("minecraft")) {
-                for(Map.Entry<String, ResourceKey<EquipmentAsset>> entry : vanillaAssets.entrySet()) {
-                    for (String armorSuffix : armorSuffixes) {
-                        if (path.startsWith(entry.getKey()) && path.endsWith(armorSuffix)) {
-                            assetKey = entry.getValue();
-                            break;
-                        }
-                    }
-                }
-
-                if (assetKey != null) {
-                    boolean generated = false;
-                    for (Map.Entry<String, Identifier> entry : trimPrefixes.entrySet()) {
-                        String suffix = entry.getKey();
-                        Identifier prefix = entry.getValue();
-                        if(path.endsWith(suffix)) {
-                            itemModelGenerator.generateTrimmableItem(item, assetKey, prefix, false);
-                            generated = true;
-                        }
-                    }
-                    if(generated) {
-                        continue;
-                    }
-                }
-                continue;
+                itemModelGenerator.generateTrimmableItem(Items.TURTLE_HELMET, ItemModelGenerators.TRIM_PREFIX_HELMET, false, Map.of());
+                itemModelGenerator.generateTrimmableArmorSet(Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS, true, Map.of());
+                itemModelGenerator.generateTrimmableArmorSet(
+                        Items.COPPER_HELMET,
+                        Items.COPPER_CHESTPLATE,
+                        Items.COPPER_LEGGINGS,
+                        Items.COPPER_BOOTS,
+                        false,
+                        Map.of(TrimMaterials.Palette.COPPER, TrimMaterials.Palette.COPPER_DARKER)
+                );
+                itemModelGenerator.generateTrimmableArmorSet(Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS, false, Map.of());
+                itemModelGenerator.generateTrimmableArmorSet(
+                        Items.IRON_HELMET,
+                        Items.IRON_CHESTPLATE,
+                        Items.IRON_LEGGINGS,
+                        Items.IRON_BOOTS,
+                        false,
+                        Map.of(TrimMaterials.Palette.IRON, TrimMaterials.Palette.IRON_DARKER)
+                );
+                itemModelGenerator.generateTrimmableArmorSet(
+                        Items.DIAMOND_HELMET,
+                        Items.DIAMOND_CHESTPLATE,
+                        Items.DIAMOND_LEGGINGS,
+                        Items.DIAMOND_BOOTS,
+                        false,
+                        Map.of(TrimMaterials.Palette.DIAMOND, TrimMaterials.Palette.DIAMOND_DARKER)
+                );
+                itemModelGenerator.generateTrimmableArmorSet(
+                        Items.GOLDEN_HELMET,
+                        Items.GOLDEN_CHESTPLATE,
+                        Items.GOLDEN_LEGGINGS,
+                        Items.GOLDEN_BOOTS,
+                        false,
+                        Map.of(TrimMaterials.Palette.GOLD, TrimMaterials.Palette.GOLD_DARKER)
+                );
+                itemModelGenerator.generateTrimmableArmorSet(
+                        Items.NETHERITE_HELMET,
+                        Items.NETHERITE_CHESTPLATE,
+                        Items.NETHERITE_LEGGINGS,
+                        Items.NETHERITE_BOOTS,
+                        false,
+                        Map.of(TrimMaterials.Palette.NETHERITE, TrimMaterials.Palette.NETHERITE_DARKER)
+                );
             }
             
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
@@ -131,30 +126,10 @@ public class AutomaticModelCreator extends FabricModelProvider {
                     handheld = true;
                 }
 
-                for (Map.Entry<String, ResourceKey<EquipmentAsset>> entry : modAssets.entrySet()) {
-                    for (String armorSuffix : armorSuffixes) {
-                        if (path.startsWith(entry.getKey()) && path.endsWith(armorSuffix)) {
-                            assetKey = entry.getValue();
-                            break;
-                        }
-                    }
-                }
-                
-                if(assetKey != null) {
-                    boolean generated = false;
-                    for (Map.Entry<String, Identifier> entry : trimPrefixes.entrySet()) {
-                        String suffix = entry.getKey();
-                        Identifier prefix = entry.getValue();
-                        if(path.endsWith(suffix)) {
-                            itemModelGenerator.generateTrimmableItem(item, assetKey, prefix, false);
-                            generated = true;
-                        }
-                    }
-                    if(generated) {
-                        continue;
-                    }
-                }
-                
+                itemModelGenerator.generateTrimmableArmorSet(ModItems.RUBY_HELMET, ModItems.RUBY_CHESTPLATE, ModItems.RUBY_LEGGINGS, ModItems.RUBY_BOOTS, false, Map.of());
+                itemModelGenerator.generateTrimmableArmorSet(ModItems.SAPPHIRE_HELMET, ModItems.SAPPHIRE_CHESTPLATE, ModItems.SAPPHIRE_LEGGINGS, ModItems.SAPPHIRE_BOOTS, false, Map.of());
+                itemModelGenerator.generateTrimmableArmorSet(ModItems.RADIANT_HELMET, ModItems.RADIANT_CHESTPLATE, ModItems.RADIANT_LEGGINGS, ModItems.RADIANT_BOOTS, false, Map.of());
+
                 if(item instanceof RadiantBowItem bow) {
                     itemModelGenerator.createFlatItemModel(bow, ModelTemplates.BOW);
                     itemModelGenerator.generateBow(bow);

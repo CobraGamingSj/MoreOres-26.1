@@ -10,13 +10,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.equipment.ArmorType;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.core.registry.ResourceHelper;
+import org.cobra.moreores.level.storage.loot.providers.number.ints.ModContextIntProviders;
 import org.cobra.moreores.world.item.equipment.ArmorItem;
 import org.cobra.moreores.world.item.equipment.ModArmorMaterials;
 import org.jspecify.annotations.Nullable;
@@ -29,9 +29,6 @@ public class ModItems {
 
     private static final ResourceHelper.ItemResource RESOURCE = ResourceHelper.ItemResource.INSTANCE;
 
-//    public static final Item GEM_DETECTOR = RESOURCE.register("gem_detector", GemDetector::new);
-
-    
 //    Gemstones & Ingots
     public static final Item RUBY = RESOURCE.register("ruby", s -> new GemItem(s, "ruby"));
     public static final Item RAW_RUBY = RESOURCE.register("raw_ruby", s -> new Item(s.fireResistant()));
@@ -81,7 +78,7 @@ public class ModItems {
         }
     });
 
-    public static final Item ENERGY_INGOT = RESOURCE.register("energy_ingot", settings ->  new EnergyIngotItem(settings.fireResistant().rarity(Rarity.RARE)));
+    public static final Item ENERGY_INGOT = RESOURCE.register("energy_ingot", settings ->  new EnergyIngotItem(settings.fireResistant().cookingFuel(ModContextIntProviders.COOKING_TIME_ENERGY_INGOT).rarity(Rarity.RARE)));
 
 
     //  Ruby Tools & Weapons

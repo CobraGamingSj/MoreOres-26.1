@@ -13,13 +13,14 @@ public class DynamicRegistriesCreator extends FabricDynamicRegistryProvider {
 
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
-        entries.addAll(registries.lookupOrThrow(Registries.CONFIGURED_FEATURE));
+        entries.addAll(registries.lookupOrThrow(Registries.FEATURE));
         entries.addAll(registries.lookupOrThrow(Registries.PLACED_FEATURE));
         entries.addAll(registries.lookupOrThrow(Registries.TRIM_MATERIAL));
         entries.addAll(registries.lookupOrThrow(Registries.TRIM_PATTERN));
         entries.addAll(registries.lookupOrThrow(Registries.ENCHANTMENT));
         entries.addAll(registries.lookupOrThrow(Registries.TRADE_SET));
         entries.addAll(registries.lookupOrThrow(Registries.VILLAGER_TRADE));
+        entries.addAll(registries.lookupOrThrow(Registries.CONTEXT_INT_PROVIDER));
     }
 
     @Override

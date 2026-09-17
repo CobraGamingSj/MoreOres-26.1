@@ -1,6 +1,9 @@
 package org.cobra.moreores.client.gui.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.InputType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -18,7 +21,6 @@ import org.cobra.moreores.client.gui.widget.MachineButton;
 import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
 import org.cobra.moreores.world.block.entity.gem.machine.AbstractGemMachineBlockEntity;
 import org.joml.Matrix3x2fStack;
-import org.lwjgl.glfw.GLFW;
 
 public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlockEntity<?>, Menu extends AbstractGemMachineMenu<T>> extends AbstractContainerScreen<Menu> {
     private static final int TEXTURE_WIDTH = 256;
@@ -78,19 +80,19 @@ public abstract class AbstractGemMachineScreen<T extends AbstractGemMachineBlock
 
     @Override
     public boolean keyPressed(KeyEvent input) {
-        if(input.input() == GLFW.GLFW_KEY_S) {
+        if(input.input() == InputConstants.KEY_S) {
             sendPolishControlPacket("start");
             return true;
         }
-        if(input.input() == GLFW.GLFW_KEY_P) {
+        if(input.input() == InputConstants.KEY_P) {
             sendPolishControlPacket("pause");
             return true;
         }
-        if(input.input() == GLFW.GLFW_KEY_R) {
+        if(input.input() == InputConstants.KEY_R) {
             sendPolishControlPacket("resume");
             return true;
         }
-        if(input.input() == GLFW.GLFW_KEY_SLASH) {
+        if(input.input() == InputConstants.KEY_SLASH) {
             sendPolishControlPacket("stop");
             return true;
         }

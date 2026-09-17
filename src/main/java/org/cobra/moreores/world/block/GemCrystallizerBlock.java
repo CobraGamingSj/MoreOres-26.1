@@ -30,24 +30,17 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.networking.block.data.GemCrystallizerBlockData;
 import org.cobra.moreores.world.block.entity.TickableBlockEntity;
 import org.cobra.moreores.world.block.entity.gem.machine.GemCrystallizerBlockEntity;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
-import org.cobra.moreores.networking.block.data.GemCrystallizerBlockData;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock {
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 14, 16);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty REDSTONE_POWERED = BooleanProperty.create("redstone_powered");
     public static final EnumProperty<CrystallizationGemstones> IS_CRYSTALLIZING = EnumProperty.create("is_crystallizing", CrystallizationGemstones.class);
-    public static final MapCodec<GemCrystallizerBlock> CODEC = GemCrystallizerBlock.simpleCodec(GemCrystallizerBlock::new);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     protected GemCrystallizerBlock(Properties settings) {
         super(settings);
@@ -118,11 +111,10 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
     protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
 
         if(world.isClientSide()) {
-            Window window = Minecraft.getInstance().getWindow();
-            boolean alt = InputConstants.isKeyDown(window, InputConstants.KEY_LALT);
+            boolean alt = InputConstants.isKeyDown(InputConstants.KEY_LALT);
 
             if(alt) {
-                ClientPlayNetworking.send(new GemCrystallizerBlockData(GLFW.GLFW_KEY_LEFT_ALT, pos));
+                ClientPlayNetworking.send(new GemCrystallizerBlockData(InputConstants.KEY_LALT, pos));
             }
         }
 

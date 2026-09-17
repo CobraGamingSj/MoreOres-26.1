@@ -1,13 +1,16 @@
 package org.cobra.moreores.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.Recipe;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.core.registry.ResourceHelper;
 import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.client.recipe.GemCrystallizerRecipeJsonBuilder;
-import org.cobra.moreores.client.recipe.GemPolishingRecipeJsonBuilder;
+import org.cobra.moreores.client.recipe.GemCrystallizerRecipeBuilder;
+import org.cobra.moreores.client.recipe.GemPurifyingRecipeBuilder;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.world.item.equipment.trim.ModArmorTrimPatterns;
 import org.cobra.moreores.tags.ModItemTags;
@@ -16,7 +19,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
 import net.minecraft.resources.Identifier;
@@ -166,8 +168,8 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
     }
 
     @Override
-    public RecipeProvider createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput recipeExporter) {
-        return new RecipeProvider(wrapperLookup, recipeExporter) {
+    public RecipeProvider createRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        return new RecipeProvider(recipes, advancements) {
             @Override
             public void buildRecipes() {
                 int defaultSmeltingTime = 1500;
@@ -263,18 +265,18 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                     var input = entry.getKey();
                     var result = entry.getValue();
 
-                    createGemPurifying(Ingredient.of(input), result)
-                            .criterion(getHasName(input), has(input))
-                            .offerTo(output, getSimpleRecipeName(result));
+                    purifying(Ingredient.of(input), result)
+                            .unlocks(getHasName(input), has(input))
+                            .save(output, getSimpleRecipeName(result));
                 }
 
                 for (var entry : GEM_INFUSES.entrySet()) {
                     Item inputBefore = entry.getKey();
                     Item result = entry.getValue();
 
-                    createGemInfusion(Ingredient.of(inputBefore), result)
-                            .criterion(getHasName(inputBefore), has(result))
-                            .offerTo(output, getSimpleRecipeName(result));
+                    crystallizing(Ingredient.of(inputBefore), result)
+                            .unlocks(getHasName(inputBefore), has(result))
+                            .save(output, getSimpleRecipeName(result));
                 }
 
                 oreBlasting(List.of(ModItems.RUBY), RecipeCategory.MISC, CookingBookCategory.MISC, Items.NETHERITE_INGOT, 0.15f, 450, "netherite");
@@ -295,10 +297,10 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
                 trimSmithing(ModItems.GUARDIAN_ARMOR_TRIM_SMITHING_TEMPLATE,
                         ModArmorTrimPatterns.GUARDIAN, ResourceKey.create(Registries.RECIPE, Identifier.withDefaultNamespace(getItemName(ModItems.GUARDIAN_ARMOR_TRIM_SMITHING_TEMPLATE) + "_smithing_trim")));
 
-                GemCrystallizerRecipeJsonBuilder.createQuartsidian()
-                        .criterion(getHasName(Items.QUARTZ), has(Items.QUARTZ))
-                        .criterion(getHasName(Blocks.OBSIDIAN), has(Blocks.OBSIDIAN))
-                        .offerTo(output, getSimpleRecipeName(ModItems.QUARTSIDIAN));
+                GemCrystallizerRecipeBuilder.quartsidian()
+                        .unlocks(getHasName(Items.QUARTZ), has(Items.QUARTZ))
+                        .unlocks(getHasName(Blocks.OBSIDIAN), has(Blocks.OBSIDIAN))
+                        .save(output, getSimpleRecipeName(ModItems.QUARTSIDIAN));
 
                 shaped(RecipeCategory.MISC, ModBlocks.GEM_PURIFIER_BLOCK, 1)
                         .pattern("III")
@@ -401,12 +403,12 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
         };
     }
 
-    public GemPolishingRecipeJsonBuilder createGemPurifying(Ingredient input, Item result) {
-        return GemPolishingRecipeJsonBuilder.create(input, new ItemStackTemplate(result), RecipeCategory.MISC);
+    public GemPurifyingRecipeBuilder purifying(Ingredient input, Item result) {
+        return GemPurifyingRecipeBuilder.purifying(input, new ItemStackTemplate(result));
     }
 
-    public GemCrystallizerRecipeJsonBuilder createGemInfusion(Ingredient inputBefore, Item result) {
-        return GemCrystallizerRecipeJsonBuilder.create(inputBefore, new ItemStackTemplate(result), RecipeCategory.MISC);
+    public GemCrystallizerRecipeBuilder crystallizing(Ingredient inputBefore, Item result) {
+        return GemCrystallizerRecipeBuilder.crystallizing(inputBefore, new ItemStackTemplate(result));
     }
 
     @Override
