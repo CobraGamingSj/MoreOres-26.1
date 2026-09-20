@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.cobra.moreores.tags.ModItemTags;
-import org.cobra.moreores.world.block.entity.ImplementedContainer;
+import org.cobra.moreores.world.block.entity.ExtendedContainer;
 import org.cobra.moreores.world.block.entity.TickableBlockEntity;
 import org.cobra.moreores.world.item.ModItems;
 import org.cobra.moreores.world.item.util.impl.CrystallizationGemstones;
@@ -29,7 +29,7 @@ import org.cobra.moreores.world.item.util.impl.PurificationGemstones;
 import org.cobra.moreores.networking.block.data.GemMachineEnergyDataPayload;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ImplementedContainer, TickableBlockEntity {
+public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayload> extends BlockEntity implements ExtendedMenuProvider<P>, ExtendedContainer, TickableBlockEntity {
     protected final NonNullList<ItemStack> main;
     protected MachineStatus machineStatus = MachineStatus.IDLE;
     protected MachineStatus.EnergyState energyState = MachineStatus.EnergyState.IDLE;
@@ -204,7 +204,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
 
     protected void addEnergy() {
         if(!hasEnergySource() || energyStorage.amount >= 1_000_000) {
-            energyState = MachineStatus.EnergyState.IDLE;
+            energyIdle();
             return;
         }
         long amount = energyStack().is(ModItems.ENERGY_INGOT) ? 102 : 154;
@@ -212,8 +212,8 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         try(Transaction transaction = Transaction.openOuter()) {
             long inserted = energyStorage.insert(amount, transaction);
             transaction.commit();
-            if(inserted > 0) energyState = MachineStatus.EnergyState.INSERTING;
-            else energyState = MachineStatus.EnergyState.IDLE;
+            if(inserted > 0) inserting();
+            else energyIdle();
         }
     }
 
@@ -224,7 +224,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
             energyExtracted +=  extracted;
             transaction.commit();
         }
-        energyState = MachineStatus.EnergyState.EXTRACTING;
+        extracting();
     }
 
     protected abstract boolean checkRecipe();
@@ -233,27 +233,51 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         this.initialProgress = 0;
     }
 
+    public void idle() {
+        this.machineStatus = MachineStatus.IDLE;
+    }
+
+    public void pause() {
+        this.machineStatus = MachineStatus.PAUSED;
+    }
+
+    public void running() {
+        this.machineStatus = MachineStatus.RUNNING;
+    }
+
+    public void energyIdle() {
+        this.energyState = MachineStatus.EnergyState.IDLE;
+    }
+
+    public void inserting() {
+        this.energyState = MachineStatus.EnergyState.INSERTING;
+    }
+
+    public void extracting() {
+        this.energyState = MachineStatus.EnergyState.EXTRACTING;
+    }
+
     public void startProcess() {
         if(machineStatus.isIdle() && checkRecipe() && hasRequiredEnergyAmount()) {
-            machineStatus = MachineStatus.RUNNING;
+            running();
         }
     }
 
     public void pauseProcess() {
         if(machineStatus.isRunning()) {
-            machineStatus = MachineStatus.PAUSED;
+            pause();
         }
     }
 
     public void resumeProcess() {
-        if(machineStatus.isPaused()&& checkRecipe() && hasRequiredEnergyAmount()) {
-            machineStatus = MachineStatus.RUNNING;
+        if(machineStatus.isPaused() && checkRecipe() && hasRequiredEnergyAmount()) {
+            running();
         }
     }
 
     public void stopProcess() {
         if(!machineStatus.isIdle()) {
-            machineStatus = MachineStatus.IDLE;
+            idle();
             clearProgress();
             try(Transaction transaction = Transaction.openOuter()) {
                 this.energyStorage.insert(energyExtracted, transaction);
@@ -287,7 +311,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         public boolean isPaused() {
             return this == PAUSED;
         }
-    
+
         @Override
         public String getSerializedName() {
             return this.name;

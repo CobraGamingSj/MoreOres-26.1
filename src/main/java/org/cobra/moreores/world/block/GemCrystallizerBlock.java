@@ -102,15 +102,12 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
     @Override
     protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         BlockState newState = state;
-
         if(state.getValue(REDSTONE_POWERED) && !world.hasNeighborSignal(pos)) {
             newState = newState.setValue(REDSTONE_POWERED, false);
         }
-
         if(world.getBlockEntity(pos) instanceof GemCrystallizerBlockEntity be) {
             newState = newState.setValue(IS_CRYSTALLIZING, be.gemstone());
         }
-
         world.setBlock(pos, newState, Block.UPDATE_ALL);
     }
 
@@ -120,12 +117,10 @@ public class GemCrystallizerBlock extends BaseEntityBlock implements EntityBlock
         if(world.isClientSide()) {
             Window window = Minecraft.getInstance().getWindow();
             boolean alt = InputConstants.isKeyDown(window, InputConstants.KEY_LALT);
-
             if(alt) {
                 ClientPlayNetworking.send(new GemCrystallizerBlockData(GLFW.GLFW_KEY_LEFT_ALT, pos));
             }
         }
-
         MenuProvider screenHandlerFactory = ((GemCrystallizerBlockEntity) world.getBlockEntity(pos));
         if (screenHandlerFactory != null) {
                 player.openMenu(screenHandlerFactory);

@@ -137,20 +137,4 @@ public class ModSmithingTemplateItem extends Item {
         textConsumer.accept(INGREDIENTS_TEXT);
         textConsumer.accept(CommonComponents.space().append(this.ingredientsText));
     }
-
-    public Component getBaseSlotDescription() {
-        return this.baseSlotDescriptionText;
-    }
-
-    public Component getAdditionsSlotDescription() {
-        return this.additionsSlotDescriptionText;
-    }
-
-    public List<Identifier> getEmptyBaseSlotTextures() {
-        return this.emptyBaseSlotTextures;
-    }
-
-    public List<Identifier> getEmptyAdditionsSlotTextures() {
-        return this.emptyAdditionsSlotTextures;
-    }
 }

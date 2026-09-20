@@ -233,7 +233,7 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
     // Tick Method
     // Logic per tick
     @Override
-    public void tick(Level level, BlockPos blockPos, BlockState state) {
+    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         if (level.isClientSide()) {
             return;
         }
@@ -249,24 +249,24 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
             setGemstone(newGem);
 
             level.sendBlockUpdated(blockPos, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-            setChanged(level, blockPos, state);
+            setChanged(level, blockPos, blockState);
         }
 
         ItemStack stack = radiantDustStack();
         if(stack.is(ModItems.RADIANT_DUST) && dustParticleCount <= maxDust) {
             dustParticleCount += 2000;
-            setChanged(level, blockPos, state);
+            setChanged(level, blockPos, blockState);
         }
         ItemStack stack1 = redstoneStack();
         if((stack1.is(Items.REDSTONE) || level.hasNeighborSignal(blockPos)) && redstone <= maxRedstone) {
             redstone += 10;
-            setChanged(level, blockPos, state);
+            setChanged(level, blockPos, blockState);
         }
 
         changeState();
-        if(machineStatus == MachineStatus.RUNNING) {
-            energyState = MachineStatus.EnergyState.EXTRACTING;
-            setChanged(level, blockPos, state);
+        if(machineStatus.isRunning()) {
+            extracting();
+            setChanged(level, blockPos, blockState);
             if (isResultSlotEmptyOrReceivable() && checkRecipe() && hasRequiredEnergyAmount() && dustParticleCount >= 15) {
                 this.continueTicks();
                 if((!level.hasNeighborSignal(blockPos) || redstone > 0) && redstoneTick >= 20) {
@@ -277,39 +277,39 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity<Ge
                 if(dustParticleCount > 0 && dustTick >= 20) {
                     dustParticleCount--;
                     dustTick = 0;
-                    setChanged(level, blockPos, state);
+                    setChanged(level, blockPos, blockState);
                 }
-                setChanged(level, blockPos, state);
+                setChanged(level, blockPos, blockState);
                 if (hasCrystallizationFinished()) {
                     this.getCrystallizedGem();
                     this.clearProgress();
-                    setChanged(level, blockPos, state);
+                    setChanged(level, blockPos, blockState);
                 }
-                setChanged(level, blockPos, state);
+                setChanged(level, blockPos, blockState);
             } else {
                 this.clearProgress();
-                this.machineStatus = MachineStatus.IDLE;
-                setChanged(level, blockPos, state);
+                idle();
+                setChanged(level, blockPos, blockState);
             }
         } else if (machineStatus.isPaused()) {
-            energyState = MachineStatus.EnergyState.INSERTING;
+            inserting();
             addEnergy();
-            setChanged(level, blockPos, state);
+            setChanged(level, blockPos, blockState);
         } else {
             if((energyAmount() < 1_000_000 && hasEnergySource())) {
-                energyState = MachineStatus.EnergyState.INSERTING;
+                inserting();
                 addEnergy();
-                setChanged(level, blockPos, state);
+                setChanged(level, blockPos, blockState);
             } else {
-                energyState = MachineStatus.EnergyState.IDLE;
-                setChanged(level, blockPos, state);
+                energyIdle();
+                setChanged(level, blockPos, blockState);
             }
         }
 
         validateEnergyAmount(ENERGY_SOURCE_SLOT);
         validateRedstoneAmount(REDSTONE_SLOT);
         checkForEnoughRadiantDustAndConsumeSingle();
-        setChanged(level, blockPos, state);
+        setChanged(level, blockPos, blockState);
     }
 
     @Override

@@ -102,15 +102,12 @@ public class GemPurifierBlock extends BaseEntityBlock implements EntityBlock {
     @Override
     protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         BlockState newState = state;
-
         if(state.getValue(REDSTONE_POWERED) && !world.hasNeighborSignal(pos)) {
             newState = newState.setValue(REDSTONE_POWERED, false);
         }
-
         if(world.getBlockEntity(pos) instanceof GemPurifierBlockEntity be) {
             newState = newState.setValue(IS_PURIFYING, be.gemstone());
         }
-
         world.setBlock(pos, newState, Block.UPDATE_ALL);
     }
 

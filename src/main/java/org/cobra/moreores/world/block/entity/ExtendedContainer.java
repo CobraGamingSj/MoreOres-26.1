@@ -14,23 +14,20 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * A simple {@code SidedInventory} implementation with only default methods + an item list getter.
- *
  * <h2>Reading and writing to tags</h2>
  * Use {@link ContainerHelper#saveAllItems(ValueOutput, NonNullList)} (NbtCompound, DefaultedList)} and {@link ContainerHelper#loadAllItems(ValueInput, NonNullList)} (NbtCompound, DefaultedList, RegistryWrapper.WrapperLookup)}
  * on {@linkplain #items() the item list}.
- *
- * License: <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
- * @author Juuz
  */
+
 @FunctionalInterface
-public interface ImplementedContainer extends WorldlyContainer {
+public interface ExtendedContainer extends WorldlyContainer {
     /**
      * Gets the item list of this inventory.
      * Must return the same instance every time it's called.
      *
      * @return the item list
      */
+
     NonNullList<ItemStack> items();
 
     /**
@@ -39,7 +36,8 @@ public interface ImplementedContainer extends WorldlyContainer {
      * @param items the item list
      * @return a new inventory
      */
-    static ImplementedContainer of(NonNullList<ItemStack> items) {
+
+    static ExtendedContainer of(NonNullList<ItemStack> items) {
         return () -> items;
     }
 
@@ -49,7 +47,8 @@ public interface ImplementedContainer extends WorldlyContainer {
      * @param size the inventory size
      * @return a new inventory
      */
-    static ImplementedContainer ofSize(int size) {
+
+    static ExtendedContainer ofSize(int size) {
         return of(NonNullList.withSize(size, ItemStack.EMPTY));
     }
 
@@ -63,6 +62,7 @@ public interface ImplementedContainer extends WorldlyContainer {
      * @param side the side
      * @return the available slots
      */
+
     @Override
     default int[] getSlotsForFace(Direction side) {
         int[] result = new int[items().size()];
@@ -83,6 +83,7 @@ public interface ImplementedContainer extends WorldlyContainer {
      * @param side the side
      * @return true if the inputBefore can be inserted
      */
+
     @Override
     default boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
         return true;
@@ -98,6 +99,7 @@ public interface ImplementedContainer extends WorldlyContainer {
      * @param side the side
      * @return true if the inputBefore can be extracted
      */
+
     @Override
     default boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
         return true;
@@ -112,6 +114,7 @@ public interface ImplementedContainer extends WorldlyContainer {
      *
      * @return the inventory size
      */
+
     @Override
     default int getContainerSize() {
         return items().size();
@@ -120,6 +123,7 @@ public interface ImplementedContainer extends WorldlyContainer {
     /**
      * @return true if this inventory has only empty stacks, false otherwise
      */
+
     @Override
     default boolean isEmpty() {
         for (int i = 0; i < getContainerSize(); i++) {
@@ -133,27 +137,12 @@ public interface ImplementedContainer extends WorldlyContainer {
     }
 
     /**
-    * @return true is this inventory has full inputBefore, false otherwise
-     */
-
-    default boolean isFull() {
-         for (int i  = 0; i < getContainerSize(); i++) {
-             ItemStack stack = getItem(i);
-             if (!stack.isEmpty()) {
-                 return true;
-             }
-         }
-
-         return false;
-     }
-
-
-    /**
      * Gets the item in the slot.
      *
      * @param slot the slot
      * @return the item in the slot
      */
+
     @Override
     default ItemStack getItem(int slot) {
         return items().get(slot);
@@ -185,6 +174,7 @@ public interface ImplementedContainer extends WorldlyContainer {
      * @param count the item count
      * @return a inputBefore
      */
+
     @Override
     default ItemStack removeItem(int slot, int count) {
         ItemStack result = ContainerHelper.removeItem(items(), slot, count);
@@ -203,6 +193,7 @@ public interface ImplementedContainer extends WorldlyContainer {
      * @param slot the slot
      * @return the removed inputBefore
      */
+
     @Override
     default ItemStack removeItemNoUpdate(int slot) {
         return ContainerHelper.takeItem(items(), slot);
@@ -217,6 +208,7 @@ public interface ImplementedContainer extends WorldlyContainer {
      * @param slot the slot
      * @param stack the inputBefore
      */
+
     @Override
     default void setItem(int slot, ItemStack stack) {
         items().set(slot, stack);
@@ -229,6 +221,7 @@ public interface ImplementedContainer extends WorldlyContainer {
     /**
      * Clears {@linkplain #items() the item list}}.
      */
+
     @Override
     default void clearContent() {
         items().clear();

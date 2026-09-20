@@ -16,7 +16,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class RubyLampBlock extends Block {
-
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
 
     public RubyLampBlock(Properties settings) {
@@ -51,12 +50,10 @@ public class RubyLampBlock extends Block {
 
     @Override
     public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
-
         if (!world.isClientSide()) {
             boolean currentState = state.getValue(LIT);
             world.setBlock(pos, state.setValue(LIT, !currentState), Block.UPDATE_ALL);
         }
-
         return super.useWithoutItem(state, world, pos, player, hit);
     }
 

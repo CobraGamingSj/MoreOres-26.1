@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public interface TickableBlockEntity {
 
-    void tick(Level level, BlockPos blockPos, BlockState state);
+    void tick(Level level, BlockPos blockPos, BlockState blockState);
 
     static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level world, BlockState state, BlockEntityType<T> type) {
         return !world.isClientSide() ? (world0, blockPos, blockState, blockEntity) -> ((TickableBlockEntity) blockEntity).tick(world0, blockPos, blockState) : null;
