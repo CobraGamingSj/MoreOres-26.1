@@ -1,44 +1,46 @@
 package org.cobra.moreores.client.gui;
 
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.Nullable;
 
 public class SkillHolderSlot extends Slot {
-
-    public final int node;
-    public final int x, y;
-    public int width, height;
-    public ItemStack item;
-    private final Container container;
+    private boolean disabledSlot;
 
     public SkillHolderSlot(int x, int y, int slot, Container container) {
         super(container, slot, x, y);
-        this.x = x;
-        this.y = y;
-        this.node = slot;
-        this.container = container;
     }
 
-    public ItemStack getItem() {
-        return this.container.getItem(node);
+    public boolean isDisabledSlot() {
+        return disabledSlot;
     }
 
-    public @Nullable Identifier getNoItemIcon() {
-        return null;
+    public void setDisabledSlot(boolean disabledSlot) {
+        this.disabledSlot = disabledSlot;
     }
 
-    public int getMaxStackSize() {
-        return this.container.getMaxStackSize();
+    private boolean isAvailable() {
+        return switch (index) {
+            case 0 -> true;
+            case 1, 2 -> !container.getItem(0).isEmpty();
+            case 3 -> !container.getItem(1).isEmpty();
+            case 4 -> !container.getItem(2).isEmpty();
+            case 5 -> !container.getItem(3).isEmpty();
+            case 6 -> !container.getItem(4).isEmpty();
+            case 7 -> !container.getItem(5).isEmpty();
+            case 8 -> !container.getItem(6).isEmpty();
+            case 9 -> !container.getItem(7).isEmpty();
+            case 10 -> !container.getItem(8).isEmpty();
+            default -> false;
+        };
     }
 
-    public int getMaxStackSize(final ItemStack itemStack) {
-        return Math.min(this.getMaxStackSize(), itemStack.getMaxStackSize());
+    @Override
+    public boolean isHighlightable() {
+        return !disabledSlot && isAvailable();
     }
 
+    @Override
     public boolean isActive() {
-        return true;
+        return !disabledSlot && isHighlightable();
     }
 }
