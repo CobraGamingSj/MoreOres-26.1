@@ -12,7 +12,9 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
@@ -143,6 +145,10 @@ public class ResourceHelper {
 
         public <S extends AbstractContainerMenu, D extends CustomPacketPayload> ExtendedMenuType<S, D> register(String id, ExtendedMenuType.ExtendedFactory<S, D> factory, StreamCodec<? super RegistryFriendlyByteBuf, D> packetCodec) {
             return Registry.register(BuiltInRegistries.MENU, MoreOresModInitializer.id(id), new ExtendedMenuType<>(factory, packetCodec));
+        }
+
+        public <T extends AbstractContainerMenu> MenuType<T> register(String name, MenuType.MenuSupplier<T> constructor) {
+            return Registry.register(BuiltInRegistries.MENU, MoreOresModInitializer.id(name), new MenuType<>(constructor, FeatureFlags.VANILLA_SET));
         }
     }
     

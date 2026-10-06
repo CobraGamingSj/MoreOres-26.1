@@ -15,7 +15,10 @@ public class ModMenuType {
 
     public static final MenuType<GemCrystallizerMenu> GEM_CRYSTALLIZER =
             RESOURCE.register("gem_crystallizer", GemCrystallizerMenu::new, GemCrystallizerDataSynchronizer.STREAM_CODEC);
-    
+
+    public static final MenuType<SkillTreeMenu> SKILL_NODE_TREE =
+            RESOURCE.register("skill_node_tree", SkillTreeMenu::new);
+
     public static void register() {
         MoreOresModInitializer.LOGGER.info("Loading ModMenuType for " + MoreOresModInitializer.MOD_ID + " mod.");
         System.out.println("------------------------------------------------------------------------------------------------------------------------");

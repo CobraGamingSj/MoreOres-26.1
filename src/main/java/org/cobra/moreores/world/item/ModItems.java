@@ -29,7 +29,7 @@ public class ModItems {
 
     private static final ResourceHelper.ItemResource RESOURCE = ResourceHelper.ItemResource.INSTANCE;
 
-//    public static final Item GEM_DETECTOR = RESOURCE.register("gem_detector", GemDetector::new);
+    public static final Item GEM_DETECTOR = RESOURCE.register("gem_detector", SkillItem::new);
 
     
 //    Gemstones & Ingots

@@ -21,13 +21,13 @@ repositories {
 	repositories {
 		maven { url "https://maven.shedaniel.me" }
 	}
-//	maven {
-//		url = uri("https://maven.pkg.github.com/CobraGamingSj/TalentsAPI")
-//		credentials {
-//			username = project.findProperty("gpr.user")
-//			password = project.findProperty("gpr.key")
-//		}
-//	}
+	maven {
+		url = uri("https://maven.pkg.github.com/CobraGamingSj/TalentsAPI")
+		credentials {
+			username = project.findProperty("gpr.user")
+			password = project.findProperty("gpr.key")
+		}
+	}
 }
 
 loom {
@@ -52,7 +52,7 @@ dependencies {
 	compileOnly("me.shedaniel.cloth:basic-math:0.6.1")
 
     include api("teamreborn:energy:${project.energy_version}")
-//	modImplementation "org.cobra.api:talents-api:${project.talents_api_version}"
+	implementation "org.cobra.api:skills-api:${project.skills_api_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
@@ -61,12 +61,12 @@ dependencies {
 
 processResources {
 	inputs.property "version", project.version
-//	inputs.property "talents_version", project.talents_api_version
+	inputs.property "skills_api_version", project.skills_api_version
 
 	filesMatching("fabric.mod.json") {
 		expand([
 				"version": project.version,
-//				"talents_version": project.talents_api_version
+				"skills_api_version": project.skills_api_version
 		])
 	}
 }
@@ -102,9 +102,6 @@ publishing {
 
 	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+
 	}
 }
