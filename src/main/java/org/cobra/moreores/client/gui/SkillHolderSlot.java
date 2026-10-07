@@ -1,46 +1,70 @@
 package org.cobra.moreores.client.gui;
 
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import org.cobra.moreores.client.gui.screen.SkillTreeMenu;
+import org.cobra.moreores.util.Skill;
 
 public class SkillHolderSlot extends Slot {
-    private boolean disabledSlot;
+    private final SkillTreeMenu menu;
+    private final Skill skill;
 
-    public SkillHolderSlot(int x, int y, int slot, Container container) {
+    public SkillHolderSlot(int x, int y, int slot, Container container, SkillTreeMenu menu, Skill skill) {
         super(container, slot, x, y);
+        this.menu = menu;
+        this.skill = skill;
     }
 
-    public boolean isDisabledSlot() {
-        return disabledSlot;
+    public Skill getSkill() {
+        return skill;
     }
 
-    public void setDisabledSlot(boolean disabledSlot) {
-        this.disabledSlot = disabledSlot;
+    public boolean isSkillActive() {
+        return menu.isSkillActive(skill);
     }
 
-    private boolean isAvailable() {
-        return switch (index) {
-            case 0 -> true;
-            case 1, 2 -> !container.getItem(0).isEmpty();
-            case 3 -> !container.getItem(1).isEmpty();
-            case 4 -> !container.getItem(2).isEmpty();
-            case 5 -> !container.getItem(3).isEmpty();
-            case 6 -> !container.getItem(4).isEmpty();
-            case 7 -> !container.getItem(5).isEmpty();
-            case 8 -> !container.getItem(6).isEmpty();
-            case 9 -> !container.getItem(7).isEmpty();
-            case 10 -> !container.getItem(8).isEmpty();
-            default -> false;
-        };
+    public boolean isSkillUnlocked() {
+        return menu.isSkillUnlocked(skill);
+    }
+
+    public boolean canUnlockSkill() {
+        return menu.canUnlockSkill(skill);
     }
 
     @Override
     public boolean isHighlightable() {
-        return !disabledSlot && isAvailable();
+        return isActive();
     }
 
     @Override
     public boolean isActive() {
-        return !disabledSlot && isHighlightable();
+        if(isSkillActive()) {
+            return false;
+        }
+        return canUnlockSkill();
+//        return !isSkillActive();
+    }
+
+    @Override
+    public boolean mayPlace(ItemStack itemStack) {
+        if (isSkillActive()) {
+            return false;
+        }
+
+        if (!canUnlockSkill()) {
+            return false;
+        }
+
+        return itemStack.is(skill.requiredGem());
+    }
+
+    @Override
+    public boolean mayPickup(Player player) {
+        if(isSkillActive()) {
+            return false;
+        }
+        return super.mayPickup(player);
     }
 }

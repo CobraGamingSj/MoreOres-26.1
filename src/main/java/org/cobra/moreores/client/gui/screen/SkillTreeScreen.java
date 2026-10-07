@@ -1,18 +1,15 @@
 package org.cobra.moreores.client.gui.screen;
 
-import net.cobra.api.talents.util.Skill;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.client.gui.SkillHolderSlot;
+import org.cobra.moreores.util.Skill;
 import org.cobra.moreores.util.Skills;
-import org.cobra.moreores.world.entity.MobEffectSkillEffect;
 
 import java.util.List;
 
@@ -28,7 +25,7 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
     public static final int WINDOW_INSIDE_WIDTH = 232;
     public static final int WINDOW_INSIDE_HEIGHT = 96;
 
-    List<Skill<MobEffectSkillEffect>> skills = List.of(Skills.STRENGTH);
+    List<Skill> skills = List.of(Skills.STRENGTH);
 
 //    public SkillTreeScreen() {
 //        //
@@ -60,18 +57,25 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
             if(!slot.getItem().isEmpty()) {
                 switch (slot.index) {
                     case 0 -> {
-                        extractSprite(graphics, CONNECTOR_TOP_TEXTURE, 28, 34);
-                        extractSprite(graphics, CONNECTOR_BOTTOM_TEXTURE, 28, 80);
+                        extractSprite(graphics, CONNECTOR_TOP_TEXTURE, 25, 34);
+                        extractSprite(graphics, CONNECTOR_BOTTOM_TEXTURE, 25, 80);
                     }
-                    case 1 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 71, 29);
+                    case 1 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 68, 29);
+                    case 2 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 68, 85);
+                    case 3 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 108, 29);
+                    case 4 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 108, 85);
+                    case 5 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 148, 29);
+                    case 6 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 148, 85);
+                    case 7 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 188, 29);
+                    case 8 -> extractSprite(graphics, CONNECTOR_SIDE_TEXTURE, 188, 85);
                 }
             }
         }
-        for (Skill<MobEffectSkillEffect> skill : skills) {
-            if(hoveredSlot instanceof SkillHolderSlot slot && slot.isDisabledSlot() && isHovering(slot, mouseX, mouseY)) {
-                graphics.text(this.font, getDescription(), mouseX, mouseY, CommonColors.DARK_GRAY, false);
-            }
-        }
+//        for (Skill<MobEffectSkillEffect> skill : skills) {
+//            if(hoveredSlot instanceof SkillHolderSlot slot && slot.isDisabledSlot() && isHovering(slot, mouseX, mouseY)) {
+//                graphics.text(this.font, getDescription(), mouseX, mouseY, CommonColors.DARK_GRAY, false);
+//            }
+//        }
     }
 
     private void extractSprite(GuiGraphicsExtractor graphics, Identifier sprite, int x, int y) {

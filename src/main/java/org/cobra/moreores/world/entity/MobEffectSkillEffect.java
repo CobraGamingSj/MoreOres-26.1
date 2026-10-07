@@ -1,10 +1,8 @@
 package org.cobra.moreores.world.entity;
 
-import net.cobra.api.talents.effect.SkillEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
+import org.cobra.moreores.util.SkillEffect;
 
 public class MobEffectSkillEffect implements SkillEffect {
     private final MobEffectInstance effect;
@@ -14,7 +12,12 @@ public class MobEffectSkillEffect implements SkillEffect {
     }
 
     @Override
-    public void apply(Player user, @Nullable LivingEntity target, int level) {
+    public void apply(Player user) {
         user.addEffect(effect);
+    }
+
+    @Override
+    public void remove(Player player) {
+        player.removeEffect(effect.getEffect());
     }
 }
