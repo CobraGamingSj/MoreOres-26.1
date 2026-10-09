@@ -1,11 +1,11 @@
 package org.cobra.moreores.networking;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.networking.block.data.GemCrystallizerBlockData;
-import org.cobra.moreores.networking.block.data.GemPurifierBlockData;
 import org.cobra.moreores.networking.block.data.GemMachineButtonPayload;
+import org.cobra.moreores.networking.block.data.GemPurifierBlockData;
 import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import org.cobra.moreores.networking.item.data.EnergyIngotC2SPayload;
 
 import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
@@ -18,6 +18,7 @@ public class ModC2SNetworkRegistries {
         ServerPlayNetworking.registerGlobalReceiver(GemPurifierBlockData.TYPE, GemPurifierBlockData::handle);
         ServerPlayNetworking.registerGlobalReceiver(GemCrystallizerBlockData.TYPE, GemCrystallizerBlockData::handle);
         ServerPlayNetworking.registerGlobalReceiver(EnergyIngotC2SPayload.TYPE, EnergyIngotC2SPayload::handle);
+        ServerPlayNetworking.registerGlobalReceiver(OpenSkillTreePayload.TYPE, OpenSkillTreePayload::handle);
     }
 
     public static void register() {

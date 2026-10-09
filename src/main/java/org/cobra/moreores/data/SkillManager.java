@@ -1,11 +1,19 @@
 package org.cobra.moreores.data;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.client.gui.SkillHolderSlot;
+import org.cobra.moreores.client.gui.screen.SkillTreeMenu;
+import org.cobra.moreores.networking.SkillStatePayload;
 import org.cobra.moreores.util.Skill;
 import org.cobra.moreores.util.SkillEffect;
 import org.cobra.moreores.util.Skills;
+
+import java.util.List;
 
 public final class SkillManager {
 
@@ -28,8 +36,15 @@ public final class SkillManager {
             ServerPlayer player,
             Skill skill
     ) {
+        return isUnlocked(player, skill.id());
+    }
+
+    public static boolean isUnlocked(
+            ServerPlayer player,
+            Identifier skillId
+    ) {
         return getData(player)
-                .getSkillProgress(skill.id())
+                .getSkillProgress(skillId)
                 .isUnlocked();
     }
 
@@ -116,6 +131,7 @@ public final class SkillManager {
             }
 
             stack.shrink(1);
+            return true;
         }
 
         return false;
@@ -143,22 +159,14 @@ public final class SkillManager {
         SkillProgress progress =
                 data.getSkillProgress(skill.id());
 
-        // Already active.
         if (progress.isActive()) {
             return false;
         }
 
-        if (progress.hasExpired()) {
-            deactivate(player, skill);
-        }
-
         if (!progress.isUnlocked()) {
-
             if (!canUnlock(player, skill)) {
                 return false;
             }
-
-            progress.setUnlocked(true);
         }
 
         if (!hasRequiredGem(player, skill)) {
@@ -169,16 +177,12 @@ public final class SkillManager {
             return false;
         }
 
-        ItemStack storedGem =
-                new ItemStack(
-                        skill.requiredGem()
-                );
+        progress.setUnlocked(true);
 
-        progress.setGem(storedGem);
+        progress.setGem(new ItemStack(skill.requiredGem()));
 
         long expiresAt =
-                System.currentTimeMillis()
-                        + skill.duration();
+                System.currentTimeMillis() + skill.duration();
 
         progress.setExpiresAt(expiresAt);
 
@@ -190,7 +194,6 @@ public final class SkillManager {
 
         return true;
     }
-
     /**
      * Deactivates a skill.
      *
@@ -217,17 +220,18 @@ public final class SkillManager {
             effect.remove(player);
         }
 
-        ItemStack gem = progress.getGem();
+//        ItemStack gem = progress.getGem();
+//
+//        if (!gem.isEmpty()) {
+//            if (!player.getInventory().add(gem.copy())) {
+//                player.drop(
+//                        gem.copy(),
+//                        false
+//                );
+//            }
+//        }
 
-        if (!gem.isEmpty()) {
-            if (!player.getInventory().add(gem.copy())) {
-                player.drop(
-                        gem.copy(),
-                        false
-                );
-            }
-        }
-
+        progress.setUnlocked(false);
         progress.clearActivation();
     }
 
@@ -241,6 +245,8 @@ public final class SkillManager {
 
         PlayerSkillData data = getData(player);
 
+        boolean changed = false;
+
         for (Skill skill : Skills.SKILLS) {
 
             SkillProgress progress =
@@ -251,6 +257,135 @@ public final class SkillManager {
             }
 
             deactivate(player, skill);
+            changed = true;
         }
+
+        if (changed) {
+            if(player.containerMenu instanceof SkillTreeMenu menu) {
+                menu.refreshSkillStates();
+            }
+            sendSkillState(player);
+        }
+    }
+
+    public static boolean activateFromSlot(
+            ServerPlayer player,
+            Skill skill,
+            SkillHolderSlot slot
+    ) {
+        PlayerSkillData data = getData(player);
+
+        SkillProgress progress =
+                data.getSkillProgress(skill.id());
+
+        if (progress.isActive()) {
+            return false;
+        }
+
+        if (!progress.isUnlocked()) {
+            if (!canUnlock(player, skill)) {
+                return false;
+            }
+        }
+
+        ItemStack gem = slot.getItem();
+
+        if (gem.isEmpty() || !gem.is(skill.requiredGem())) {
+            return false;
+        }
+
+        ItemStack storedGem = gem.copy();
+        storedGem.setCount(1);
+
+        slot.set(ItemStack.EMPTY);
+
+        progress.setUnlocked(true);
+
+        progress.setGem(storedGem);
+
+        progress.setExpiresAt(
+                System.currentTimeMillis() + skill.duration()
+        );
+
+        SkillEffect effect = skill.effect();
+
+        if (effect != null) {
+            effect.apply(player);
+            MoreOresModInitializer.LOGGER.info("Skill {} | unlocked={} | gemEmpty={} | expiresAt={} | active={}",
+                    skill.id(), progress.isUnlocked(), progress.getGem().isEmpty(), progress.getExpiresAt(), progress.isActive());
+        }
+
+        if (player.containerMenu instanceof SkillTreeMenu menu) {
+            menu.refreshSkillStates();
+        }
+
+        sendSkillState(player);
+
+        return true;
+    }
+
+    public static void reapplyActiveEffects(ServerPlayer player) {
+        PlayerSkillData data = getData(player);
+
+        MoreOresModInitializer.LOGGER.info("Respawned Player: {}", player.getName().getString());
+
+        for (Skill skill : Skills.SKILLS) {
+            SkillProgress progress =
+                    data.getSkillProgress(skill.id());
+
+            MoreOresModInitializer.LOGGER.info("Skill {} | unlocked={} | gemEmpty={} | expiresAt={} | active={}",
+                    skill.id(), progress.isUnlocked(), progress.getGem().isEmpty(), progress.getExpiresAt(), progress.isActive());
+
+            if (!progress.isActive()) {
+                continue;
+            }
+
+            SkillEffect effect = skill.effect();
+
+            if (effect != null) {
+                MoreOresModInitializer.LOGGER.info("Reapplying effect: {}", skill.id());
+                effect.apply(player);
+            } else {
+                MoreOresModInitializer.LOGGER.info("No effect configured: {}", skill.id());
+            }
+        }
+
+        sendSkillState(player);
+    }
+
+    public static void sendSkillState(ServerPlayer player) {
+
+        PlayerSkillData data = getData(player);
+
+        List<ItemStack> gems = Skills.SKILLS.stream()
+                .map(skill -> {
+                    SkillProgress progress =
+                            data.getSkillProgress(skill.id());
+
+                    if (progress.isActive()) {
+                        return progress.getGem().copy();
+                    }
+
+                    return ItemStack.EMPTY;
+                })
+                .toList();
+
+        List<Long> expiresAt = Skills.SKILLS.stream()
+                .map(skill -> {
+                    SkillProgress progress =
+                            data.getSkillProgress(skill.id());
+
+                    if (progress.isActive()) {
+                        return progress.getExpiresAt();
+                    }
+
+                    return 0L;
+                })
+                .toList();
+
+        ServerPlayNetworking.send(
+                player,
+                new SkillStatePayload(gems, expiresAt)
+        );
     }
 }

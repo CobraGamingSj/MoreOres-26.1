@@ -6,8 +6,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.networking.block.data.GemCrystallizerBlockData;
-import org.cobra.moreores.networking.block.data.GemPurifierBlockData;
 import org.cobra.moreores.networking.block.data.GemMachineButtonPayload;
+import org.cobra.moreores.networking.block.data.GemPurifierBlockData;
 import org.cobra.moreores.networking.block.data.MachineStatusDataPayload;
 import org.cobra.moreores.networking.item.data.EnergyIngotC2SPayload;
 
@@ -21,6 +21,7 @@ public class ModC2SPayloadRegistries {
         registerC2S(GemPurifierBlockData.TYPE, GemPurifierBlockData.STREAM_CODEC);
         registerC2S(GemCrystallizerBlockData.TYPE, GemCrystallizerBlockData.STREAM_CODEC);
         registerC2S(EnergyIngotC2SPayload.TYPE, EnergyIngotC2SPayload.STREAM_CODEC);
+        registerC2S(OpenSkillTreePayload.TYPE, OpenSkillTreePayload.STREAM_CODEC);
     }
     
     public static<T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> id, StreamCodec<RegistryFriendlyByteBuf, T> packetCodec) {

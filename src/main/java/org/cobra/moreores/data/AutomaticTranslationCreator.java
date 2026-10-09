@@ -2,6 +2,7 @@ package org.cobra.moreores.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.util.Skills;
 import org.cobra.moreores.world.block.ModBlocks;
 import org.cobra.moreores.world.item.GemItem;
 import org.cobra.moreores.world.item.ModItems;
@@ -19,6 +20,7 @@ public class AutomaticTranslationCreator extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(HolderLookup.Provider registryLookup, TranslationBuilder translationBuilder) {
+        translationBuilder.add("key.talents", "Open Skill Tree");
         translationBuilder.add("gui.button.gp.start", "Start");
         translationBuilder.add("gui.button.gp.pause", "Pause");
         translationBuilder.add("gui.button.gp.resume", "Resume");
@@ -32,18 +34,29 @@ public class AutomaticTranslationCreator extends FabricLanguageProvider {
         translationBuilder.add("item.moreores.smithing_template.radiant_upgrade.applies_to", "Sapphire Equipment");
         translationBuilder.add("item.moreores.smithing_template.radiant_upgrade.ingredients", "Sapphire");
         translationBuilder.add("item.moreores.smithing_template.ingredients", "Ingredients:");
-        translationBuilder.add("advancement.moreores.gems",  "Is that a gem?");
-        translationBuilder.add("advancement.moreores.gems.desc",  "Collect a gemstone");
-        translationBuilder.add("advancement.moreores.ruby_armor",  "Cover me in Ruby");
-        translationBuilder.add("advancement.moreores.ruby_armor.desc",  "Equip a Ruby Armor");
-        translationBuilder.add("advancement.moreores.radiant_sword",  "Overpowered!");
-        translationBuilder.add("advancement.moreores.radiant_sword.desc",  "Get a Radiant Sword");
-        translationBuilder.add("advancement.moreores.gems_all",  "Pocket full of GEMSTONES!");
-        translationBuilder.add("advancement.moreores.gems_all.desc",  "Collect every single gemstone");
-        translationBuilder.add("enchantment.moreores.thunder_striker",  "Thunder Striker");
-        translationBuilder.add("entity.minecraft.villager.jeweller",  "Jeweller");
-        translationBuilder.add("trim_pattern.moreores.guardian",  "Guardian Armor Trim");
-        translationBuilder.add("entity.moreores.gem_arrow",  "Gem Arrow");
+        translationBuilder.add("advancement.moreores.gems", "Is that a gem?");
+        translationBuilder.add("advancement.moreores.gems.desc", "Collect a gemstone");
+        translationBuilder.add("advancement.moreores.ruby_armor", "Cover me in Ruby");
+        translationBuilder.add("advancement.moreores.ruby_armor.desc", "Equip a Ruby Armor");
+        translationBuilder.add("advancement.moreores.radiant_sword", "Overpowered!");
+        translationBuilder.add("advancement.moreores.radiant_sword.desc", "Get a Radiant Sword");
+        translationBuilder.add("advancement.moreores.gems_all", "Pocket full of GEMSTONES!");
+        translationBuilder.add("advancement.moreores.gems_all.desc", "Collect every single gemstone");
+        translationBuilder.add("enchantment.moreores.thunder_striker", "Thunder Striker");
+        translationBuilder.add("entity.minecraft.villager.jeweller", "Jeweller");
+        translationBuilder.add("trim_pattern.moreores.guardian", "Guardian Armor Trim");
+        translationBuilder.add("entity.moreores.gem_arrow", "Gem Arrow");
+        translationBuilder.add(Skills.STRENGTH.description().getString(), "Increases attack damage");
+        translationBuilder.add(Skills.NIGHT_VISION.description().getString(), "Grants night vision");
+        translationBuilder.add(Skills.REGENERATION.description().getString(), "Grants regeneration");
+        translationBuilder.add(Skills.RESISTANCE.description().getString(), "Grants resistance when health is low");
+        translationBuilder.add(Skills.SPEED.description().getString(), "Increases movement speed");
+        translationBuilder.add(Skills.HEALTH_BOOST.description().getString(), "Increases maximum health");
+        translationBuilder.add(Skills.HASTE.description().getString(), "Increases mining speed");
+        translationBuilder.add(Skills.SLOW_FALL.description().getString(), "Reduces falling speed and prevents fall damage");
+        translationBuilder.add(Skills.JUMP_BOOST.description().getString(), "Increases jump height");
+        translationBuilder.add(Skills.KNOCKBACK_RESISTANCE.description().getString(), "Reduces knockback");
+        translationBuilder.add(Skills.IMMORTAL.description().getString(), "Prevents death like a Totem of Undying");
 
         for (Item item :  BuiltInRegistries.ITEM) {
             Identifier id = BuiltInRegistries.ITEM.getKey(item);

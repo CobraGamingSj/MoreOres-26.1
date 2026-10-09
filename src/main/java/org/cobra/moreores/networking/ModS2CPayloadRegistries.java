@@ -18,6 +18,7 @@ public class ModS2CPayloadRegistries {
        registerS2C(GemCrystallizerDataSynchronizer.TYPE, GemCrystallizerDataSynchronizer.STREAM_CODEC);
        registerS2C(MachineStatusDataPayload.TYPE, MachineStatusDataPayload.STREAM_CODEC);
        registerS2C(ScreenGhostRenderingS2CPacket.TYPE, ScreenGhostRenderingS2CPacket.STREAM_CODEC);
+       registerS2C(SkillStatePayload.TYPE, SkillStatePayload.STREAM_CODEC);
     }
 
     public static<T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> id, StreamCodec<RegistryFriendlyByteBuf, T> packetCodec) {
