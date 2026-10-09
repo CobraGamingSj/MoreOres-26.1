@@ -1,5 +1,6 @@
 package org.cobra.moreores.client.gui.screen;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -8,10 +9,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.util.Skill;
-import org.cobra.moreores.util.Skills;
+import org.cobra.moreores.client.gui.SkillHolderSlot;
 
 import java.util.List;
+import java.util.Optional;
 
 public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
     private static final Identifier TEXTURE = MoreOresModInitializer.id("textures/gui/skill_tree/window.png");
@@ -20,16 +21,6 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
     private static final Identifier CONNECTOR_TOP_TEXTURE = MoreOresModInitializer.id("connector_top_active");
     private static final Identifier CONNECTOR_BOTTOM_TEXTURE = MoreOresModInitializer.id("connector_bottom_active");
     private static final Identifier CONNECTOR_SIDE_TEXTURE = MoreOresModInitializer.id("connector_side_active");
-    public static final int WINDOW_WIDTH = 255;
-    public static final int WINDOW_HEIGHT = 127;
-    public static final int WINDOW_INSIDE_WIDTH = 232;
-    public static final int WINDOW_INSIDE_HEIGHT = 96;
-
-    List<Skill> skills = List.of(Skills.STRENGTH);
-
-//    public SkillTreeScreen() {
-//        //
-//    }
 
     public SkillTreeScreen(SkillTreeMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, 256, 226);
@@ -41,16 +32,11 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
         inventoryLabelY = 1000;
     }
 
-    public String getDescription() {
-        return "Example";
-    }
-
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
         int i = this.leftPos;
         int j = this.topPos;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0, 0, this.width, this.height, 256, 256);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0F, 0F, this.imageWidth, this.imageHeight, 256, 256);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, INNER_TEXTURE, i + 12, j + 21, 232, 100);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, VIGNETTE_TEXTURE, i + 12, j + 21, 232, 100);
         for(Slot slot : menu.slots) {
@@ -71,11 +57,30 @@ public class SkillTreeScreen extends AbstractContainerScreen<SkillTreeMenu> {
                 }
             }
         }
-//        for (Skill<MobEffectSkillEffect> skill : skills) {
-//            if(hoveredSlot instanceof SkillHolderSlot slot && slot.isDisabledSlot() && isHovering(slot, mouseX, mouseY)) {
-//                graphics.text(this.font, getDescription(), mouseX, mouseY, CommonColors.DARK_GRAY, false);
-//            }
-//        }
+        if(hoveredSlot instanceof SkillHolderSlot slot && isHovering(slot, mouseX, mouseY)) {
+            long expiresAt = menu.getExpiresAt(slot.getSkillIndex());
+            long remainingTime =
+                    Math.max(0L, expiresAt - System.currentTimeMillis());
+            long seconds = remainingTime / 1000;
+
+            long hours = seconds / 3600;
+            long minutes = seconds % 3600 / 60;
+            long remainingSeconds = seconds % 60;
+
+            String time = hours > 0 ? String.format("%dh %02dm %02ds", hours, minutes, remainingSeconds) : String.format("%dm %02ds", minutes, remainingSeconds);
+            graphics.setTooltipForNextFrame(this.font,List.of(
+                    Component.literal(MoreOresModInitializer.formatIdName(slot.getSkill().id().getPath())).withStyle(ChatFormatting.RED),
+                            Component.empty(),
+                            Component.literal("When unlocked: ").withStyle(ChatFormatting.GRAY),
+                            Component.literal(" ").append(slot.getSkill().description().copy().withStyle(ChatFormatting.BLUE)),
+                            Component.literal("Required Gem: ").withStyle(ChatFormatting.GRAY),
+                            Component.literal(" ").append(Component.translatable(slot.getSkill().requiredGem().getDescriptionId()).withStyle(ChatFormatting.GREEN)),
+                            slot.isSkillActive() ? Component.literal("Expires in: " + time).withStyle(ChatFormatting.AQUA) : Component.empty(),
+                    Component.literal(slot.getSkill().id().toString()).withStyle(ChatFormatting.DARK_GRAY)
+                    ),
+                    Optional.empty(),
+                    mouseX, mouseY);
+        }
     }
 
     private void extractSprite(GuiGraphicsExtractor graphics, Identifier sprite, int x, int y) {

@@ -5,6 +5,8 @@
   "mixins": [
     "AnvilMenuMixin",
     "ExampleMixin",
+    "LivingEntityMixin",
+    "PlayerMixin",
     "ServerPlayerMixin"
   ],
   "injectors": {
@@ -14,6 +16,8 @@
     "requireAnnotations": true
   },
   "client": [
+    "CreativeModeInventoryScreenMixin",
+    "InventoryScreenMixin",
     "ItemModelGeneratorsMixin"
   ]
 }

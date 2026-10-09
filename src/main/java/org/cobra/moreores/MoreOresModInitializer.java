@@ -3,6 +3,7 @@ package org.cobra.moreores;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.registry.FuelValueEvents;
@@ -24,6 +25,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
 import org.cobra.moreores.core.registry.RewardDataSaver;
+import org.cobra.moreores.core.OreSenseManager;
+import org.cobra.moreores.core.PlayerSkillData;
+import org.cobra.moreores.data.ModAttachmentTypes;
+import org.cobra.moreores.core.SkillManager;
 import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
 import org.cobra.moreores.level.gen.BiomeModifiers;
 import org.cobra.moreores.networking.ModC2SNetworkRegistries;
@@ -44,10 +49,12 @@ import org.cobra.moreores.world.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+
 public class MoreOresModInitializer implements ModInitializer {
 
 	public static final String MOD_ID = "moreores";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final Logger LOGGER = LoggerFactory.getLogger("MoreOres+");
 
 	public static Identifier id(String id) {
 		return Identifier.fromNamespaceAndPath(MOD_ID, id);
@@ -134,20 +141,32 @@ public class MoreOresModInitializer implements ModInitializer {
 	public void onInitialize() {
 
 
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+			PlayerSkillData oldData = SkillManager.getData(oldPlayer);
+			newPlayer.setAttached(ModAttachmentTypes.PLAYER_SKILL_DATA, oldData.copy());
+			SkillManager.tick(newPlayer);
+			SkillManager.reapplyActiveEffects(newPlayer);
+		});
+
+
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.getPlayer();
 			String modVersion = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().getMetadata().getVersion().getFriendlyString();
-
-			player.addTag("moreores_first_join");
 			player.connection.send(new ClientboundSetTitleTextPacket(Component.literal("MoreOres+").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD)));
 			player.connection.send(new ClientboundSetSubtitleTextPacket(Component.literal(modVersion).withStyle(ChatFormatting.YELLOW)));
 			player.connection.send(new ClientboundSetTitlesAnimationPacket(20, 100, 20));
 		});
 
 
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			OreSenseManager.onDisconnect(handler.getPlayer());
+		});
+
+
 		ServerMessageEvents.CHAT_MESSAGE.register((msg, sender, bounds) -> {
 			String playerSignature = msg.signedContent().toLowerCase();
-			if(playerSignature.contains("happy birthday cobra") || playerSignature.contains("happy birthday") || playerSignature.contains("happy bday") || playerSignature.contains("happy bday cobra")) {
+			LocalDate today = LocalDate.now();
+			if((playerSignature.contains("happy birthday cobra") || playerSignature.contains("happy birthday") || playerSignature.contains("happy bday") || playerSignature.contains("happy bday cobra")) && (today.getMonthValue() == 4 && today.getDayOfMonth() == 8)) {
 				giveBirthdayRewards(sender);
 			}
 		});
@@ -387,6 +406,10 @@ public class MoreOresModInitializer implements ModInitializer {
 
 		//EnchantmentEffects Registry
 		EnchantmentEffects.register();
+
+
+		//Attachments Registry
+		ModAttachmentTypes.register();
 	}
 
 

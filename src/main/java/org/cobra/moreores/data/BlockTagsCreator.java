@@ -479,6 +479,9 @@ public class BlockTagsCreator extends FabricTagsProvider.BlockTagsProvider {
                 .add(ResourceHelper.obtainKey(ModBlocks.PYROPE_ORE))
                 .add(ResourceHelper.obtainKey(ModBlocks.DEEPSLATE_PYROPE_ORE));
 
+        tag(ModBlockTags.ORE_SENSE_TARGETS)
+                .forceAddTag(ModBlockTags.MOD_ORES);
+
         tag(ModBlockTags.MOD_ORES)
                 .addTag(ModBlockTags.RUBY_ORES)
                 .addTag(ModBlockTags.SAPPHIRE_ORES)

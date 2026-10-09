@@ -1,4 +1,4 @@
-package org.cobra.moreores.data;
+package org.cobra.moreores.core;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.Identifier;
@@ -38,6 +38,23 @@ public class PlayerSkillData {
                 skillId,
                 id -> new SkillProgress()
         );
+    }
+
+    public PlayerSkillData copy() {
+        Map<Identifier, SkillProgress> copiedSkills = new HashMap<>();
+
+        skills.forEach((id, progress) -> {
+            copiedSkills.put(
+                    id,
+                    new SkillProgress(
+                            progress.isUnlocked(),
+                            progress.getGem().copy(),
+                            progress.getExpiresAt()
+                    )
+            );
+        });
+
+        return new PlayerSkillData(copiedSkills);
     }
 
     public boolean isUnlocked(Identifier skillId) {

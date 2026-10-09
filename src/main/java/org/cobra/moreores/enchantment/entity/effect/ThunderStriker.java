@@ -10,9 +10,9 @@ import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 
-public record ThunderSummonEnchantmentEffect() implements EnchantmentEntityEffect {
+public record ThunderStriker() implements EnchantmentEntityEffect {
 
-    public static final MapCodec<ThunderSummonEnchantmentEffect> CODEC = MapCodec.unit(ThunderSummonEnchantmentEffect::new);
+    public static final MapCodec<ThunderStriker> CODEC = MapCodec.unit(ThunderStriker::new);
 
     @Override
     public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity user, Vec3 pos) {

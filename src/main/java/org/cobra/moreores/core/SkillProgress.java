@@ -1,4 +1,4 @@
-package org.cobra.moreores.data;
+package org.cobra.moreores.core;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -5,3 +5,4 @@ extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerSc
 extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen extractSlotHighlightFront (Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V
 extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen isHovering (Lnet/minecraft/world/inventory/Slot;DD)Z
 accessible method net/minecraft/client/gui/GuiGraphicsExtractor itemCount (Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V
+accessible field net/minecraft/server/level/ServerPlayer server Lnet/minecraft/server/MinecraftServer;

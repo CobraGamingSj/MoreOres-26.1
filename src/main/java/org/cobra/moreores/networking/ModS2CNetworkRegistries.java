@@ -14,6 +14,7 @@ public class ModS2CNetworkRegistries {
         ClientPlayNetworking.registerGlobalReceiver(GemPurifierDataSynchronizer.TYPE, GemPurifierDataSynchronizer::handlePacket);
         ClientPlayNetworking.registerGlobalReceiver(GemCrystallizerDataSynchronizer.TYPE, GemCrystallizerDataSynchronizer::handlePacket);
         ClientPlayNetworking.registerGlobalReceiver(ScreenGhostRenderingS2CPacket.TYPE, ScreenGhostRenderingS2CPacket::handlePacket);
+        ClientPlayNetworking.registerGlobalReceiver(SkillStatePayload.TYPE, SkillStatePayload::handlePacket);
     }
 
     public static void register() {

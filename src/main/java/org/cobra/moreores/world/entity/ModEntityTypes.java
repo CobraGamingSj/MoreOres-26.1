@@ -14,12 +14,6 @@ public class ModEntityTypes {
             EntityType.Builder.<GemArrow>of(GemArrow::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f).clientTrackingRange(4).noLootTable().updateInterval(20).eyeHeight(0.13f));
 
-    public static final EntityType<RadiantSword> RADIANT_SWORD = RESOURCE.register(
-            "radiant_sword",
-            EntityType.Builder.<RadiantSword>of(RadiantSword::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f).clientTrackingRange(4).noLootTable().updateInterval(20).eyeHeight(0.13f)
-    );
-    
     public static void register() {
         MoreOresModInitializer.LOGGER.info("Registering ModEntityTypes for {} mod.", MoreOresModInitializer.MOD_ID);
     }

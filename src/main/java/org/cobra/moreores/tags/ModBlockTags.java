@@ -27,6 +27,7 @@ public class ModBlockTags {
     public static final TagKey<Block> PERIDOT_ORES = of("peridot_ores");
     public static final TagKey<Block> JADE_ORES = of("jade_ores");
     public static final TagKey<Block> PYROPE_ORES = of("pyrope_ores");
+    public static final TagKey<Block> ORE_SENSE_TARGETS = of("ores");
 
     private static TagKey<Block> of(String id) {
         return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MoreOresModInitializer.MOD_ID, id));
