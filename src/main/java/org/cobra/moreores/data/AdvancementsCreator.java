@@ -27,7 +27,7 @@ public class AdvancementsCreator extends FabricAdvancementProvider {
                 .display(
                         ModItems.RUBY, // The display icon
                         Component.translatable("advancement.moreores.gems"), // The title
-                        Component.translatable("advancement.moreores.gems.desc"), // The description
+                        Component.translatable("advancement.moreores.gems.desc"), // The descriptionId
                         MoreOresModInitializer.id("block/radiant_block"), // Background image used
                         AdvancementType.TASK,
                         true,

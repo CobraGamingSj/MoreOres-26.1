@@ -4,10 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AnvilMenuMixin",
-    "ExampleMixin",
-    "LivingEntityMixin",
-    "PlayerMixin",
-    "ServerPlayerMixin"
+    "ExampleMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -16,8 +13,6 @@
     "requireAnnotations": true
   },
   "client": [
-    "CreativeModeInventoryScreenMixin",
-    "InventoryScreenMixin",
     "ItemModelGeneratorsMixin"
   ]
 }

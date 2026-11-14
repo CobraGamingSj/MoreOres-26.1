@@ -1,16 +1,16 @@
 package org.cobra.moreores.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import org.cobra.moreores.MoreOresModInitializer;
-import org.cobra.moreores.util.Skills;
-import org.cobra.moreores.world.block.ModBlocks;
-import org.cobra.moreores.world.item.GemItem;
-import org.cobra.moreores.world.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import org.cobra.moreores.MoreOresModInitializer;
+import org.cobra.moreores.world.block.ModBlocks;
+import org.cobra.moreores.world.item.GemItem;
+import org.cobra.moreores.world.item.ModItems;
+
 import java.util.concurrent.CompletableFuture;
 
 public class AutomaticTranslationCreator extends FabricLanguageProvider {
@@ -46,17 +46,17 @@ public class AutomaticTranslationCreator extends FabricLanguageProvider {
         translationBuilder.add("entity.minecraft.villager.jeweller", "Jeweller");
         translationBuilder.add("trim_pattern.moreores.guardian", "Guardian Armor Trim");
         translationBuilder.add("entity.moreores.gem_arrow", "Gem Arrow");
-        translationBuilder.add(Skills.STRENGTH.description().getString(), "Increases attack damage");
-        translationBuilder.add(Skills.NIGHT_VISION.description().getString(), "Grants night vision");
-        translationBuilder.add(Skills.REGENERATION.description().getString(), "Grants regeneration");
-        translationBuilder.add(Skills.RESISTANCE.description().getString(), "Grants resistance when health is low");
-        translationBuilder.add(Skills.SPEED.description().getString(), "Increases movement speed");
-        translationBuilder.add(Skills.HEALTH_BOOST.description().getString(), "Increases maximum health");
-        translationBuilder.add(Skills.ORE_SENSE.description().getString(), "Increases mining speed");
-        translationBuilder.add(Skills.FIRE_SWORD.description().getString(), "Reduces falling speed and prevents fall damage");
-        translationBuilder.add(Skills.LIFE_STEAL.description().getString(), "Increases jump height");
-        translationBuilder.add(Skills.KNOCKBACK_RESISTANCE.description().getString(), "Reduces knockback");
-        translationBuilder.add(Skills.IMMORTAL.description().getString(), "Prevents death like a Totem of Undying");
+//        translationBuilder.add(Skills.STRENGTH.descriptionId().getString(), "Increases attack damage");
+//        translationBuilder.add(Skills.NIGHT_VISION.descriptionId().getString(), "Grants night vision");
+//        translationBuilder.add(Skills.REGENERATION.descriptionId().getString(), "Grants regeneration");
+//        translationBuilder.add(Skills.RESISTANCE.descriptionId().getString(), "Grants resistance when health is low");
+//        translationBuilder.add(Skills.SPEED.descriptionId().getString(), "Increases movement speed");
+//        translationBuilder.add(Skills.HEALTH_BOOST.descriptionId().getString(), "Increases maximum health");
+//        translationBuilder.add(Skills.ORE_SENSE.descriptionId().getString(), "Increases mining speed");
+//        translationBuilder.add(Skills.FIRE_SWORD.descriptionId().getString(), "Reduces falling speed and prevents fall damage");
+//        translationBuilder.add(Skills.LIFE_STEAL.descriptionId().getString(), "Increases jump height");
+//        translationBuilder.add(Skills.KNOCKBACK_RESISTANCE.descriptionId().getString(), "Reduces knockback");
+//        translationBuilder.add(Skills.IMMORTAL.descriptionId().getString(), "Prevents death like a Totem of Undying");
 
         for (Item item :  BuiltInRegistries.ITEM) {
             Identifier id = BuiltInRegistries.ITEM.getKey(item);

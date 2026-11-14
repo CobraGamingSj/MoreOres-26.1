@@ -3,7 +3,6 @@ package org.cobra.moreores;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.registry.FuelValueEvents;
@@ -25,10 +24,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
 import org.cobra.moreores.core.registry.RewardDataSaver;
-import org.cobra.moreores.core.OreSenseManager;
-import org.cobra.moreores.core.PlayerSkillData;
-import org.cobra.moreores.data.ModAttachmentTypes;
-import org.cobra.moreores.core.SkillManager;
 import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
 import org.cobra.moreores.level.gen.BiomeModifiers;
 import org.cobra.moreores.networking.ModC2SNetworkRegistries;
@@ -141,13 +136,6 @@ public class MoreOresModInitializer implements ModInitializer {
 	public void onInitialize() {
 
 
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
-			PlayerSkillData oldData = SkillManager.getData(oldPlayer);
-			newPlayer.setAttached(ModAttachmentTypes.PLAYER_SKILL_DATA, oldData.copy());
-			SkillManager.tick(newPlayer);
-			SkillManager.reapplyActiveEffects(newPlayer);
-		});
-
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.getPlayer();
@@ -158,9 +146,9 @@ public class MoreOresModInitializer implements ModInitializer {
 		});
 
 
-		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
-			OreSenseManager.onDisconnect(handler.getPlayer());
-		});
+//		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+//			OreSenseManager.onDisconnect(handler.getPlayer());
+//		});
 
 
 		ServerMessageEvents.CHAT_MESSAGE.register((msg, sender, bounds) -> {
@@ -409,7 +397,7 @@ public class MoreOresModInitializer implements ModInitializer {
 
 
 		//Attachments Registry
-		ModAttachmentTypes.register();
+//		ModAttachmentTypes.register();
 	}
 
 

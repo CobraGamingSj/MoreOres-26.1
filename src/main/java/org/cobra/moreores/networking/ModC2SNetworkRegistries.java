@@ -18,7 +18,7 @@ public class ModC2SNetworkRegistries {
         ServerPlayNetworking.registerGlobalReceiver(GemPurifierBlockData.TYPE, GemPurifierBlockData::handle);
         ServerPlayNetworking.registerGlobalReceiver(GemCrystallizerBlockData.TYPE, GemCrystallizerBlockData::handle);
         ServerPlayNetworking.registerGlobalReceiver(EnergyIngotC2SPayload.TYPE, EnergyIngotC2SPayload::handle);
-        ServerPlayNetworking.registerGlobalReceiver(OpenSkillTreePayload.TYPE, OpenSkillTreePayload::handle);
+//        ServerPlayNetworking.registerGlobalReceiver(OpenSkillTreePayload.TYPE, OpenSkillTreePayload::handle);
     }
 
     public static void register() {

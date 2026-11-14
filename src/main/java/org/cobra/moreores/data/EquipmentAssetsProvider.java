@@ -37,7 +37,7 @@ public class EquipmentAssetsProvider implements DataProvider {
         Map<ResourceKey<EquipmentAsset>, EquipmentClientInfo> equipmentAssets = new HashMap<>();
         bootstrap((id, asset) -> {
             if (equipmentAssets.putIfAbsent(id, asset) != null) {
-                throw new IllegalStateException("Tried to register equipment asset twice for id: " + id);
+                throw new IllegalStateException("Tried to register equipment asset twice for skillId: " + id);
             }
         });
         return DataProvider.saveAll(cache, EquipmentClientInfo.CODEC, this.pathProvider::json, equipmentAssets);
