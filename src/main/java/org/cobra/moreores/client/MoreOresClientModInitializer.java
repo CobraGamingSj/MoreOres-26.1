@@ -10,13 +10,11 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import org.cobra.moreores.client.gui.screen.GemCrystallizerScreen;
 import org.cobra.moreores.client.gui.screen.GemPurifierScreen;
 import org.cobra.moreores.client.gui.screen.ModMenuType;
-import org.cobra.moreores.client.gui.screen.SkillTreeScreen;
 import org.cobra.moreores.client.render.block.entity.GemCrystallizerBlockEntityRenderer;
 import org.cobra.moreores.client.render.block.entity.GemPurifierBlockEntityRenderer;
 import org.cobra.moreores.client.render.item.entity.GemArrowRenderer;
 import org.cobra.moreores.client.render.item.model.GemArrowEntityModel;
 import org.cobra.moreores.networking.ModS2CNetworkRegistries;
-import org.cobra.moreores.networking.OpenSkillTreePayload;
 import org.cobra.moreores.world.block.entity.ModBlockEntityTypes;
 import org.cobra.moreores.world.entity.ModEntityTypes;
 
@@ -25,18 +23,9 @@ public class MoreOresClientModInitializer implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
          ModS2CNetworkRegistries.registerClientS2C();
-
-         ModKeyMappings.register();
-
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if(ModKeyMappings.SKILL_TREE_KEY.consumeClick()) {
-                ClientPlayNetworking.send(new OpenSkillTreePayload());
-            }
-        });
-
+        
         MenuScreens.register(ModMenuType.GEM_PURIFIER, GemPurifierScreen::new);
         MenuScreens.register(ModMenuType.GEM_CRYSTALLIZER, GemCrystallizerScreen::new);
-        MenuScreens.register(ModMenuType.SKILL_TREE, SkillTreeScreen::new);
 
         BlockEntityRenderers.register(ModBlockEntityTypes.GEM_PURIFIER, GemPurifierBlockEntityRenderer::new);
         BlockEntityRenderers.register(ModBlockEntityTypes.GEM_CRYSTALLIZER, GemCrystallizerBlockEntityRenderer::new);
