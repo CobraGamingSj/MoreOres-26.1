@@ -115,7 +115,12 @@ public class RadiantBowItem extends ProjectileWeaponItem {
             return InteractionResult.CONSUME;
         }
     }
-    
+
+    @Override
+    public int getUseDuration(ItemStack itemStack, LivingEntity user) {
+        return 72000;
+    }
+
     @Override
     protected void shootProjectile(LivingEntity shooter, Projectile projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
         projectile.shootFromRotation(shooter, shooter.getXRot(), shooter.getYRot() + yaw, 0.0F, speed, divergence);

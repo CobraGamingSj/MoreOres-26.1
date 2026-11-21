@@ -82,7 +82,7 @@ public class EnergyIngotItem extends Item {
                             pos.getX() + 2,
                             pos.getY(),
                             pos.getZ() + 2,
-                            new ItemStack(ModItems.RADIANT_DUST, 9)
+                            new ItemStack(ModItems.RADIANT_DUST, context.getLevel().getRandom().nextInt(3, 10))
                     ));
                     lightningStrikes = 0;
                 }

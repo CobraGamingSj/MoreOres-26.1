@@ -136,7 +136,6 @@ public class MoreOresModInitializer implements ModInitializer {
 	public void onInitialize() {
 
 
-
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.getPlayer();
 			String modVersion = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().getMetadata().getVersion().getFriendlyString();

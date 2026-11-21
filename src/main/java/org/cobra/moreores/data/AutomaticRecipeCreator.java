@@ -44,6 +44,7 @@ public class AutomaticRecipeCreator extends FabricRecipeProvider {
             Map.entry(Items.NETHERITE_BOOTS, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE, ModItems.RUBY_BOOTS, ModItemTags.RUBY_TOOL_MATERIALS)),
             Map.entry(Items.NETHERITE_NAUTILUS_ARMOR, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE, ModItems.RUBY_NAUTILUS_ARMOR, ModItemTags.RUBY_TOOL_MATERIALS)),
             Map.entry(Items.NETHERITE_SPEAR, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE, ModItems.RUBY_SPEAR, ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_NAUTILUS_ARMOR, new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE, ModItems.RADIANT_NAUTILUS_ARMOR, ModItemTags.RADIANT_TOOL_MATERIALS)),
             Map.entry(ModItems.SAPPHIRE_SWORD, new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE, ModItems.RADIANT_SWORD, ModItemTags.RADIANT_TOOL_MATERIALS)),
             Map.entry(ModItems.SAPPHIRE_PICKAXE, new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE, ModItems.RADIANT_PICKAXE, ModItemTags.RADIANT_TOOL_MATERIALS)),
             Map.entry(ModItems.SAPPHIRE_AXE, new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE, ModItems.RADIANT_AXE, ModItemTags.RADIANT_TOOL_MATERIALS)),
