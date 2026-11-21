@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:grandidierite_block_crystallizing"
+        "recipes": "moreores:grandidierite_block_crystallizing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

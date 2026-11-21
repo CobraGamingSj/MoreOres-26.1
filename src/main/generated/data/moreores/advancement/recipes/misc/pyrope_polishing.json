@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:pyrope_polishing"
+        "recipes": "moreores:pyrope_polishing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

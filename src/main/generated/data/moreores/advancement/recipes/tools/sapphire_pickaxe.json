@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_pickaxe"
+        "recipes": "moreores:sapphire_pickaxe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

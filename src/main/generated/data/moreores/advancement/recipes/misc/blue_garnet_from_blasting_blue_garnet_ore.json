@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:blue_garnet_from_blasting_blue_garnet_ore"
+        "recipes": "moreores:blue_garnet_from_blasting_blue_garnet_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

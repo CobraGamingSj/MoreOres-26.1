@@ -22,7 +22,6 @@
     }
   },
   "display": {
-    "background": "moreores:block/radiant_block",
     "description": {
       "translate": "advancement.moreores.ruby_armor.desc"
     },

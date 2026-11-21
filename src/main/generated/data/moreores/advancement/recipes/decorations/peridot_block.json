@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:peridot_block"
+        "recipes": "moreores:peridot_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

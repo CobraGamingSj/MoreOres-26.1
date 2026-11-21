@@ -3,7 +3,10 @@ package org.cobra.moreores;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.component.predicates.DataComponentPredicates;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionTypes;
+import net.minecraft.world.level.storage.loot.predicates.LootPredicates;
 import org.cobra.moreores.data.*;
 import org.cobra.moreores.data.village.TradeSets;
 import org.cobra.moreores.enchantment.ModEnchantments;
@@ -41,6 +44,6 @@ public class MoreOresDataGenerator implements DataGeneratorEntrypoint {
 		registryBuilder.add(Registries.ENCHANTMENT, ModEnchantments::bootstrap);
 		registryBuilder.add(Registries.TRADE_SET, TradeSets::bootstrap);
 		registryBuilder.add(Registries.VILLAGER_TRADE, ModVillagerTrades::bootstrap);
-		registryBuilder.add(Registries.CONTEXT_INT_PROVIDER, ModContextIntProviders::bootstrap);
+//		registryBuilder.add(Registries.CONTEXT_INT_PROVIDER, ModContextIntProviders::bootstrap);
 	}
 }

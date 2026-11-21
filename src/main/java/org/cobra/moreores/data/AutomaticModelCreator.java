@@ -57,67 +57,98 @@ public class AutomaticModelCreator extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerator) {
-       
+
+        itemModelGenerator.generateTrimmableArmorSet(
+                Items.LEATHER_HELMET,
+                Items.LEATHER_CHESTPLATE,
+                Items.LEATHER_LEGGINGS,
+                Items.LEATHER_BOOTS,
+                true,
+                Map.of());
+
+        itemModelGenerator.generateTrimmableArmorSet(
+                Items.COPPER_HELMET,
+                Items.COPPER_CHESTPLATE,
+                Items.COPPER_LEGGINGS,
+                Items.COPPER_BOOTS,
+                false,
+                Map.of(TrimMaterials.Palette.COPPER, TrimMaterials.Palette.COPPER_DARKER)
+        );
+
+        itemModelGenerator.generateTrimmableArmorSet(Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS, false, Map.of());
+        itemModelGenerator.generateTrimmableArmorSet(
+                Items.IRON_HELMET,
+                Items.IRON_CHESTPLATE,
+                Items.IRON_LEGGINGS,
+                Items.IRON_BOOTS,
+                false,
+                Map.of(TrimMaterials.Palette.IRON, TrimMaterials.Palette.IRON_DARKER)
+        );
+
+        itemModelGenerator.generateTrimmableArmorSet(
+                Items.DIAMOND_HELMET,
+                Items.DIAMOND_CHESTPLATE,
+                Items.DIAMOND_LEGGINGS,
+                Items.DIAMOND_BOOTS,
+                false,
+                Map.of(TrimMaterials.Palette.DIAMOND, TrimMaterials.Palette.DIAMOND_DARKER)
+        );
+
+        itemModelGenerator.generateTrimmableArmorSet(
+                Items.GOLDEN_HELMET,
+                Items.GOLDEN_CHESTPLATE,
+                Items.GOLDEN_LEGGINGS,
+                Items.GOLDEN_BOOTS,
+                false,
+                Map.of(TrimMaterials.Palette.GOLD, TrimMaterials.Palette.GOLD_DARKER)
+        );
+
+        itemModelGenerator.generateTrimmableArmorSet(
+                Items.NETHERITE_HELMET,
+                Items.NETHERITE_CHESTPLATE,
+                Items.NETHERITE_LEGGINGS,
+                Items.NETHERITE_BOOTS,
+                false,
+                Map.of(TrimMaterials.Palette.NETHERITE, TrimMaterials.Palette.NETHERITE_DARKER)
+        );
+
+        itemModelGenerator.generateTrimmableArmorSet(
+                ModItems.RUBY_HELMET,
+                ModItems.RUBY_CHESTPLATE,
+                ModItems.RUBY_LEGGINGS,
+                ModItems.RUBY_BOOTS,
+                false,
+                Map.of());
+
+        itemModelGenerator.generateTrimmableArmorSet(
+                ModItems.SAPPHIRE_HELMET,
+                ModItems.SAPPHIRE_CHESTPLATE,
+                ModItems.SAPPHIRE_LEGGINGS,
+                ModItems.SAPPHIRE_BOOTS,
+                false,
+                Map.of());
+
+        itemModelGenerator.generateTrimmableArmorSet(
+                ModItems.RADIANT_HELMET,
+                ModItems.RADIANT_CHESTPLATE,
+                ModItems.RADIANT_LEGGINGS,
+                ModItems.RADIANT_BOOTS,
+                false,
+                Map.of());
+
         for (Item item : BuiltInRegistries.ITEM) {
             if(item instanceof BlockItem) {
                 continue;
             }
 
             Identifier id = BuiltInRegistries.ITEM.getKey(item);
-            ResourceKey<EquipmentAsset> assetKey = null;
             String path = id.getPath();
 
             boolean handheld = false;
 
-            if(id.getNamespace().equals("minecraft")) {
-                itemModelGenerator.generateTrimmableItem(Items.TURTLE_HELMET, ItemModelGenerators.TRIM_PREFIX_HELMET, false, Map.of());
-                itemModelGenerator.generateTrimmableArmorSet(Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS, true, Map.of());
-                itemModelGenerator.generateTrimmableArmorSet(
-                        Items.COPPER_HELMET,
-                        Items.COPPER_CHESTPLATE,
-                        Items.COPPER_LEGGINGS,
-                        Items.COPPER_BOOTS,
-                        false,
-                        Map.of(TrimMaterials.Palette.COPPER, TrimMaterials.Palette.COPPER_DARKER)
-                );
-                itemModelGenerator.generateTrimmableArmorSet(Items.CHAINMAIL_HELMET, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS, false, Map.of());
-                itemModelGenerator.generateTrimmableArmorSet(
-                        Items.IRON_HELMET,
-                        Items.IRON_CHESTPLATE,
-                        Items.IRON_LEGGINGS,
-                        Items.IRON_BOOTS,
-                        false,
-                        Map.of(TrimMaterials.Palette.IRON, TrimMaterials.Palette.IRON_DARKER)
-                );
-                itemModelGenerator.generateTrimmableArmorSet(
-                        Items.DIAMOND_HELMET,
-                        Items.DIAMOND_CHESTPLATE,
-                        Items.DIAMOND_LEGGINGS,
-                        Items.DIAMOND_BOOTS,
-                        false,
-                        Map.of(TrimMaterials.Palette.DIAMOND, TrimMaterials.Palette.DIAMOND_DARKER)
-                );
-                itemModelGenerator.generateTrimmableArmorSet(
-                        Items.GOLDEN_HELMET,
-                        Items.GOLDEN_CHESTPLATE,
-                        Items.GOLDEN_LEGGINGS,
-                        Items.GOLDEN_BOOTS,
-                        false,
-                        Map.of(TrimMaterials.Palette.GOLD, TrimMaterials.Palette.GOLD_DARKER)
-                );
-                itemModelGenerator.generateTrimmableArmorSet(
-                        Items.NETHERITE_HELMET,
-                        Items.NETHERITE_CHESTPLATE,
-                        Items.NETHERITE_LEGGINGS,
-                        Items.NETHERITE_BOOTS,
-                        false,
-                        Map.of(TrimMaterials.Palette.NETHERITE, TrimMaterials.Palette.NETHERITE_DARKER)
-                );
-            }
-            
             if(id.getNamespace().equals(MoreOresModInitializer.MOD_ID)) {
                 if(path.endsWith("_sword") || path.endsWith("_shovel") ||
-                        path.endsWith("_axe") || path.endsWith("_hoe") || 
+                        path.endsWith("_axe") || path.endsWith("_hoe") ||
                         path.endsWith("_pickaxe")) {
                     itemModelGenerator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM);
                     handheld = true;
@@ -126,16 +157,19 @@ public class AutomaticModelCreator extends FabricModelProvider {
                     handheld = true;
                 }
 
-                itemModelGenerator.generateTrimmableArmorSet(ModItems.RUBY_HELMET, ModItems.RUBY_CHESTPLATE, ModItems.RUBY_LEGGINGS, ModItems.RUBY_BOOTS, false, Map.of());
-                itemModelGenerator.generateTrimmableArmorSet(ModItems.SAPPHIRE_HELMET, ModItems.SAPPHIRE_CHESTPLATE, ModItems.SAPPHIRE_LEGGINGS, ModItems.SAPPHIRE_BOOTS, false, Map.of());
-                itemModelGenerator.generateTrimmableArmorSet(ModItems.RADIANT_HELMET, ModItems.RADIANT_CHESTPLATE, ModItems.RADIANT_LEGGINGS, ModItems.RADIANT_BOOTS, false, Map.of());
-
                 if(item instanceof RadiantBowItem bow) {
                     itemModelGenerator.createFlatItemModel(bow, ModelTemplates.BOW);
                     itemModelGenerator.generateBow(bow);
                     continue;
                 }
-                
+
+                if (path.endsWith("_helmet") ||
+                        path.endsWith("_chestplate") ||
+                        path.endsWith("_leggings") ||
+                        path.endsWith("_boots")) {
+                    continue;
+                }
+
                 if(!handheld) itemModelGenerator.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
             }
         }

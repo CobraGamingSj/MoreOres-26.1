@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_helmet"
+        "recipes": "moreores:sapphire_helmet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

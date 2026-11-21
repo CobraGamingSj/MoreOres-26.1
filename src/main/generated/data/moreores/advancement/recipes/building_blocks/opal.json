@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:opal"
+        "recipes": "moreores:opal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

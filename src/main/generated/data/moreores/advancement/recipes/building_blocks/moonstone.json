@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:moonstone"
+        "recipes": "moreores:moonstone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

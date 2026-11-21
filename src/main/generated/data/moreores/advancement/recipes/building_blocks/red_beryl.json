@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:red_beryl"
+        "recipes": "moreores:red_beryl"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

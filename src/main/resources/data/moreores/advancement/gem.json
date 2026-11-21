@@ -253,7 +253,6 @@
     }
   },
   "display": {
-    "background": "moreores:block/radiant_block",
     "description": {
       "translate": "advancement.moreores.gems_all.desc"
     },

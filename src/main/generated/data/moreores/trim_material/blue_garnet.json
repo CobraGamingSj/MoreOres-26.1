@@ -1,7 +1,7 @@
 {
-  "asset_name": "blue_garnet",
   "description": {
     "color": "#1700C2",
     "translate": "trim_material.moreores.blue_garnet"
-  }
+  },
+  "palette_id": "minecraft:trim/blue_garnet"
 }

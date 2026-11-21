@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:pink_garnet_block_polishing"
+        "recipes": "moreores:pink_garnet_block_polishing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

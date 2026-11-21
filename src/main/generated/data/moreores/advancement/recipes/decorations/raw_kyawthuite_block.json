@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:raw_kyawthuite_block"
+        "recipes": "moreores:raw_kyawthuite_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

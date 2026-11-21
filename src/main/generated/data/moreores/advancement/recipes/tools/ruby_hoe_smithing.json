@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:ruby_hoe_smithing"
+        "recipes": "moreores:ruby_hoe_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

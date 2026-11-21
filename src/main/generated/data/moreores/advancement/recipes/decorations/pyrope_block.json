@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:pyrope_block"
+        "recipes": "moreores:pyrope_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

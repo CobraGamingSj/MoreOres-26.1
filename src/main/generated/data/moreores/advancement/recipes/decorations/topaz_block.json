@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:topaz_block"
+        "recipes": "moreores:topaz_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

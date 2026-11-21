@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_nautilus_armor"
+        "recipes": "moreores:sapphire_nautilus_armor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:kyawthuite_from_smelting_deepslate_kyawthuite_ore"
+        "recipes": "moreores:kyawthuite_from_smelting_deepslate_kyawthuite_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:raw_sapphire"
+        "recipes": "moreores:raw_sapphire"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:ruby_polishing"
+        "recipes": "moreores:ruby_polishing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

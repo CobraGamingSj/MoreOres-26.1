@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:crimson_garnet_block"
+        "recipes": "moreores:crimson_garnet_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

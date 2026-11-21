@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:topaz_block_polishing"
+        "recipes": "moreores:topaz_block_polishing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_leggings"
+        "recipes": "moreores:sapphire_leggings"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

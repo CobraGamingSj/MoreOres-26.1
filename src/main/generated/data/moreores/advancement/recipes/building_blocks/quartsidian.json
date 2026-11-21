@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:quartsidian"
+        "recipes": "moreores:quartsidian"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

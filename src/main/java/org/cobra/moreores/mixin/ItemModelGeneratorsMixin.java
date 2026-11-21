@@ -4,6 +4,7 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
+import org.cobra.moreores.MoreOresModInitializer;
 import org.cobra.moreores.world.item.equipment.trim.ModTrimMaterials;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,30 +27,34 @@ public class ItemModelGeneratorsMixin {
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void moreores$addTrimMaterials(CallbackInfo ci) {
+        for (TrimMaterials.Palette palette : TrimMaterials.Palette.values()) {
+            MoreOresModInitializer.LOGGER.info("Trim palette: {}", palette.name());
+        }
+
         List<ItemModelGenerators.TrimMaterialData> materials = new ArrayList<>(TRIM_MATERIAL_MODELS);
 
-        add(materials, TrimMaterials.Palette.RUBY, ModTrimMaterials.RUBY);
-        add(materials, TrimMaterials.Palette.RADIANT, ModTrimMaterials.RADIANT);
-        add(materials, TrimMaterials.Palette.SAPPHIRE, ModTrimMaterials.SAPPHIRE);
-        add(materials, TrimMaterials.Palette.GREEN_SAPPHIRE, ModTrimMaterials.GREEN_SAPPHIRE);
-        add(materials, TrimMaterials.Palette.BLUE_GARNET, ModTrimMaterials.BLUE_GARNET);
-        add(materials, TrimMaterials.Palette.PINK_GARNET, ModTrimMaterials.PINK_GARNET);
-        add(materials, TrimMaterials.Palette.GREEN_GARNET, ModTrimMaterials.GREEN_GARNET);
-        add(materials, TrimMaterials.Palette.KYAWTHUITE, ModTrimMaterials.KYAWTHUITE);
-        add(materials, TrimMaterials.Palette.TOPAZ, ModTrimMaterials.TOPAZ);
-        add(materials, TrimMaterials.Palette.WHITE_TOPAZ, ModTrimMaterials.WHITE_TOPAZ);
-        add(materials, TrimMaterials.Palette.PERIDOT, ModTrimMaterials.PERIDOT);
-        add(materials, TrimMaterials.Palette.JADE, ModTrimMaterials.JADE);
-        add(materials, TrimMaterials.Palette.PYROPE, ModTrimMaterials.PYROPE);
-        add(materials, TrimMaterials.Palette.CRIMSON_GARNET, ModTrimMaterials.CRIMSON_GARNET);
-        add(materials, TrimMaterials.Palette.CRYSTALLITE, ModTrimMaterials.CRYSTALLITE);
-        add(materials, TrimMaterials.Palette.RADIANT_AMETHYST, ModTrimMaterials.RADIANT_AMETHYST);
-        add(materials, TrimMaterials.Palette.LIMESTONE, ModTrimMaterials.LIMESTONE);
-        add(materials, TrimMaterials.Palette.MOONSTONE, ModTrimMaterials.MOONSTONE);
-        add(materials, TrimMaterials.Palette.ALEXANDRITE, ModTrimMaterials.ALEXANDRITE);
-        add(materials, TrimMaterials.Palette.QUARTSIDIAN, ModTrimMaterials.QUARTSIDIAN);
-        add(materials, TrimMaterials.Palette.OPAL, ModTrimMaterials.OPAL);
-        add(materials, TrimMaterials.Palette.RED_BERYL, ModTrimMaterials.RED_BERYL);
+        add(materials, TrimMaterials.Palette.MOREORES_RUBY, ModTrimMaterials.RUBY);
+        add(materials, TrimMaterials.Palette.MOREORES_RADIANT, ModTrimMaterials.RADIANT);
+        add(materials, TrimMaterials.Palette.MOREORES_SAPPHIRE, ModTrimMaterials.SAPPHIRE);
+        add(materials, TrimMaterials.Palette.MOREORES_GREEN_SAPPHIRE, ModTrimMaterials.GREEN_SAPPHIRE);
+        add(materials, TrimMaterials.Palette.MOREORES_BLUE_GARNET, ModTrimMaterials.BLUE_GARNET);
+        add(materials, TrimMaterials.Palette.MOREORES_PINK_GARNET, ModTrimMaterials.PINK_GARNET);
+        add(materials, TrimMaterials.Palette.MOREORES_GREEN_GARNET, ModTrimMaterials.GREEN_GARNET);
+        add(materials, TrimMaterials.Palette.MOREORES_KYAWTHUITE, ModTrimMaterials.KYAWTHUITE);
+        add(materials, TrimMaterials.Palette.MOREORES_TOPAZ, ModTrimMaterials.TOPAZ);
+        add(materials, TrimMaterials.Palette.MOREORES_WHITE_TOPAZ, ModTrimMaterials.WHITE_TOPAZ);
+        add(materials, TrimMaterials.Palette.MOREORES_PERIDOT, ModTrimMaterials.PERIDOT);
+        add(materials, TrimMaterials.Palette.MOREORES_JADE, ModTrimMaterials.JADE);
+        add(materials, TrimMaterials.Palette.MOREORES_PYROPE, ModTrimMaterials.PYROPE);
+        add(materials, TrimMaterials.Palette.MOREORES_CRIMSON_GARNET, ModTrimMaterials.CRIMSON_GARNET);
+        add(materials, TrimMaterials.Palette.MOREORES_CRYSTALLITE, ModTrimMaterials.CRYSTALLITE);
+        add(materials, TrimMaterials.Palette.MOREORES_RADIANT_AMETHYST, ModTrimMaterials.RADIANT_AMETHYST);
+        add(materials, TrimMaterials.Palette.MOREORES_LIMESTONE, ModTrimMaterials.LIMESTONE);
+        add(materials, TrimMaterials.Palette.MOREORES_MOONSTONE, ModTrimMaterials.MOONSTONE);
+        add(materials, TrimMaterials.Palette.MOREORES_ALEXANDRITE, ModTrimMaterials.ALEXANDRITE);
+        add(materials, TrimMaterials.Palette.MOREORES_QUARTSIDIAN, ModTrimMaterials.QUARTSIDIAN);
+        add(materials, TrimMaterials.Palette.MOREORES_OPAL, ModTrimMaterials.OPAL);
+        add(materials, TrimMaterials.Palette.MOREORES_RED_BERYL, ModTrimMaterials.RED_BERYL);
 
         TRIM_MATERIAL_MODELS = List.copyOf(materials);
     }

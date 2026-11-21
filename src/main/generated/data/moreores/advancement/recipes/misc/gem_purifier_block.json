@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:gem_purifier_block"
+        "recipes": "moreores:gem_purifier_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:topaz_from_smelting_topaz_ore"
+        "recipes": "moreores:topaz_from_smelting_topaz_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

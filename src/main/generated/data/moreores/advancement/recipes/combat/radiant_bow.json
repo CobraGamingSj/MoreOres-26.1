@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:radiant_bow"
+        "recipes": "moreores:radiant_bow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

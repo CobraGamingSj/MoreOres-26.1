@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_boots"
+        "recipes": "moreores:sapphire_boots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

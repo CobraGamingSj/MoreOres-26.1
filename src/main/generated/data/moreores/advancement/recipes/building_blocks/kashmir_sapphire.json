@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:kashmir_sapphire"
+        "recipes": "moreores:kashmir_sapphire"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

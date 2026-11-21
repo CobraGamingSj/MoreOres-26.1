@@ -51,11 +51,10 @@ public class AdvancementsCreator extends FabricAdvancementProvider {
                 .save(consumer, MoreOresModInitializer.id("is_that_a_gem"));
 
         AdvancementHolder ruby_armor = Advancement.Builder.advancement()
-                .rootDisplay(
+                .display(
                         ModItems.RUBY_CHESTPLATE,
                         Component.translatable("advancement.moreores.ruby_armor").withStyle(ChatFormatting.DARK_AQUA),
                         Component.translatable("advancement.moreores.ruby_armor.desc"),
-                        MoreOresModInitializer.id("block/radiant_block"),
                         AdvancementType.GOAL,
                         true,
                         true,
@@ -66,11 +65,10 @@ public class AdvancementsCreator extends FabricAdvancementProvider {
                 .save(consumer, MoreOresModInitializer.id("ruby_armor"));
 
         AdvancementHolder radiant_sword = Advancement.Builder.advancement()
-                .rootDisplay(
+                .display(
                         ModItems.RADIANT_SWORD,
                         Component.translatable("advancement.moreores.radiant_sword").withStyle(ChatFormatting.DARK_PURPLE),
                         Component.translatable("advancement.moreores.radiant_sword.desc"),
-                        MoreOresModInitializer.id("block/radiant_block"),
                         AdvancementType.CHALLENGE,
                         true,
                         true,

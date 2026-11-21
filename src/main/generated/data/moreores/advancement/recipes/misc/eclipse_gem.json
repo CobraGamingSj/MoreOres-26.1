@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:eclipse_gem"
+        "recipes": "moreores:eclipse_gem"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

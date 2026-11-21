@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:ruby_chestplate_smithing"
+        "recipes": "moreores:ruby_chestplate_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

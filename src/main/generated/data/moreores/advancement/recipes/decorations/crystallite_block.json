@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:crystallite_block"
+        "recipes": "moreores:crystallite_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

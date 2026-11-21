@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:alexandrite"
+        "recipes": "moreores:alexandrite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:raw_peridot"
+        "recipes": "moreores:raw_peridot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

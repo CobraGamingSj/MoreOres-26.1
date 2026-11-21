@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:peridot_from_smelting_deepslate_peridot_ore"
+        "recipes": "moreores:peridot_from_smelting_deepslate_peridot_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

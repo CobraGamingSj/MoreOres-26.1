@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_from_blasting_sapphire_ore"
+        "recipes": "moreores:sapphire_from_blasting_sapphire_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

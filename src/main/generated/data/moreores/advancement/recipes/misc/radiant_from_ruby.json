@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:radiant_from_ruby"
+        "recipes": "moreores:radiant_from_ruby"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

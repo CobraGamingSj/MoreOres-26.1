@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:jade_from_smelting_jade_ore"
+        "recipes": "moreores:jade_from_smelting_jade_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

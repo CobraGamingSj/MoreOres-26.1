@@ -13,7 +13,6 @@
     }
   },
   "display": {
-    "background": "moreores:block/radiant_block",
     "description": {
       "translate": "advancement.moreores.radiant_sword.desc"
     },

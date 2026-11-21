@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:ruby"
+        "recipes": "moreores:ruby"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

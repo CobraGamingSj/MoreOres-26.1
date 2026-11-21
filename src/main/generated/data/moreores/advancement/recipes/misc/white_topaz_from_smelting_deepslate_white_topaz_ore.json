@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:white_topaz_from_smelting_deepslate_white_topaz_ore"
+        "recipes": "moreores:white_topaz_from_smelting_deepslate_white_topaz_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

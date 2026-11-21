@@ -168,7 +168,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         long [] milestones = {1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000, 9000000, 10000000};
 
         for(long milestone : milestones) {
-            if(energy == milestone && previousRemovedEnergyMilestone < milestone) {
+            if(energy >= milestone && previousRemovedEnergyMilestone < milestone) {
                 this.removeItem(energySlot, 1);
                 previousRemovedEnergyMilestone = milestone;
                 break;
@@ -186,7 +186,7 @@ public abstract class AbstractGemMachineBlockEntity<P extends CustomPacketPayloa
         int [] milestones = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000};
 
         for(long milestone : milestones) {
-            if(amount == milestone && previousRemovedRedstoneMilestone < milestone) {
+            if(amount >= milestone && previousRemovedRedstoneMilestone < milestone) {
                 this.removeItem(slot, 1);
                 previousRemovedRedstoneMilestone = milestone;
                 break;

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:jade"
+        "recipes": "moreores:jade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

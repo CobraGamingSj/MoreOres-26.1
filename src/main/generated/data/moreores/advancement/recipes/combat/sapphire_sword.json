@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_sword"
+        "recipes": "moreores:sapphire_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

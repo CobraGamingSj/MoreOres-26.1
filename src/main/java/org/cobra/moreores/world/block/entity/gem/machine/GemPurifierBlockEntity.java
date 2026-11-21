@@ -365,7 +365,7 @@ public class GemPurifierBlockEntity extends AbstractGemMachineBlockEntity<GemPur
         long [] milestones = {81000, 162000, 243000, 324000, 405000, 486000, 567000, 648000, 729000, 810000};
 
         for(long milestone : milestones) {
-            if(water == milestone && previousRemovedFluidMilestone < milestone) {
+            if(water >= milestone && previousRemovedFluidMilestone < milestone) {
                 this.removeItem(WATER_SOURCE_SLOT, 1);
                 this.setItem(WATER_SOURCE_SLOT, new ItemStack(Items.BUCKET, 1));
                 previousRemovedFluidMilestone = milestone;

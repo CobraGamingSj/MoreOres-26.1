@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:radiant_helmet_smithing"
+        "recipes": "moreores:radiant_helmet_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

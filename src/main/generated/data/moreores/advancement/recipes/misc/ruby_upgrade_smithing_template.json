@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:ruby_upgrade_smithing_template"
+        "recipes": "moreores:ruby_upgrade_smithing_template"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

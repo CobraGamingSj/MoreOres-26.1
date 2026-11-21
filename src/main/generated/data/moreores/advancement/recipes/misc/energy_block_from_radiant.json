@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:energy_block_from_radiant"
+        "recipes": "moreores:energy_block_from_radiant"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

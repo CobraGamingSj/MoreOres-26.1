@@ -6,25 +6,25 @@ extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerSc
 extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen isHovering (Lnet/minecraft/world/inventory/Slot;DD)Z
 accessible method net/minecraft/client/gui/GuiGraphicsExtractor itemCount (Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V
 
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette RUBY
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette RADIANT
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette SAPPHIRE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette GREEN_SAPPHIRE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette BLUE_GARNET
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette PINK_GARNET
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette GREEN_GARNET
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette KYAWTHUITE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette TOPAZ
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette WHITE_TOPAZ
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette PERIDOT
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette JADE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette PYROPE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette CRIMSON_GARNET
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette CRYSTALLITE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette RADIANT_AMETHYST
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette LIMESTONE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOONSTONE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette ALEXANDRITE
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette QUARTSIDIAN
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette OPAL
-extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette RED_BERYL
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_RUBY
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_RADIANT
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_SAPPHIRE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_GREEN_SAPPHIRE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_BLUE_GARNET
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_PINK_GARNET
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_GREEN_GARNET
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_KYAWTHUITE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_TOPAZ
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_WHITE_TOPAZ
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_PERIDOT
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_JADE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_PYROPE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_CRIMSON_GARNET
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_CRYSTALLITE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_RADIANT_AMETHYST
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_LIMESTONE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_MOONSTONE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_ALEXANDRITE
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_QUARTSIDIAN
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_OPAL
+extend-enum net/minecraft/world/item/equipment/trim/TrimMaterials$Palette MOREORES_RED_BERYL

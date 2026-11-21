@@ -1,7 +1,7 @@
 {
-  "asset_name": "limestone",
   "description": {
     "color": "#00FFB3",
     "translate": "trim_material.moreores.limestone"
-  }
+  },
+  "palette_id": "minecraft:trim/limestone"
 }

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_shovel"
+        "recipes": "moreores:sapphire_shovel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:limestone_block"
+        "recipes": "moreores:limestone_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:raw_blue_garnet"
+        "recipes": "moreores:raw_blue_garnet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

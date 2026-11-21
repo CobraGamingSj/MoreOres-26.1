@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:raw_white_topaz"
+        "recipes": "moreores:raw_white_topaz"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

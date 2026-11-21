@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:sapphire_polishing"
+        "recipes": "moreores:sapphire_polishing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

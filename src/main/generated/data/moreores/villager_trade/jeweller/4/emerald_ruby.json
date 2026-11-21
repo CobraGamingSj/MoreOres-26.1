@@ -2,11 +2,11 @@
   "gives": {
     "id": "moreores:ruby"
   },
-  "max_uses": 6.0,
+  "max_uses": 6,
   "reputation_discount": 0.5,
   "wants": {
-    "count": 13.0,
+    "count": 13,
     "id": "minecraft:emerald"
   },
-  "xp": 5.0
+  "xp": 5
 }

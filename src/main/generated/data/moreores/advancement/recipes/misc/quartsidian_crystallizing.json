@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:quartsidian_crystallizing"
+        "recipes": "moreores:quartsidian_crystallizing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

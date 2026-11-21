@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:gem_arrow"
+        "recipes": "moreores:gem_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

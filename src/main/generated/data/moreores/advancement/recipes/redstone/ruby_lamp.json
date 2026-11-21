@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moreores:ruby_lamp"
+        "recipes": "moreores:ruby_lamp"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

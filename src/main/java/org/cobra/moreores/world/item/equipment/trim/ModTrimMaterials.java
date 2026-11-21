@@ -37,29 +37,29 @@ public class ModTrimMaterials {
     public static final ResourceKey<TrimMaterial> RED_BERYL = of("red_beryl");
 
     public static void bootstrap(BootstrapContext<TrimMaterial> context) {
-        register(context, RUBY, Style.EMPTY.withColor(16711680), TrimMaterials.Palette.RUBY);
-        register(context, RADIANT, Style.EMPTY.withColor(11730944), TrimMaterials.Palette.RADIANT);
-        register(context, SAPPHIRE, Style.EMPTY.withColor(6875), TrimMaterials.Palette.SAPPHIRE);
-        register(context, GREEN_SAPPHIRE, Style.EMPTY.withColor(2925312), TrimMaterials.Palette.GREEN_SAPPHIRE);
-        register(context, BLUE_GARNET, Style.EMPTY.withColor(TextColor.fromRgb(1507522)), TrimMaterials.Palette.BLUE_GARNET);
-        register(context, PINK_GARNET, Style.EMPTY.withColor(16711927), TrimMaterials.Palette.PINK_GARNET);
-        register(context, GREEN_GARNET, Style.EMPTY.withColor(65331), TrimMaterials.Palette.GREEN_GARNET);
-        register(context, KYAWTHUITE, Style.EMPTY.withColor(16737792), TrimMaterials.Palette.KYAWTHUITE);
-        register(context, TOPAZ, Style.EMPTY.withColor(13713152), TrimMaterials.Palette.TOPAZ);
-        register(context, WHITE_TOPAZ, Style.EMPTY.withColor(15328482), TrimMaterials.Palette.WHITE_TOPAZ);
-        register(context, PERIDOT, Style.EMPTY.withColor(52238), TrimMaterials.Palette.PERIDOT);
-        register(context, JADE, Style.EMPTY.withColor(11140783), TrimMaterials.Palette.JADE);
-        register(context, PYROPE, Style.EMPTY.withColor(12717839), TrimMaterials.Palette.PYROPE);
+        register(context, RUBY, Style.EMPTY.withColor(16711680), TrimMaterials.Palette.MOREORES_RUBY);
+        register(context, RADIANT, Style.EMPTY.withColor(11730944), TrimMaterials.Palette.MOREORES_RADIANT);
+        register(context, SAPPHIRE, Style.EMPTY.withColor(6875), TrimMaterials.Palette.MOREORES_SAPPHIRE);
+        register(context, GREEN_SAPPHIRE, Style.EMPTY.withColor(2925312), TrimMaterials.Palette.MOREORES_GREEN_SAPPHIRE);
+        register(context, BLUE_GARNET, Style.EMPTY.withColor(TextColor.fromRgb(1507522)), TrimMaterials.Palette.MOREORES_BLUE_GARNET);
+        register(context, PINK_GARNET, Style.EMPTY.withColor(16711927), TrimMaterials.Palette.MOREORES_PINK_GARNET);
+        register(context, GREEN_GARNET, Style.EMPTY.withColor(65331), TrimMaterials.Palette.MOREORES_GREEN_GARNET);
+        register(context, KYAWTHUITE, Style.EMPTY.withColor(16737792), TrimMaterials.Palette.MOREORES_KYAWTHUITE);
+        register(context, TOPAZ, Style.EMPTY.withColor(13713152), TrimMaterials.Palette.MOREORES_TOPAZ);
+        register(context, WHITE_TOPAZ, Style.EMPTY.withColor(15328482), TrimMaterials.Palette.MOREORES_WHITE_TOPAZ);
+        register(context, PERIDOT, Style.EMPTY.withColor(52238), TrimMaterials.Palette.MOREORES_PERIDOT);
+        register(context, JADE, Style.EMPTY.withColor(11140783), TrimMaterials.Palette.MOREORES_JADE);
+        register(context, PYROPE, Style.EMPTY.withColor(12717839), TrimMaterials.Palette.MOREORES_PYROPE);
 
-        register(context, CRIMSON_GARNET, Style.EMPTY.withColor(12058624), TrimMaterials.Palette.CRIMSON_GARNET);
-        register(context, CRYSTALLITE, Style.EMPTY.withColor(2086544), TrimMaterials.Palette.CRYSTALLITE);
-        register(context, RADIANT_AMETHYST, Style.EMPTY.withColor(8733893), TrimMaterials.Palette.RADIANT_AMETHYST);
-        register(context, LIMESTONE, Style.EMPTY.withColor(65459), TrimMaterials.Palette.LIMESTONE);
-        register(context, MOONSTONE, Style.EMPTY.withColor(14935011), TrimMaterials.Palette.MOONSTONE);
-        register(context, ALEXANDRITE, Style.EMPTY.withColor(12009953), TrimMaterials.Palette.ALEXANDRITE);
-        register(context, QUARTSIDIAN, Style.EMPTY.withColor(5197647), TrimMaterials.Palette.QUARTSIDIAN);
-        register(context, OPAL, Style.EMPTY.withColor(5085951), TrimMaterials.Palette.OPAL);
-        register(context, RED_BERYL, Style.EMPTY.withColor(15073280), TrimMaterials.Palette.RED_BERYL);
+        register(context, CRIMSON_GARNET, Style.EMPTY.withColor(12058624), TrimMaterials.Palette.MOREORES_CRIMSON_GARNET);
+        register(context, CRYSTALLITE, Style.EMPTY.withColor(2086544), TrimMaterials.Palette.MOREORES_CRYSTALLITE);
+        register(context, RADIANT_AMETHYST, Style.EMPTY.withColor(8733893), TrimMaterials.Palette.MOREORES_RADIANT_AMETHYST);
+        register(context, LIMESTONE, Style.EMPTY.withColor(65459), TrimMaterials.Palette.MOREORES_LIMESTONE);
+        register(context, MOONSTONE, Style.EMPTY.withColor(14935011), TrimMaterials.Palette.MOREORES_MOONSTONE);
+        register(context, ALEXANDRITE, Style.EMPTY.withColor(12009953), TrimMaterials.Palette.MOREORES_ALEXANDRITE);
+        register(context, QUARTSIDIAN, Style.EMPTY.withColor(5197647), TrimMaterials.Palette.MOREORES_QUARTSIDIAN);
+        register(context, OPAL, Style.EMPTY.withColor(5085951), TrimMaterials.Palette.MOREORES_OPAL);
+        register(context, RED_BERYL, Style.EMPTY.withColor(15073280), TrimMaterials.Palette.MOREORES_RED_BERYL);
     }
 
     private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, Style style, TrimMaterials.Palette palette) {
